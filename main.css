@@ -1,0 +1,44 @@
+#question, #answer {
+  font-size: 20px;
+}
+
+#tamaC span, #chieC span, #skipC span {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.soonQ {
+	color: lightgray;
+}
+
+.tamaQ {
+	color: lime;
+}
+
+.chieQ {
+	color: red;
+}
+
+.sayangQ {
+	color: yellow;
+}
+
+.skipQ {
+	color: dodgerblue;
+}
+
+.currentQ {
+	color: black;
+}
+
+#toInclude input {
+	width: 80px;
+}
+
+body {
+    font-family: "Nunito Sans";
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: Nunito;
+}

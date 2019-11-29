@@ -18,239 +18,6 @@
 --- go reggie!
 */
 
-/** The fraction class. */
-class Fraction {
-	constructor(n, d = 1) {
-		/** The numerator of the Fraction. */
-		this.n = n;
-
-		/** The denominator of the Fraction. */
-		this.d = d;
-	}
-	
-	/** Returns a string representation of the Fraction. */
-	str() {
-		return this.n + "/" + this.d;
-	}
-	
-	/** Returns the numerical value of the Fraction. */
-	num() {
-		return this.n / this.d;
-	}
-	
-	/** Returns the LaTeX code for the Fraction. */
-	latex() {
-		return convertToLatexFrac(this.n, this.d);
-	}
-	
-	/** Returns a string representation of the simplified version of the Fraction. */
-	simplestStr() {
-		return (this.n / gcd(this.n, this.d)) + "/" + (this.d / gcd(this.n, this.d));
-	}
-	
-	/** Returns a new Fraction representing the simplified version of the current Fraction. */
-	simplestFrac() {
-		return new Fraction(this.n / gcd(this.n, this.d), this.d / gcd(this.n, this.d));
-	}
-	
-	/** Returns the LaTeX code representing the simplified version of the current Fraction. */
-	simplestLatex() {
-        let res = convertToLatexFrac(this.n / gcd(this.n, this.d), this.d / gcd(this.n, this.d));
-        return res != "" ? res : "1"
-	}
-}
-
-/** The equation class. */
-class Equation {
-	/** Makes a polynomial. Also makes upper and lower bounds for the definite integral. */
-	constructor() {
-		/** Coefficients of each term of the polynomial. */
-		this.coefficients = [];
-		
-		/** Signs of each term of the polynomial. */
-		this.signs = [];
-		
-		/** The lower bound of the definite integral. */
-		this.defl;
-
-		/** The upper bound of the definite integral. */
-		this.defu;
-	}
-	
-	randomize(max) {
-		for (let i = 0; i < max; i++) {
-			this.coefficients.push(d3.randomInt(minCoef, maxCoef + 1)());
-			this.signs.push(sgn[d3.randomInt(0,2)()]);
-		}
-		
-		if (this.signs[this.signs.length - 1] == "+") {
-			this.signs[this.signs.length - 1] = "";
-		}
-		
-		this.defl = d3.randomInt(minBound, maxBound + 1)();
-		this.defu = d3.randomInt(minBound, maxBound + 1)();
-	}
-	
-	/** Forces the polynomial to the degree specified. */
-	forceMax(max) {
-		for (let i = this.coefficients.length - 1; i > max; i--) {
-			this.coefficients[i] = 0;
-		}
-		
-		if (this.signs[max] == "+") {
-			this.signs[max] = "";
-		}
-	}
-	
-	/** Randomly assigns zero coefficients to terms. */
-	randomZero() {
-		let tf = [true, false, false, false, false];
-		
-		for (let i = 0; i < this.coefficients.length; i++) {
-			if (tf[d3.randomInt(0, tf.length + 1)()]) {
-				this.coefficients[i] = 0;
-			}
-		}
-	}
-	
-	/** Returns the LaTeX code of the equation for display in #question. */
-	display() {
-		let terms = [];
-		let final = "";
-		
-		for (let i = 0; i < this.coefficients.length; i++) {
-			if (this.coefficients[i] != undefined) {
-				switch (i) {
-					case 0:
-						terms[i] = this.signs[i] + this.coefficients[i];
-						break;
-					case 1:
-						if (this.coefficients[i] == 1) {
-							terms[i] = this.signs[i] + "x";
-						} else {
-							terms[i] = this.signs[i] + this.coefficients[i] + "x";
-						}
-						break;
-					default:
-						if (this.coefficients[i] == 1) {
-							terms[i] = this.signs[i] + "x^" + i;
-						} else {
-							terms[i] = this.signs[i] + this.coefficients[i] + "x^" + i;
-						}
-						break;
-				}
-
-				if (this.coefficients[i] == 0) {
-					terms[i] = "";
-
-					if (i > 0) {
-						if (this.signs[i - 1] == "+" && this.coefficients.slice(i, this.coefficients.length).every(function(a) { if (a == 0) { return true } })) {
-							this.signs[i - 1] = "";
-						}
-
-						switch (i - 1) {
-							case 0:
-								terms[i - 1] = this.signs[i - 1] + this.coefficients[i - 1];
-								break;
-							case 1:
-								if (this.coefficients[i - 1] == 1) {
-									terms[i - 1] = this.signs[i - 1] + "x";
-								} else {
-									terms[i - 1] = this.signs[i - 1] + this.coefficients[i - 1] + "x";
-								}
-								break;
-							default:
-								if (this.coefficients[i - 1] == 1) {
-									terms[i - 1] = this.signs[i - 1] + "x^" + (i - 1);
-								} else {
-									terms[i - 1] = this.signs[i - 1] + this.coefficients[i - 1] + "x^" + (i - 1);
-								}
-								break;
-						}
-					}
-
-					if (this.coefficients[i - 1] == 0) {
-						terms[i - 1] = "";
-					}
-				}
-			}
-		}
-		
-		for (let i = terms.length - 1; i >= 0; i--) {
-			final += terms[i];
-		}
-		
-		if (final == "") { final = "0" }
-		
-		return final;
-	}
-	
-	/** Returns the LaTeX code for the derivative. Used to check input. */
-	derivative() {
-		let answerEq = new Equation();
-		
-		for (let i = 1; i < this.coefficients.length; i++) {
-			answerEq.coefficients[i - 1] = i * this.coefficients[i];
-			answerEq.signs[i - 1] = this.signs[i];
-		}
-		
-		return answerEq.display();
-	}
-	
-	/** Returns the LaTeX code for the indefinite integral. Used to check input. */
-	indefinite() {
-		let answerEq = new Equation();
-		
-		for (let i = 0; i < this.coefficients.length; i++) {
-			answerEq.coefficients[i + 1] = convertToLatexFrac(this.coefficients[i], i + 1);
-			answerEq.signs[i + 1] = this.signs[i];
-		}
-		
-		console.log(answerEq);
-		
-		if (answerEq.display() != "0") {
-			return answerEq.display() + "+C";
-		} else {
-			return "C";
-		}
-	}
-	
-	/** Returns the value of the definite integral. Used to check input. */
-	definite() {
-		let cof4 = parseInt(this.sgn3 + this.deg3);
-		let cof3 = parseInt(this.sgn2 + this.deg2);
-		let cof2 = parseInt(this.sgn1 + this.deg1);
-		let cof1 = parseInt(this.sgn0 + this.deg0);
-	
-		let mlt4 = operateFrac(new Fraction(cof4), new Fraction(1, 4), "m");
-		let mlt3 = operateFrac(new Fraction(cof3), new Fraction(1, 3), "m");
-		let mlt2 = operateFrac(new Fraction(cof2), new Fraction(1, 2), "m");
-		let mlt1 = new Fraction(cof1);
-
-		let upB4 = operateFrac(mlt4, new Fraction(this.defu ** 4), "m");
-		let upB3 = operateFrac(mlt3, new Fraction(this.defu ** 3), "m");
-		let upB2 = operateFrac(mlt2, new Fraction(this.defu ** 2), "m");
-		let upB1 = operateFrac(mlt1, new Fraction(this.defu), "m");
-
-		let lwB4 = operateFrac(mlt4, new Fraction(this.defl ** 4), "m");
-		let lwB3 = operateFrac(mlt3, new Fraction(this.defl ** 3), "m");
-		let lwB2 = operateFrac(mlt2, new Fraction(this.defl ** 2), "m");
-		let lwB1 = operateFrac(mlt1, new Fraction(this.defl), "m");
-
-		let upA = [upB4, upB3, upB2, upB1].reduce(function(a, b) {
-			return operateFrac(a, b, "a");
-		});
-
-		let lwA = [lwB4, lwB3, lwB2, lwB1].reduce(function(a, b) {
-			return operateFrac(a, b, "a");
-		});
-
-		let ans = operateFrac(upA, lwA, "s");
-
-		return ans.latex();
-	}
-}
-
 /** Array containing + and - operators/signs. */
 let sgn = ["+", "-"];
 
@@ -264,6 +31,9 @@ let qCount = 0;
 
 /** Current question number. */
 let qCurrent = 1;
+
+/** Maximum degree of Equation. */
+let maxDeg;
 
 /** Minimum term coefficient in Equations. */
 let minCoef;
@@ -279,6 +49,9 @@ let maxBound;
 
 /** Determines whether Equations will have missing terms. */
 let zeroCoef;
+
+/** Determines whether lower bounds greater than upper bounds are allowed. */
+let greaterLower;
 
 /** Number of correct answers. */
 let tamaC = 0;
@@ -315,83 +88,10 @@ let mathField = MQ.MathField(mathFieldSpan, {
 /** The equation that gets displayed. */
 let charot;
 
-/** Gets the GCD of two numbers. Used to find lowest terms. */
-function gcd(a, b) {
-	if (!b) return Math.abs(a);
-
-	return gcd(b, a % b);
-}
-
-/** Gets the LCM of two numbers. Used for adding and subtracting Fractions. */
-function lcm(a, b) {
-	return Math.abs((a * b) / gcd(a, b));
-}
-
-/** Operates on two Fractions.
-	@param {Fraction} a - First Fraction
-	@param {Fraction} b - Second Fraction
-	@param {string} operation - Operation to be performed
-*/
-function operateFrac(a, b, operation) {
-	let aN = a.n;
-	let aD = a.d;
-	let bN = b.n;
-	let bD = b.d;
-	let lcd = lcm(aD, bD);
-	let aN2 = aN * lcd / aD;
-	let bN2 = bN * lcd / bD;
-	
-	switch (operation) {
-	case "a":
-		return new Fraction(aN2 + bN2, lcd);
-		break;
-	case "s":
-		return new Fraction(aN2 - bN2, lcd);
-		break;
-	case "m":
-		return new Fraction(aN * bN, aD * bD);
-		break;
-	case "d":
-		return new Fraction(aN * bD, aD * bN);
-	}
-}
-
-/**
-	Takes two numbers. Returns either an integer or a LaTeX fraction depending on divisibilty.
-	@param {number} n - Numerator (dividend)
-	@param {number} d - Denominator (divisor)
-*/
-function convertToLatexFrac(n, d) {
-	if (n % d == 0) {
-		if (n / d == 1) {
-			return "";
-		} else {
-			return (n / d).toString();
-		}
-	} else {
-		let N = n;
-		let D = d;
-		let S = "";
-
-		if (n < 0 && d > 0) {
-			N = -n;
-			S = "-";
-		} else if (n > 0 && d < 0) {
-			D = -d;
-			S = "-";
-		} else if (n < 0 && d < 0) {
-			N = -n;
-			D = -d;
-		}
-		
-		return S + "\\frac{" + (N / gcd(n, d)) + "}{" + (D / gcd(n, d)) + "}";
-	}
-}
-
 /** Creates a new, randomly generated equation. */
 function newEq() {
 	charot = new Equation();
-	charot.randomize(d3.randomInt(0,11)());
+	charot.randomize(d3.randomInt(0, maxDeg + 1)());
 	
 	if (zeroCoef) { charot.randomZero(); }
 }
@@ -489,7 +189,7 @@ function skip() {
 */
 function refresh(correct) {
 	if (correct == true) {
-		newEq(minCoef, maxCoef);
+		newEq();
 		lagay();
 	}
 	
@@ -554,6 +254,8 @@ function gameProper() {
 	minBound = parseInt($("#min_intb").val());
 	maxBound = parseInt($("#max_intb").val());
 	zeroCoef = $("#allow_zero").prop("checked");
+	maxDeg = parseInt($("#max_deg").val());
+	greaterLower = $("#greater_lower").prop("checked");
 	
 	$("#choose").hide();
     $("#main").show();
@@ -617,9 +319,11 @@ function checkForm() {
 	if (!$("#inc_f").is(":checked")) {
 		$("#min_intb").prop("disabled", true);
 		$("#max_intb").prop("disabled", true);
+		$("#greater_lower").prop("disabled", true);
 	} else {
 		$("#min_intb").prop("disabled", false);
 		$("#max_intb").prop("disabled", false);
+		$("#greater_lower").prop("disabled", false);
 	}
 	
 	parseInt($("#question_count").val()) <= 0 ? $("#question_count").addClass("is-invalid") : $("#question_count").removeClass("is-invalid");

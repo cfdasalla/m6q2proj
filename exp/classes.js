@@ -41,7 +41,7 @@ class Fraction {
 }
 
 /** The equation class. */
-class Equation {
+class Polynomial {
 	/** Makes a polynomial. Also makes upper and lower bounds for the definite integral. */
 	constructor() {
 		/** Coefficients of each term of the polynomial. */
@@ -58,7 +58,7 @@ class Equation {
 	}
 	
 	randomize(max) {
-		for (let i = 0; i < max; i++) {
+		for (let i = 0; i <= max; i++) {
 			this.coefficients.push(d3.randomInt(minCoef, maxCoef + 1)());
 			this.signs.push(sgn[d3.randomInt(0,2)()]);
 		}
@@ -107,10 +107,18 @@ class Equation {
 							}
 							break;
 						default:
-							if (this.coefficients[i] == 1) {
-								terms[i] = this.signs[i] + "x^" + i;
+							if (i < 10) {
+								if (this.coefficients[i] == 1) {
+									terms[i] = this.signs[i] + "x^" + i;
+								} else {
+									terms[i] = this.signs[i] + this.coefficients[i] + "x^" + i;
+								}
 							} else {
-								terms[i] = this.signs[i] + this.coefficients[i] + "x^" + i;
+								if (this.coefficients[i] == 1) {
+									terms[i] = this.signs[i] + "x^{" + i + "}";
+								} else {
+									terms[i] = this.signs[i] + this.coefficients[i] + "x^{" + i + "}";
+								}
 							}
 							break;
 					}
@@ -127,12 +135,21 @@ class Equation {
 							}
 							break;
 						default:
-							if (this.coefficients[i] == 1) {
-								terms[i] = this.signs[i] + "x^" + i;
+							if (i < 10) {
+								if (this.coefficients[i] == 1) {
+									terms[i] = this.signs[i] + "x^" + i;
+								} else {
+									terms[i] = this.signs[i] + this.coefficients[i].latex() + "x^" + i;
+								}
 							} else {
-								terms[i] = this.signs[i] + this.coefficients[i].latex() + "x^" + i;
+								if (this.coefficients[i] == 1) {
+									terms[i] = this.signs[i] + "x^{" + i + "}";
+								} else {
+									terms[i] = this.signs[i] + this.coefficients[i].latex() + "x^{" + i + "}";
+								}
 							}
 							break;
+								
 					}
 				}
 
@@ -167,7 +184,7 @@ class Equation {
 	
 	/** Returns the LaTeX code for the derivative. Used to check input. */
 	derivative() {
-		let answerEq = new Equation();
+		let answerEq = new Polynomial();
 		
 		for (let i = 1; i < this.coefficients.length; i++) {
 			answerEq.coefficients[i - 1] = i * this.coefficients[i];
@@ -179,7 +196,7 @@ class Equation {
 	
 	/** Returns the LaTeX code for the indefinite integral. Used to check input. */
 	indefinite() {
-		let answerEq = new Equation();
+		let answerEq = new Polynomial();
 		
 		for (let i = 0; i < this.coefficients.length; i++) {
 			answerEq.coefficients[i + 1] = new Fraction(this.coefficients[i], i + 1);

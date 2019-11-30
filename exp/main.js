@@ -32,22 +32,22 @@ let qCount = 0;
 /** Current question number. */
 let qCurrent = 1;
 
-/** Maximum degree of Equation. */
+/** Maximum degree of Polynomial. */
 let maxDeg;
 
-/** Minimum term coefficient in Equations. */
+/** Minimum term coefficient in Polynomials. */
 let minCoef;
 
-/** Maximum term coefficient in Equations. */
+/** Maximum term coefficient in Polynomials. */
 let maxCoef ;
 
-/** Minimum definite integral bound in Equations. */
+/** Minimum definite integral bound in Polynomials. */
 let minBound;
 
-/** Maximum definite integral bound in Equations. */
+/** Maximum definite integral bound in Polynomials. */
 let maxBound;
 
-/** Determines whether Equations will have missing terms. */
+/** Determines whether Polynomials will have missing terms. */
 let zeroCoef;
 
 /** Determines whether lower bounds greater than upper bounds are allowed. */
@@ -86,21 +86,21 @@ let mathField = MQ.MathField(mathFieldSpan, {
 });
 
 /** The equation that gets displayed. */
-let charot;
+let current;
 
 /** Creates a new, randomly generated equation. */
-function newEq() {
-	charot = new Equation();
-	charot.randomize(d3.randomInt(0, maxDeg + 1)());
+function generatePolynomial() {
+	current = new Polynomial();
+	current.randomize(d3.randomInt(0, maxDeg + 1)());
 	
-	if (zeroCoef) { charot.randomZero(); }
+	if (zeroCoef) { current.randomZero(); }
 }
 
 /** Checks if answer is correct. */
 function check() {
-	let modes = {d: charot.derivative(),
-				 i: charot.indefinite(),
-				 f: charot.definite()};
+	let modes = {d: current.derivative(),
+				 i: current.indefinite(),
+				 f: current.definite()};
 	let dots = $("#progress .dot");
 	
     $("#check").prop("disabled", true);
@@ -150,9 +150,9 @@ function check() {
 
 /* Fills in input field with correct answer while skipping current question. */
 function skip() {
-	let modes = {d: charot.derivative(),
-				 i: charot.indefinite(),
-				 f: charot.definite()};
+	let modes = {d: current.derivative(),
+				 i: current.indefinite(),
+				 f: current.definite()};
 	let dots = $("#progress .dot");
     
 	dots.eq(qCurrent - 1).removeClass("currentQ");
@@ -189,8 +189,11 @@ function skip() {
 */
 function refresh(correct) {
 	if (correct == true) {
-		newEq();
-		lagay();
+		generatePolynomial();
+		place();
+	
+		mathField.select();
+		mathField.write("");
 	}
 	
 	if (qCurrent <= qCount) {
@@ -198,8 +201,6 @@ function refresh(correct) {
 		$("#skip").prop("disabled", false);
 	}
 	
-	mathField.select();
-	mathField.write("");
 	mathField.focus();
 	
 	$("#result").html("");
@@ -215,7 +216,7 @@ function randomMode() {
 }
 
 /** Places equation into #question. */
-function lagay() {
+function place() {
 	let dots = $("#progress .dot");
 	
 	dots.eq(qCurrent - 1).removeClass("soonQ");
@@ -226,15 +227,15 @@ function lagay() {
 
 		switch (mode) {
 			case "d":
-				$("#question").html("\\( \\displaystyle \\frac{\\mathrm{d}} {\\mathrm{d} x} (" + charot.display() + ") \\)");
+				$("#question").html("\\( \\displaystyle \\frac{\\mathrm{d}} {\\mathrm{d} x} (" + current.display() + ") \\)");
 				$("#question").css("color", "red");
 				break;
 			case "i":
-				$("#question").html("\\( \\displaystyle \\int {(" + charot.display() + ") \\mathrm{d} x} \\)");
+				$("#question").html("\\( \\displaystyle \\int {(" + current.display() + ") \\mathrm{d} x} \\)");
 				$("#question").css("color", "blue");
 				break;
 			case "f":
-				$("#question").html("\\( \\displaystyle \\int ^{" + charot.defu + "} _{" + charot.defl + "} {(" + charot.display() + ") \\mathrm{d} x} \\)");
+				$("#question").html("\\( \\displaystyle \\int ^{" + current.defu + "} _{" + current.defl + "} {(" + current.display() + ") \\mathrm{d} x} \\)");
 				$("#question").css("color", "green");
 				break;
 		}
@@ -278,8 +279,8 @@ function gameProper() {
 	progressDots();
 	resetCounters();
 	
-	newEq();
-	lagay();
+	generatePolynomial();
+	place();
 }
 
 /** Updates tama, chie, and skip counters. */

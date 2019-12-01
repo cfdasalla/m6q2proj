@@ -10135,6 +10135,7 @@ html {
 #chat .choices {
   padding-top: 0;
   display: inline-block;
+  line-height: 3;
 }
 
 #chat .choices button {

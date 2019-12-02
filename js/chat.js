@@ -61,7 +61,7 @@ ${optionButtons}
 }
 
 /** Calisto's Recipient object. */
-let cal = new Recipient("Calisto", "Lucero", "https://pbs.twimg.com/profile_images/1200298735617499137/bHcTZaX6_400x400.jpg", "Tama!", "Mali...", "Ulitin kaya natin?");
+let cal = new Recipient("Calisto", "Lucero", "https://pbs.twimg.com/profile_images/1200298735617499137/bHcTZaX6_400x400.jpg", "tama!", "mali...", "ulitin kaya natin?");
 
 /** IO's recipient object. */
 let io = new Recipient("Ian", "Kona", "", "Yes!", "I don't think that's right...", "Why don't we try again?", "Okelani");
@@ -70,18 +70,21 @@ let io = new Recipient("Ian", "Kona", "", "Yes!", "I don't think that's right...
 let lastPoll;
 
 /** Adds a message to the chat. */
-function addMessage(m, s, d = 0) {
+function addMessage(m, s, f = function() {}, d = 0) {
 	let x = new Message(m, s);
 	let y = $("#chat div[class~=left], #chat div[class~=right]");
 	let z = y.last();
+	let u = $("#chat div[class~=choose]").last();
 	
-	if (y.length != 0) {
-		if (z.attr("class").match(new RegExp(s)) != null) {
-			z.css("margin-bottom", "1px");
-			if (s == "left") {
-				z.css("border-bottom-left-radius", "0");	
-			} else {
-				z.css("border-bottom-right-radius", "0");
+	if (z.prev().index() > u.index()) {
+		if (y.length != 0) {
+			if (z.attr("class").match(new RegExp(s)) != null) {
+				z.css("margin-bottom", "1px");
+				if (s == "left") {
+					z.css("border-bottom-left-radius", "0");	
+				} else {
+					z.css("border-bottom-right-radius", "0");
+				}
 			}
 		}
 	}
@@ -100,8 +103,9 @@ function addMessage(m, s, d = 0) {
 	}
 	
 	z = $("#chat div[class~=left], #chat div[class~=right]").last();
+	u = $("#chat div[class~=choose]").last();
 	
-	if (z.prev().length != 0) {
+	if (z.prev().index() > u.index()) {
 		if (z.prev().attr("class").match(new RegExp(s)) != null) {
 			z.css("margin-top", "1px");
 
@@ -115,9 +119,11 @@ function addMessage(m, s, d = 0) {
 	
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	
-	$("#chat div").last().on("animationend", function() {
+	$("#chat div").last().one("animationend", function() {
 		$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
 	});
+	
+	setTimeout(f, d + d3.randomInt(1000, 1501)());
 }
 
 /** Removes last message from the chat. */
@@ -142,11 +148,11 @@ function replaceLastMessage(n) {
 }
 
 /** Adds a poll to the chat. */
-function addPoll(q, o, c) {
+function addPoll(q, o, c, f = function() {}, e = "") {
 	let x = new Poll(q, o);
 	let y = $(x.add()).appendTo("#chat");
 	
-	addPollClicks(y.find(".choice"), c);
+	addPollClicks(y.find(".choice"), c, f, e);
 	colorButtons();
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	
@@ -165,7 +171,7 @@ function pollSelect(a) {
 }
 
 /** Adds click events to poll choices. */
-function addPollClicks(a, b) {
+function addPollClicks(a, b, f = function() {}, e = "") {
 	for (let i = 0; i < a.length; i++) {
 		if (i != b) {
 			$(a[i]).one("click", function() {
@@ -179,27 +185,28 @@ function addPollClicks(a, b) {
 				}
 				
 				pollSelect(this);
-				addMessage(lastPoll.options[$(this).index()], "right");
+				addMessage(lastPoll.options[$(this).index()] + " " + e, "right");
 				
 				setTimeout(function() {
-					addMessage(currentRecipient.wrong, "left", 2000);
-				}, 1000);
-				
-				setTimeout(function() {
-					addMessage(currentRecipient.again, "left");
-				}, 4000);
-				
-				setTimeout(function() {
-					addPoll(lastPoll.question, newOptions, newCorrect);
-				}, 5000);
+					addMessage(currentRecipient.wrong, "left", function() {
+						setTimeout(function() {
+							addMessage(currentRecipient.again, "left", function() {
+								addPoll(lastPoll.question, newOptions, newCorrect, f, e);
+							});
+						}, d3.randomInt(0, 501)());
+					}, d3.randomInt(1000, 2001)());
+				}, d3.randomInt(1001, 1501)());
 			});
 		} else {
 			$(a[i]).one("click", function() {
 				pollSelect(this);
 				addMessage(lastPoll.options[$(this).index()], "right");
 				setTimeout(function() {
-					addMessage(currentRecipient.correct, "left", 2000);
-				}, 1000);
+					let x = d3.randomInt(2000, 3001)();
+					
+					addMessage(currentRecipient.correct, "left", undefined, x);
+					setTimeout(f, x + d3.randomInt(1000, 2001)());
+				}, d3.randomInt(1000, 2001)());
 			});
 		}
 	}
@@ -208,6 +215,16 @@ function addPollClicks(a, b) {
 /** Adds button classes corresponding to current chat color. */
 function colorButtons() {
 	$("#chat .choice").addClass("btn-outline-" + $("#chat").attr("class").match(new RegExp(currentRecipient.first.toLowerCase()))[0]);
+}
+
+function toggleOnline() {
+	if ($("#online_dot").hasClass("online")) {
+		$("#online_dot").removeClass("online");
+		$("#online_dot").addClass("offline");
+	} else {
+		$("#online_dot").removeClass("offline");
+		$("#online_dot").addClass("online");
+	}
 }
 
 $(function() {

@@ -200,7 +200,7 @@ function addPollClicks(a, b, f = function() {}, e = "") {
 		} else {
 			$(a[i]).one("click", function() {
 				pollSelect(this);
-				addMessage(lastPoll.options[$(this).index()], "right");
+				addMessage(lastPoll.options[$(this).index()] + " " + e, "right");
 				setTimeout(function() {
 					let x = d3.randomInt(2000, 3001)();
 					

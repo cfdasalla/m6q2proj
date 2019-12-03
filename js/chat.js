@@ -61,10 +61,10 @@ ${optionButtons}
 }
 
 /** Calisto's Recipient object. */
-let cal = new Recipient("Calisto", "Lucero", "https://pbs.twimg.com/profile_images/1200298735617499137/bHcTZaX6_400x400.jpg", "tama!", "mali...", "ulitin kaya natin?");
+let cal = new Recipient("Calisto", "Lucero", "images/cal dp.png", "tama!", "mali...", "ulitin kaya natin?");
 
 /** IO's recipient object. */
-let io = new Recipient("Ian", "Kona", "", "Yes!", "I don't think that's right...", "Why don't we try again?", "Okelani");
+let io = new Recipient("Ian", "Kona", "images/io dp.png", "Yes!", "I don't think that's right...", "Why don't we try again?", "Okelani");
 
 /** Last poll added. */
 let lastPoll;
@@ -148,11 +148,11 @@ function replaceLastMessage(n) {
 }
 
 /** Adds a poll to the chat. */
-function addPoll(q, o, c, f = function() {}, e = "") {
+function addPoll(q, o, c, f = function() {}, pre = "", post = "") {
 	let x = new Poll(q, o);
 	let y = $(x.add()).appendTo("#chat");
 	
-	addPollClicks(y.find(".choice"), c, f, e);
+	addPollClicks(y.find(".choice"), c, f, pre, post);
 	colorButtons();
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	
@@ -171,7 +171,7 @@ function pollSelect(a) {
 }
 
 /** Adds click events to poll choices. */
-function addPollClicks(a, b, f = function() {}, e = "") {
+function addPollClicks(a, b, f = function() {}, pre = "", post = "") {
 	for (let i = 0; i < a.length; i++) {
 		if (i != b) {
 			$(a[i]).one("click", function() {
@@ -185,13 +185,13 @@ function addPollClicks(a, b, f = function() {}, e = "") {
 				}
 				
 				pollSelect(this);
-				addMessage(lastPoll.options[$(this).index()] + " " + e, "right");
+				addMessage(pre + lastPoll.options[$(this).index()] + post, "right");
 				
 				setTimeout(function() {
 					addMessage(currentRecipient.wrong, "left", function() {
 						setTimeout(function() {
 							addMessage(currentRecipient.again, "left", function() {
-								addPoll(lastPoll.question, newOptions, newCorrect, f, e);
+								addPoll(lastPoll.question, newOptions, newCorrect, f, pre, post);
 							});
 						}, d3.randomInt(0, 501)());
 					}, d3.randomInt(1000, 2001)());
@@ -200,7 +200,7 @@ function addPollClicks(a, b, f = function() {}, e = "") {
 		} else {
 			$(a[i]).one("click", function() {
 				pollSelect(this);
-				addMessage(lastPoll.options[$(this).index()] + " " + e, "right");
+				addMessage(pre + lastPoll.options[$(this).index()] + post, "right");
 				setTimeout(function() {
 					let x = d3.randomInt(2000, 3001)();
 					

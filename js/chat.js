@@ -119,7 +119,7 @@ function addMessage(m, s, f = function() {}, d = 0) {
 	
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	
-	$("#chat div").last().one("animationend", function() {
+	$("#chat div[class~=left], #chat div[class~=right]").last().one("animationend", function() {
 		$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
 	});
 	

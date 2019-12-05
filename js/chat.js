@@ -151,6 +151,8 @@ function addMessage(m, s, f = function() {}, d = 0) {
 	
 	updateScroll();
 	
+	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
+	
 	setTimeout(f, d + d3.randomInt(1000, 1501)());
 }
 

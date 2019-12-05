@@ -57,6 +57,11 @@ class Polynomial {
 		this.defu;
 	}
 	
+	setValues(c, s) {
+		this.coefficients = c;
+		this.signs = s;
+	}
+	
 	randomize(max) {
 		for (let i = 0; i <= max; i++) {
 			this.coefficients.push(d3.randomInt(minCoef, maxCoef + 1)());
@@ -191,7 +196,7 @@ class Polynomial {
 			answerEq.signs[i - 1] = this.signs[i];
 		}
 		
-		return answerEq.display();
+		return answerEq;
 	}
 	
 	/** Returns the LaTeX code for the indefinite integral. Used to check input. */
@@ -203,11 +208,10 @@ class Polynomial {
 			answerEq.signs[i + 1] = this.signs[i];
 		}
 		
-		if (answerEq.display() != "0") {
-			return answerEq.display() + "+C";
-		} else {
-			return "C";
-		}
+		answerEq.coefficients[0] = "C";
+		answerEq.signs[0] = "+";
+		
+		return answerEq;
 	}
 	
 	/** Returns the value of the definite integral. Used to check input. */

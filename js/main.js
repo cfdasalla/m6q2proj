@@ -32,26 +32,26 @@ let qCount = 0;
 /** Current question number. */
 let qCurrent = 1;
 
-/** Maximum degree of Polynomial. */
-let maxDeg;
+/** Maximum degree of Polynomial. Default value: 3. */
+let maxDeg = 3;
 
-/** Minimum term coefficient in Polynomials. */
-let minCoef;
+/** Minimum term coefficient in Polynomials. Default value: 1. */
+let minCoef = 1;
 
-/** Maximum term coefficient in Polynomials. */
-let maxCoef ;
+/** Maximum term coefficient in Polynomials. Default value: 20. */
+let maxCoef = 20;
 
-/** Minimum definite integral bound in Polynomials. */
-let minBound;
+/** Minimum definite integral bound in Polynomials. Default value: -5. */
+let minBound = -5;
 
-/** Maximum definite integral bound in Polynomials. */
-let maxBound;
+/** Maximum definite integral bound in Polynomials. Default value: 5. */
+let maxBound = 5;
 
-/** Determines whether Polynomials will have missing terms. */
-let zeroCoef;
+/** Determines whether Polynomials will have missing terms. Default value: true. */
+let zeroCoef = true;
 
-/** Determines whether lower bounds greater than upper bounds are allowed. */
-let greaterLower;
+/** Determines whether lower bounds greater than upper bounds are allowed. Default value: true. */
+let greaterLower = true;
 
 /** Number of correct answers. */
 let tamaC = 0;
@@ -98,8 +98,8 @@ function generatePolynomial() {
 
 /** Checks if answer is correct. */
 function check() {
-	let modes = {d: current.derivative(),
-				 i: current.indefinite(),
+	let modes = {d: current.derivative().display(),
+				 i: current.indefinite().display(),
 				 f: current.definite()};
 	let dots = $("#progress .dot");
 	
@@ -150,8 +150,8 @@ function check() {
 
 /* Fills in input field with correct answer while skipping current question. */
 function skip() {
-	let modes = {d: current.derivative(),
-				 i: current.indefinite(),
+	let modes = {d: current.derivative().display(),
+				 i: current.indefinite().display(),
 				 f: current.definite()};
 	let dots = $("#progress .dot");
     

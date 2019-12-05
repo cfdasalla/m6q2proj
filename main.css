@@ -10097,15 +10097,16 @@ html {
   text-align: center;
 }
 
-#chat div, #chat button {
+#chat div {
   border-radius: 10px;
   clear: both;
 }
 
 #chat .left, #chat .right {
   padding: 10px;
-  max-width: 20em;
+  max-width: 80%;
   margin: 10px 0px;
+  text-align: left;
 }
 
 #chat .left {
@@ -10173,6 +10174,16 @@ html {
 
 #chat .loading div:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+#chat .status {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 1em;
+  color: #6c757d;
+  font-style: italic;
 }
 
 #online_dot.online {

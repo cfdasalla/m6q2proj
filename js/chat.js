@@ -8,6 +8,29 @@ let isTyping = `<div class="loading">
 	<div></div>
 </div>`
 
+/**
+	Shuffles an array.
+	From https://stackoverflow.com/a/2450976
+*/
+function shuffle(array) {
+	var currentIndex = array.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+}
+
 /** The Recipient class. */
 class Recipient {
 	constructor(first, last, picture, correct, wrong, again, middle = "") {
@@ -45,26 +68,33 @@ class Poll {
 	}
 	
 	add() {
-		let optionButtons = "";
+		let optionButtonsA = [];
+		let optionButtonsS = "";
 		
-		for (let i of this.options) {
-			optionButtons += `<button class="choice btn">${i}</button>\n`
+		for (let i in this.options) {
+			optionButtonsA.push(`<button class="choice choice_${i} btn">${this.options[i]}</button>\n`);
+		}
+		
+		optionButtonsA = shuffle(optionButtonsA);
+		
+		for (let j of optionButtonsA) {
+			optionButtonsS += j;
 		}
 		
 		return `<div class="animated faster fadeInUp choose">
 <div class="question h5 mt-4">${this.question}</div>
 <div class="choices mb-4">
-${optionButtons}
+${optionButtonsS}
 </div>
 </div>`
 	}
 }
 
 /** Calisto's Recipient object. */
-let cal = new Recipient("Calisto", "Lucero", "images/cal dp.png", "tama!", "mali...", "ulitin kaya natin?");
+let cal = new Recipient("Calisto", "Lucero", "images/cal dp.png");
 
 /** IO's recipient object. */
-let io = new Recipient("Ian", "Kona", "images/io dp.png", "Yes!", "I don't think that's right...", "Why don't we try again?", "Okelani");
+let io = new Recipient("Ian", "Kona", "images/io dp.png", "Okelani");
 
 /** Last poll added. */
 let lastPoll;
@@ -117,11 +147,9 @@ function addMessage(m, s, f = function() {}, d = 0) {
 		}
 	}
 	
-	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	
-	$("#chat div").last().one("animationend", function() {
-		$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
-	});
+	updateScroll();
 	
 	setTimeout(f, d + d3.randomInt(1000, 1501)());
 }
@@ -144,21 +172,21 @@ function removeLastMessage() {
 function replaceLastMessage(n) {
 	let x = $("#chat div[class~=left], #chat div[class~=right]").last();
 	
-	x.html(n);
+	x.html(n);	
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	updateScroll();
 }
 
 /** Adds a poll to the chat. */
-function addPoll(q, o, c, f = function() {}, pre = "", post = "") {
+function addPoll(q, o, c, r, w, u, pre = "", post = "", f = function() {}) {
 	let x = new Poll(q, o);
 	let y = $(x.add()).appendTo("#chat");
 	
-	addPollClicks(y.find(".choice"), c, f, pre, post);
+	addPollClicks(y.find(".choice"), c, r, w, u, pre, post, f);
 	colorButtons();
-	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	
-	$("#chat").last().one('animationend', function() {
-		$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
-	});
+	updateScroll();
 	
 	lastPoll = x;
 }
@@ -171,43 +199,38 @@ function pollSelect(a) {
 }
 
 /** Adds click events to poll choices. */
-function addPollClicks(a, b, f = function() {}, pre = "", post = "") {
-	for (let i = 0; i < a.length; i++) {
-		if (i != b) {
-			$(a[i]).one("click", function() {
-				let newOptions = lastPoll.options.slice(0, i).concat(lastPoll.options.slice(i + 1, lastPoll.options.length));
-				let newCorrect;
-				
-				if (i < b) {
-					newCorrect = b - 1;
-				} else {
-					newCorrect = b;
-				}
-				
+function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
+	for (i of a) {
+		if ($(i).attr('class').match(new RegExp("choice_."))[0].slice(-1) != c) {
+			$(i).one("click", function() {
 				pollSelect(this);
-				addMessage(pre + lastPoll.options[$(this).index()] + post, "right");
+				addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
+				
+				delete lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)];
 				
 				setTimeout(function() {
-					addMessage(currentRecipient.wrong, "left", function() {
+					addMessage(w, "left", function() {
 						setTimeout(function() {
-							addMessage(currentRecipient.again, "left", function() {
-								addPoll(lastPoll.question, newOptions, newCorrect, f, pre, post);
+							addMessage(u, "left", function() {
+								addPoll(lastPoll.question, lastPoll.options, c, r, w, u, pre, post, f);
 							});
 						}, d3.randomInt(0, 501)());
-					}, d3.randomInt(1000, 2001)());
-				}, d3.randomInt(1001, 1501)());
+					}, d3.randomInt(2000, 3001)());
+				}, d3.randomInt(1001, 2501)());
 			});
 		} else {
-			$(a[i]).one("click", function() {
+			$(i).one("click", function() {
 				pollSelect(this);
-				addMessage(pre + lastPoll.options[$(this).index()] + post, "right");
+				addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
+				
 				setTimeout(function() {
 					let x = d3.randomInt(2000, 3001)();
 					
-					addMessage(currentRecipient.correct, "left", undefined, x);
+					addMessage(r, "left", undefined, x);
 					setTimeout(f, x + d3.randomInt(1000, 2001)());
 				}, d3.randomInt(1000, 2001)());
 			});
+			
 		}
 	}
 }
@@ -221,10 +244,17 @@ function toggleOnline() {
 	if ($("#online_dot").hasClass("online")) {
 		$("#online_dot").removeClass("online");
 		$("#online_dot").addClass("offline");
+		$("#chat").append(`<div class="status animated faster fadeInUp">${currentRecipient.first} is now offline.</div>`);
 	} else {
 		$("#online_dot").removeClass("offline");
 		$("#online_dot").addClass("online");
+		$("#chat").append(`<div class="status animated faster fadeInUp">${currentRecipient.first} is now online.</div>`);
 	}
+	updateScroll();
+}
+
+function updateScroll() {
+	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
 }
 
 $(function() {
@@ -233,6 +263,8 @@ $(function() {
 	$("#header").parent().css("top", "0");
 	$("#header").parent().css("background-color", "white");
 	$("#header").parent().css("z-index", 1);
+	
+	$("#chat button").addClass("btn-" + currentRecipient.first.toLowerCase());
 	
 	$("#recipient").text(currentRecipient.fullName());
 	$("#picture").attr("src", currentRecipient.picture);

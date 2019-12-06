@@ -47,7 +47,6 @@ for (let z = 0; z < 3; z++) {
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
 
 let messages = [
-	/*
 	["m", "Uy, IO! Kamusta?", right],
 	["m", "Okay naman. Ikaw?", left, 2000],
 	["m", "Okay naman din, pero… medyo nahihirapan ako sa Math eh.", right],
@@ -68,8 +67,7 @@ let messages = [
 		c: "\\(" + random1W[1].display() + "\\)",
 		d: "\\(" + random1W[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "Kapag nabigyan naman tayo ng polynomial, maaari tayo magdifferentiate isa-isa sa bawat term."]
-	*/
+	["m", "Kapag nabigyan naman tayo ng polynomial, maaari tayo magdifferentiate isa-isa sa bawat term."],
 	["m", "Halimbawa, \\(" + random2.display() + "\\).", left, 4000],
 	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random2.display() + ")\\)", {
 		a: "\\(" + random2.derivative().display() + "\\)",
@@ -78,18 +76,21 @@ let messages = [
 		d: "\\(" + random2W[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000],
+	["m", "Number 1:", left, 1000],
 	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random3.display() + ")\\)", {
 		a: "\\(" + random3.derivative().display() + "\\)",
 		b: "\\(" + random3W[0].display() + "\\)",
 		c: "\\(" + random3W[1].display() + "\\)",
 		d: "\\(" + random3W[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["m", "Number 2!", left, 1000],
 	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random4.display() + ")\\)", {
 		a: "\\(" + random4.derivative().display() + "\\)",
 		b: "\\(" + random4W[0].display() + "\\)",
 		c: "\\(" + random4W[1].display() + "\\)",
 		d: "\\(" + random4W[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["m", "Isa pa siguro...", left, 1500],
 	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random5.display() + ")\\)", {
 		a: "\\(" + random5.derivative().display() + "\\)",
 		b: "\\(" + random5W[0].display() + "\\)",

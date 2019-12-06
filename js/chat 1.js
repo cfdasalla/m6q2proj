@@ -25,8 +25,8 @@ random2.randomize(r2d);
 random2W = [];
 
 for (let y = 0; y < 3; y++) {
-	random2W[x] = new Polynomial();
-	random2W[x].randomize(r2d - 1);
+	random2W[y] = new Polynomial();
+	random2W[y].randomize(r2d - 1);
 }
 
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer

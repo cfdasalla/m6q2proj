@@ -101,7 +101,7 @@ let messages = [
 	["m", "Oo, salamat sa pagturo sa 'kin nito!", right],
 	["m", "Walang anuman!", left, 1000],
 	["m", "Good luck pala sa quiz bukas!", left, 2000],
-	["m", "OMG MAY QUIZ???", right]
+	["m", "Salamat!", right]
 ];
 
 let messagesToAdd = [];

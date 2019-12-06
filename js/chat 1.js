@@ -67,7 +67,7 @@ let messages = [
 		c: "\\(" + random1W[1].display() + "\\)",
 		d: "\\(" + random1W[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "Kapag nabigyan naman tayo ng polynomial, maaari tayo magdifferentiate isa-isa sa bawat term."],
+	["m", "Kapag nabigyan naman tayo ng polynomial, maaari tayo magdifferentiate isa-isa sa bawat term.", left, 4000],
 	["m", "Halimbawa, \\(" + random2.display() + "\\).", left, 4000],
 	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random2.display() + ")\\)", {
 		a: "\\(" + random2.derivative().display() + "\\)",

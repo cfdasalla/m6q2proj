@@ -257,12 +257,6 @@ function updateScroll() {
 }
 
 $(function() {
-	$("#header").parent().css("position", "sticky");
-	$("#header").parent().css("position", "-webkit-sticky");
-	$("#header").parent().css("top", "0");
-	$("#header").parent().css("background-color", "white");
-	$("#header").parent().css("z-index", 1);
-	
 	$("#chat button").addClass("btn-" + currentRecipient.first.toLowerCase());
 	
 	$("#recipient").text(currentRecipient.fullName());

@@ -29,6 +29,21 @@ for (let y = 0; y < 3; y++) {
 	random2W[y].randomize(r2d - 1);
 }
 
+let [random3, random4, random5] = [new Polynomial(), new Polynomial(), new Polynomial()];
+let [r3d, r4d, r5d] = [d3.randomInt(0, 3)(), d3.randomInt(0, 3)(), d3.randomInt(0, 3)()];
+random3.randomize(r3d); random4.randomize(r4d); random5.randomize(r5d);
+
+let [random3W, random4W, random5W] = [[], [], []];
+
+for (let z = 0; z < 3; z++) {
+	random3W[z] = new Polynomial();
+	random3W[z].randomize(r3d - 1);
+	random4W[z] = new Polynomial();
+	random4W[z].randomize(r4d - 1);
+	random5W[z] = new Polynomial();
+	random5W[z].randomize(r5d - 1);
+}
+
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
 
 let messages = [
@@ -62,7 +77,30 @@ let messages = [
 		c: "\\(" + random2W[1].display() + "\\)",
 		d: "\\(" + random2W[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000]
+	["m", "Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000],
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random3.display() + ")\\)", {
+		a: "\\(" + random3.derivative().display() + "\\)",
+		b: "\\(" + random3W[0].display() + "\\)",
+		c: "\\(" + random3W[1].display() + "\\)",
+		d: "\\(" + random3W[2].display() + "\\)"
+	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random4.display() + ")\\)", {
+		a: "\\(" + random4.derivative().display() + "\\)",
+		b: "\\(" + random4W[0].display() + "\\)",
+		c: "\\(" + random4W[1].display() + "\\)",
+		d: "\\(" + random4W[2].display() + "\\)"
+	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random5.display() + ")\\)", {
+		a: "\\(" + random5.derivative().display() + "\\)",
+		b: "\\(" + random5W[0].display() + "\\)",
+		c: "\\(" + random5W[1].display() + "\\)",
+		d: "\\(" + random5W[2].display() + "\\)"
+	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["m", "O ayan, nagets mo na ba kung pano yung power rule?", left, 3000],
+	["m", "Oo, salamat sa pagturo sa 'kin nito!", right],
+	["m", "Walang anuman!", left, 1000],
+	["m", "Good luck pala sa quiz bukas!", left, 2000],
+	["m", "OMG MAY QUIZ???", right]
 ];
 
 let messagesToAdd = [];
@@ -72,13 +110,15 @@ for (let i = messages.length - 1; i >= 0; i--) {
 		if (i == messages.length - 1) {
 			if (messages[i].length == 3) {
 				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2]);
-					setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
+					addMessage(messages[i][1], messages[i][2], function() {
+						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
+					});
 				});
 			} else {
 				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], undefined, messages[i][3]);
-					setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
+					addMessage(messages[i][1], messages[i][2], function() {
+						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
+					}, messages[i][3]);
 				});
 			}
 		} else {

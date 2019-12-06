@@ -253,7 +253,7 @@ function toggleOnline() {
 }
 
 function updateScroll() {
-	$("html").animate({scrollTop: ((parseFloat($("html").css("height").slice(0, -2))) + 100).toString()}, 800);
+	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
 }
 
 $(function() {

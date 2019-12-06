@@ -33,13 +33,10 @@ function shuffle(array) {
 
 /** The Recipient class. */
 class Recipient {
-	constructor(first, last, picture, correct, wrong, again, middle = "") {
+	constructor(first, last, picture, middle = "") {
 		this.first = first;
 		this.last = last;
 		this.middle = middle;
-		this.correct = correct;
-		this.wrong = wrong;
-		this.again = again;
 		this.picture = picture;
 	}
 	

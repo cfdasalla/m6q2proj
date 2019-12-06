@@ -53,7 +53,7 @@ class Message {
 	}
 	
 	add() {
-		return `<div class="clearfix animated faster fadeInUp ${this.sender}">${this.message}</div>`
+		return `<div class="animated faster fadeInUp ${this.sender}">${this.message}</div>`
 	}
 }
 

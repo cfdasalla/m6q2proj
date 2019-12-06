@@ -1,47 +1,53 @@
 let currentRecipient = io;
 
-random1 = new Polynomial();
-random1.randomize(d3.randomInt(2, 5)());
+let [r1, r2] = [new Polynomial(), new Polynomial()];
+let [r1w, r2w] = [[], []];
 
-for (let y = 0; y < random1.coefficients.length - 1; y++) {
-	random1.coefficients[y] = 0;
+// First example: derivative of one term
+
+r1.randomize(d3.randomInt(1, 5)());
+
+for (let y = 0; y < r1.coefficients.length - 1; y++) {
+	r1.coefficients[y] = 0;
 }
-
-random1W = [];
 
 for (let x = 0; x < 3; x++) {
-	random1W[x] = new Polynomial();
+	r1w[x] = new Polynomial();
 }
 
-random1W[0].setValues(random1.coefficients.slice(1, random1.coefficients.length), random1.signs.slice(1, random1.signs.length));
-random1W[1].setValues([0].concat(random1.coefficients), ["+"].concat(random1.signs));
-random1W[2].setValues([0].concat(random1.derivative().coefficients), ["+"].concat(random1.derivative().signs));
+r1w[0].setValues(r1.coefficients.slice(1, r1.coefficients.length), r1.signs.slice(1, r1.signs.length));
+r1w[1].setValues([0].concat(r1.coefficients), ["+"].concat(r1.signs));
+r1w[2].setValues([0].concat(r1.derivative().coefficients), ["+"].concat(r1.derivative().signs));
+
+// Second example: derivative of a polynomial
 
 let r2d = d3.randomInt(1, 3)();
 
-random2 = new Polynomial();
-random2.randomize(r2d);
-
-random2W = [];
+r2.randomize(r2d);
 
 for (let y = 0; y < 3; y++) {
-	random2W[y] = new Polynomial();
-	random2W[y].randomize(r2d - 1);
+	r2w[y] = new Polynomial();
+	r2w[y].randomize(r2d - 1);
 }
 
-let [random3, random4, random5] = [new Polynomial(), new Polynomial(), new Polynomial()];
-let [r3d, r4d, r5d] = [d3.randomInt(1, 3)(), d3.randomInt(1, 3)(), d3.randomInt(1, 3)()];
-random3.randomize(r3d); random4.randomize(r4d); random5.randomize(r5d);
+// Quiz
 
-let [random3W, random4W, random5W] = [[], [], []];
+let [rq1, rq2, rq3] = [new Polynomial(), new Polynomial(), new Polynomial()];
+let [rq1d, rq2d, rq3d] = [d3.randomInt(1, 3)(), d3.randomInt(1, 3)(), d3.randomInt(1, 3)()];
+
+rq1.randomize(rq1d);
+rq2.randomize(rq2d);
+rq3.randomize(rq3d);
+
+let [rq1w, rq2w, rq3w] = [[], [], []];
 
 for (let z = 0; z < 3; z++) {
-	random3W[z] = new Polynomial();
-	random3W[z].randomize(r3d - 1);
-	random4W[z] = new Polynomial();
-	random4W[z].randomize(r4d - 1);
-	random5W[z] = new Polynomial();
-	random5W[z].randomize(r5d - 1);
+	rq1w[z] = new Polynomial();
+	rq1w[z].randomize(rq1d - 1);
+	rq2w[z] = new Polynomial();
+	rq2w[z].randomize(rq2d - 1);
+	rq3w[z] = new Polynomial();
+	rq3w[z].randomize(rq3d - 1);
 }
 
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
@@ -60,42 +66,58 @@ let messages = [
 	["m", "Ang power rule ay isang strategy ng pag-differentiate. Kadalasan siyang ginagamit pag ang term o expression na ididifferentiate ay may exponent.", left, 7000],
 	["m", "Para makapag-differentiate gamit ang power rule, imumultiply natin yung coefficient ng term sa exponent niya tapos magsusubtract tayo ng 1 sa exponent.", left, 8000],
 	["m", "Kumbaga, binababa natin yung exponent tapos nagmiminus 1 tayo sa exponent.", left, 4500],
-	["m", "Halimbawa, \\(" + random1.display() + "\\).", left, 4000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random1.display() + ")\\)", {
-		a: "\\(" + random1.derivative().display() + "\\)",
-		b: "\\(" + random1W[0].display() + "\\)",
-		c: "\\(" + random1W[1].display() + "\\)",
-		d: "\\(" + random1W[2].display() + "\\)"
+	["m", "Halimbawa, \\(" + r1.display() + "\\).", left, 4000],
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.display() + ")\\)", {
+		a: "\\(" + r1.derivative().display() + "\\)",
+		b: "\\(" + r1w[0].display() + "\\)",
+		c: "\\(" + r1w[1].display() + "\\)",
+		d: "\\(" + r1w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "Kapag nabigyan naman tayo ng polynomial, maaari tayo magdifferentiate isa-isa sa bawat term.", left, 4000],
-	["m", "Halimbawa, \\(" + random2.display() + "\\).", left, 4000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random2.display() + ")\\)", {
-		a: "\\(" + random2.derivative().display() + "\\)",
-		b: "\\(" + random2W[0].display() + "\\)",
-		c: "\\(" + random2W[1].display() + "\\)",
-		d: "\\(" + random2W[2].display() + "\\)"
+	["m", "OK! Mukhang madali lang 'to, ah!", right],
+	["m", "Teka lang...", right],
+	["m", "Paano naman kung constant lang yung meron?", right],
+	["m", "Magandang tanong 'yan!", left, 1500],
+	["m", "Sige, isipin natin...", left, 1000],
+	["p", "Ano ba ang <i>degree</i> ng isang constant?", {
+		a: ["1", "Degree 1 'yun, diba?"],
+		b: ["0", "Degree 0 'yun, diba?"],
+		c: ["wala", "Wala namang degree 'yun, diba?"]
+	}, "b", "Ayun!", "Hindi...", "Isipin mo ulit."],
+	["m", "So dahil degree 0 ang isang constant, para mo na rin siyang nilagyan ng invisible na \\(x^0\\).", left, 4000],
+	["m", "Dahil sinasabi ng power rule na imu-multiply natin sa coefficient yung exponent, magiging 0 na yung coefficient niya.", left, 4000],
+	["m", "So magiging 0 yung derivative niya?", right],
+	["m", "Oo!", left, 500],
+	["m", "At kahit ano pang constant ang gamitin natin, 0 lagi ang magiging derivative niya.", left, 2500],
+	["m", "Wow! Ang galing naman nun!", right],
+	["m", "Kapag binigyan naman tayo ng polynomial, maaari nating isa-isahin ang pag-differentiate sa bawat term.", left, 4000],
+	["m", "Halimbawa, \\(" + r2.display() + "\\).", left, 4000],
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r2.display() + ")\\)", {
+		a: "\\(" + r2.derivative().display() + "\\)",
+		b: "\\(" + r2w[0].display() + "\\)",
+		c: "\\(" + r2w[1].display() + "\\)",
+		d: "\\(" + r2w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000],
 	["m", "Number 1:", left, 1000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random3.display() + ")\\)", {
-		a: "\\(" + random3.derivative().display() + "\\)",
-		b: "\\(" + random3W[0].display() + "\\)",
-		c: "\\(" + random3W[1].display() + "\\)",
-		d: "\\(" + random3W[2].display() + "\\)"
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq1.display() + ")\\)", {
+		a: "\\(" + rq1.derivative().display() + "\\)",
+		b: "\\(" + rq1w[0].display() + "\\)",
+		c: "\\(" + rq1w[1].display() + "\\)",
+		d: "\\(" + rq1w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Number 2!", left, 1000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random4.display() + ")\\)", {
-		a: "\\(" + random4.derivative().display() + "\\)",
-		b: "\\(" + random4W[0].display() + "\\)",
-		c: "\\(" + random4W[1].display() + "\\)",
-		d: "\\(" + random4W[2].display() + "\\)"
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq2.display() + ")\\)", {
+		a: "\\(" + rq2.derivative().display() + "\\)",
+		b: "\\(" + rq2w[0].display() + "\\)",
+		c: "\\(" + rq2w[1].display() + "\\)",
+		d: "\\(" + rq2w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Isa pa siguro...", left, 1500],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random5.display() + ")\\)", {
-		a: "\\(" + random5.derivative().display() + "\\)",
-		b: "\\(" + random5W[0].display() + "\\)",
-		c: "\\(" + random5W[1].display() + "\\)",
-		d: "\\(" + random5W[2].display() + "\\)"
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.display() + ")\\)", {
+		a: "\\(" + rq3.derivative().display() + "\\)",
+		b: "\\(" + rq3w[0].display() + "\\)",
+		c: "\\(" + rq3w[1].display() + "\\)",
+		d: "\\(" + rq3w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "O ayan, nagets mo na ba kung pano yung power rule?", left, 3000],
 	["m", "Oo, salamat sa pagturo sa 'kin nito!", right],

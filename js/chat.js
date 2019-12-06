@@ -61,7 +61,19 @@ class Message {
 class Poll {
 	constructor(question, options) {
 		this.question = question;
-		this.options = options;
+		this.options = {};
+		this.replies = {};
+		
+		if (Object.values(options).every(a => a instanceof Array)) {
+			for (let i in options) {
+				this.options[i] = options[i][0];
+				this.replies[i] = options[i][1];
+			}
+		} else {
+			for (let i in options) {
+				this.options[i] = options[i];
+			}
+		}
 	}
 	
 	add() {
@@ -95,6 +107,10 @@ let io = new Recipient("Ian", "Kona", "images/io dp.png", "Okelani");
 
 /** Last poll added. */
 let lastPoll;
+
+function timeDelay(l) {
+	return (l * 50) - 500 > 1000 ? d3.randomInt((l * 50) - 500, (l * 50) + 1500)() : d3.randomInt(1000, (l * 50) + 1500)();
+}
 
 /** Adds a message to the chat. */
 function addMessage(m, s, f = function() {}, d = 0) {
@@ -150,7 +166,7 @@ function addMessage(m, s, f = function() {}, d = 0) {
 	
 	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
 	
-	setTimeout(f, d + d3.randomInt(1000, 1501)());
+	setTimeout(f, d + timeDelay(m.length));
 }
 
 /** Removes last message from the chat. */
@@ -199,11 +215,16 @@ function pollSelect(a) {
 
 /** Adds click events to poll choices. */
 function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
-	for (i of a) {
+	for (let i of a) {
 		if ($(i).attr('class').match(new RegExp("choice_."))[0].slice(-1) != c) {
 			$(i).one("click", function() {
 				pollSelect(this);
-				addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
+				
+				if (Object.keys(lastPoll.replies).length != 0) {
+					addMessage(lastPoll.replies[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)], "right");
+				} else {
+					addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
+				}
 				
 				delete lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)];
 				
@@ -211,7 +232,17 @@ function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
 					addMessage(w, "left", function() {
 						setTimeout(function() {
 							addMessage(u, "left", function() {
-								addPoll(lastPoll.question, lastPoll.options, c, r, w, u, pre, post, f);
+								let newOptions = {};
+								
+								if (Object.keys(lastPoll.replies).length != 0) {
+									for (let j in lastPoll.options) {
+										newOptions[j] = [lastPoll.options[j], lastPoll.replies[j]];
+									}
+								} else {
+									newOptions = lastPoll.options;
+								}									
+								
+								addPoll(lastPoll.question, newOptions, c, r, w, u, pre, post, f);
 							});
 						}, d3.randomInt(0, 501)());
 					}, d3.randomInt(2000, 3001)());
@@ -220,7 +251,12 @@ function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
 		} else {
 			$(i).one("click", function() {
 				pollSelect(this);
-				addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
+				
+				if (Object.keys(lastPoll.replies).length != 0) {
+					addMessage(lastPoll.replies[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)], "right");
+				} else {
+					addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
+				}
 				
 				setTimeout(function() {
 					let x = d3.randomInt(2000, 3001)();

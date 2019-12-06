@@ -17,10 +17,23 @@ random1W[0].setValues(random1.coefficients.slice(1, random1.coefficients.length)
 random1W[1].setValues([0].concat(random1.coefficients), ["+"].concat(random1.signs));
 random1W[2].setValues([0].concat(random1.derivative().coefficients), ["+"].concat(random1.derivative().signs));
 
+let r2d = d3.randomInt(0, 3)();
+
+random2 = new Polynomial();
+random2.randomize(r2d);
+
+random2W = [];
+
+for (let y = 0; y < 3; y++) {
+	random2W[x] = new Polynomial();
+	random2W[x].randomize(r2d - 1);
+}
+
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
 
 let messages = [
-	["m", "Uy, Io! Kamusta?", right],
+	/*
+	["m", "Uy, IO! Kamusta?", right],
 	["m", "Okay naman. Ikaw?", left, 2000],
 	["m", "Okay naman din, pero… medyo nahihirapan ako sa Math eh.", right],
 	["m", "Ahhh. Ano na ba topic niyo?", left, 2500],
@@ -39,13 +52,17 @@ let messages = [
 		b: "\\(" + random1W[0].display() + "\\)",
 		c: "\\(" + random1W[1].display() + "\\)",
 		d: "\\(" + random1W[2].display() + "\\)"
-	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"]
-	/*
-	["Kapag nabigyan naman tayo ng polynomial, maaari tayo magdifferentiate isa-isa sa bawat term."]
-	["Halimbawa, <rng polynomial>"]
-	["Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz."]
-	["<enter OG chie the game>]
+	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["m", "Kapag nabigyan naman tayo ng polynomial, maaari tayo magdifferentiate isa-isa sa bawat term."]
 	*/
+	["m", "Halimbawa, \\(" + random2.display() + "\\).", left, 4000],
+	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + random2.display() + ")\\)", {
+		a: "\\(" + random2.derivative().display() + "\\)",
+		b: "\\(" + random2W[0].display() + "\\)",
+		c: "\\(" + random2W[1].display() + "\\)",
+		d: "\\(" + random2W[2].display() + "\\)"
+	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["m", "Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000]
 ];
 
 let messagesToAdd = [];

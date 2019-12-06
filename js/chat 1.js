@@ -17,7 +17,7 @@ random1W[0].setValues(random1.coefficients.slice(1, random1.coefficients.length)
 random1W[1].setValues([0].concat(random1.coefficients), ["+"].concat(random1.signs));
 random1W[2].setValues([0].concat(random1.derivative().coefficients), ["+"].concat(random1.derivative().signs));
 
-let r2d = d3.randomInt(0, 3)();
+let r2d = d3.randomInt(1, 3)();
 
 random2 = new Polynomial();
 random2.randomize(r2d);
@@ -30,7 +30,7 @@ for (let y = 0; y < 3; y++) {
 }
 
 let [random3, random4, random5] = [new Polynomial(), new Polynomial(), new Polynomial()];
-let [r3d, r4d, r5d] = [d3.randomInt(0, 3)(), d3.randomInt(0, 3)(), d3.randomInt(0, 3)()];
+let [r3d, r4d, r5d] = [d3.randomInt(1, 3)(), d3.randomInt(1, 3)(), d3.randomInt(1, 3)()];
 random3.randomize(r3d); random4.randomize(r4d); random5.randomize(r5d);
 
 let [random3W, random4W, random5W] = [[], [], []];

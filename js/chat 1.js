@@ -67,7 +67,7 @@ let messages = [
 	["m", "Para makapag-differentiate gamit ang power rule, imumultiply natin yung coefficient ng term sa exponent niya tapos magsusubtract tayo ng 1 sa exponent.", left, 8000],
 	["m", "Kumbaga, binababa natin yung exponent tapos nagmiminus 1 tayo sa exponent.", left, 4500],
 	["m", "Halimbawa, \\(" + r1.display() + "\\).", left, 4000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.display() + ")\\)", {
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.display() + ")\\]", {
 		a: "\\(" + r1.derivative().display() + "\\)",
 		b: "\\(" + r1w[0].display() + "\\)",
 		c: "\\(" + r1w[1].display() + "\\)",
@@ -91,7 +91,7 @@ let messages = [
 	["m", "Wow! Ang galing naman nun!", right],
 	["m", "Kapag binigyan naman tayo ng polynomial, maaari nating isa-isahin ang pag-differentiate sa bawat term.", left, 4000],
 	["m", "Halimbawa, \\(" + r2.display() + "\\).", left, 4000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r2.display() + ")\\)", {
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r2.display() + ")\\]", {
 		a: "\\(" + r2.derivative().display() + "\\)",
 		b: "\\(" + r2w[0].display() + "\\)",
 		c: "\\(" + r2w[1].display() + "\\)",
@@ -99,21 +99,21 @@ let messages = [
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000],
 	["m", "Number 1:", left, 1000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq1.display() + ")\\)", {
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq1.display() + ")\\]", {
 		a: "\\(" + rq1.derivative().display() + "\\)",
 		b: "\\(" + rq1w[0].display() + "\\)",
 		c: "\\(" + rq1w[1].display() + "\\)",
 		d: "\\(" + rq1w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Number 2!", left, 1000],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq2.display() + ")\\)", {
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq2.display() + ")\\]", {
 		a: "\\(" + rq2.derivative().display() + "\\)",
 		b: "\\(" + rq2w[0].display() + "\\)",
 		c: "\\(" + rq2w[1].display() + "\\)",
 		d: "\\(" + rq2w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Isa pa siguro...", left, 1500],
-	["p", "\\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.display() + ")\\)", {
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.display() + ")\\]", {
 		a: "\\(" + rq3.derivative().display() + "\\)",
 		b: "\\(" + rq3w[0].display() + "\\)",
 		c: "\\(" + rq3w[1].display() + "\\)",

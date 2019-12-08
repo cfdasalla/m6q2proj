@@ -13,11 +13,19 @@ for (let y = 0; y < r1.coefficients.length - 1; y++) {
 
 for (let x = 0; x < 3; x++) {
 	r1w[x] = new Polynomial();
+	r1w[x].setValues([...r1.coefficients], [...r1.signs]);
 }
 
-r1w[0].setValues(r1.coefficients.slice(1, r1.coefficients.length), r1.signs.slice(1, r1.signs.length));
-r1w[1].setValues([0].concat(r1.coefficients), ["+"].concat(r1.signs));
-r1w[2].setValues([0].concat(r1.derivative().coefficients), ["+"].concat(r1.derivative().signs));
+r1w[0].coefficients.shift();
+r1w[0].signs.shift();
+
+r1w[1] = r1w[1].derivative();
+r1w[1].coefficients.shift();
+r1w[1].signs.shift();
+
+r1w[2] = r1w[2].derivative();
+r1w[2].coefficients.unshift(0);
+r1w[2].signs.unshift("+");
 
 // Second example: derivative of a polynomial
 

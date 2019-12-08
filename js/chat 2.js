@@ -16,19 +16,17 @@ r1c.coefficients[0] = 0;
 
 for (let x = 0; x < 3; x++) {
 	r1w[x] = new Polynomial();
+	r1w[x].setValues([...r1.coefficients], [...r1.signs]);
 }
 
-r1w[0].setValues([...r1.coefficients], [...r1.signs]);
 r1w[0].coefficients.unshift(0);
 r1w[0].signs.unshift("+");
 
-r1w[1].setValues([...r1.coefficients], [...r1.signs]);
 r1w[1] = r1w[1].indefinite();
 r1w[1].coefficients[0] = 0;
 r1w[1].coefficients.unshift(0);
 r1w[1].signs.unshift("+");
 
-r1w[2].setValues([...r1.coefficients], [...r1.signs]);
 r1w[2].coefficients.shift();
 r1w[2].signs.shift();
 r1w[2] = r1w[2].indefinite();

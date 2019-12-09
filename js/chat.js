@@ -8,6 +8,8 @@ let isTyping = `<div class="loading">
 	<div></div>
 </div>`
 
+let typedPollInputs = [];
+
 /**
 	Shuffles an array.
 	From https://stackoverflow.com/a/2450976
@@ -99,6 +101,20 @@ ${optionButtonsS}
 	}
 }
 
+class TypedPoll {
+	constructor(question) {
+		this.question = question;
+		this.field = "poll_input_" + $("[class*=\"poll_input_\"]").length;
+	}
+	
+	add() {
+		return `<div class="animated faster fadeInUp choose">
+<div class="question h5 mt-4">${this.question}</div>
+<span id="${this.field}"></span>
+</div>`;
+	}
+}
+
 /** Calisto's Recipient object. */
 let cal = new Recipient("Calisto", "Lucero", "images/cal dp.png");
 
@@ -107,6 +123,9 @@ let io = new Recipient("Ian", "Kona", "images/io dp.png", "Okelani");
 
 /** Last poll added. */
 let lastPoll;
+
+/** Last input poll added. */
+let lastTypedPoll;
 
 function timeDelay(l) {
 	return (l * 50) - 500 > 1000 ? d3.randomInt((l * 50) - 500, (l * 50) + 1500)() : d3.randomInt(1000, (l * 50) + 1500)();
@@ -265,9 +284,58 @@ function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
 					setTimeout(f, x + d3.randomInt(1000, 2001)());
 				}, d3.randomInt(1000, 2001)());
 			});
-			
 		}
 	}
+}
+
+function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
+	let x = new TypedPoll(q);
+	let y = $(x.add()).appendTo("#chat");
+	
+	function checkTP(ans) {
+		if (ans == c) {
+			setTimeout(function() {
+				let x = d3.randomInt(2000, 3001)();
+
+				addMessage(r, "left", undefined, x);
+				setTimeout(f, x + d3.randomInt(1000, 2001)());
+			}, d3.randomInt(1000, 2001)());
+		} else {
+			setTimeout(function() {
+				addMessage(w, "left", function() {
+					setTimeout(function() {
+						addMessage(u, "left", function() {
+							let newOptions = {};
+
+							if (Object.keys(lastTypedPoll.replies).length != 0) {
+								for (let j in lastTypedPoll.options) {
+									newOptions[j] = [lastTypedPoll.options[j], lastTypedPoll.replies[j]];
+								}
+							} else {
+								newOptions = lastTypedPoll.options;
+							}									
+
+							addTypedPoll(lastTypedPoll.question, newOptions, c, r, w, u, pre, post, f);
+						});
+					}, d3.randomInt(0, 501)());
+				}, d3.randomInt(2000, 3001)());
+			}, d3.randomInt(1001, 2501)());
+		}
+	}
+	
+	typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)] = MQ.MathField($("#" + x.field)[0], {
+		handlers: {
+			enter: function() {
+				checkTP(x.latex());
+			}
+		}
+	});
+	
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	
+	updateScroll();
+	
+	lastTypedPoll = x;
 }
 
 /** Adds button classes corresponding to current chat color. */
@@ -290,13 +358,6 @@ function toggleOnline() {
 
 function updateScroll() {
 	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
-}
-
-function nextLesson(lessonNum){
-	let lnk = "https://xtian.dev/m6q2proj/" + lessonNum; 
-	
-	$("#chat").append(`<a class="btn" role="button">Next</a>`);
-	$('a.btn').attr("href", lnk);
 }
 
 $(function() {

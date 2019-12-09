@@ -5,7 +5,7 @@ let [r1w, r2w] = [[], []];
 
 // First example: derivative of one term
 
-r1.randomize(d3.randomInt(1, 5)());
+r1.randomize(d3.randomInt(2, 5)());
 
 for (let y = 0; y < r1.coefficients.length - 1; y++) {
 	r1.coefficients[y] = 0;

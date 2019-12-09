@@ -86,19 +86,19 @@ let [rq1w, rq2w, rq3w] = [[], [], []];
 for (let z = 0; z < 3; z++) {
 	[rq1w[z], rq2w[z], rq3w[z]] = [new Polynomial(), new Polynomial(), new Polynomial()];
 	
-	rq1w[z].randomize(rq1.coefficients.length + 1);
-	rq2w[z].randomize(rq2.coefficients.length + 1);
-	rq3w[z].randomize(rq3.coefficients.length + 1);
+	rq1w[z].randomize(rq1.indefinite().coefficients.length - 1);
+	rq2w[z].randomize(rq2.indefinite().coefficients.length - 1);
+	rq3w[z].randomize(rq3.indefinite().coefficients.length - 1);
 	
-	for (let o = 1; o < rq1.indefinite().coefficients.length; o++) {
+	for (let o = 1; o < rq1w[z].length; o++) {
 		rq1w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
 	}
 
-	for (let o = 1; o < rq2.indefinite().coefficients.length; o++) {
+	for (let o = 1; o < rq2w[z].length; o++) {
 		rq2w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
 	}
 	
-	for (let o = 1; o < rq3.indefinite().coefficients.length; o++) {
+	for (let o = 1; o < rq3w[z].length; o++) {
 		rq3w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
 	}
 	

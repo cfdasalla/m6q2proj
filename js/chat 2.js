@@ -189,13 +189,9 @@ let messages = [
 		c: "\\(" + rq2w[1].display() + "\\)",
 		d: "\\(" + rq2w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "Isa pa siguro...", left, 1500],
-	["p", "\\[\\int{(" + rq3.display() + ")\\mathrm{d}x}\\]", {
-		a: "\\(" + rq3.indefinite().display() + "\\)",
-		b: "\\(" + rq3w[0].display() + "\\)",
-		c: "\\(" + rq3w[1].display() + "\\)",
-		d: "\\(" + rq3w[2].display() + "\\)"
-	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["m", "Last na!", left, 1500],
+	["m", "Ngayon, ikaw naman mag-type!", left, 1500],
+	["t", "\\[\\int{(" + rq3.display() + ")\\mathrm{d}x}\\]", rq3.indefinite().display(), "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "O ayan! Natapos na natin yung pairwork!", left, 1500],
 	["m", "Yehey! Salamat ulit sa pagturo sa 'kin! 😁", right],
 	["m", "Walang anuman!", left, 1000],

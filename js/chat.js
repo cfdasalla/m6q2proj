@@ -292,6 +292,13 @@ function updateScroll() {
 	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
 }
 
+function nextLesson(lessonNum){
+	let lnk = "https://xtian.dev/m6q2proj/" + lessonNum; 
+	
+	$("#chat").append(`<a class="btn" role="button">Next</a>`);
+	$('a.btn').attr("href", lnk);
+}
+
 $(function() {
 	$("#chat button").addClass("btn-" + currentRecipient.first.toLowerCase());
 	

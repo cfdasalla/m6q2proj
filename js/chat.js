@@ -104,13 +104,13 @@ ${optionButtonsS}
 class TypedPoll {
 	constructor(question) {
 		this.question = question;
-		this.field = "poll_input_" + $("[class*=\"poll_input_\"]").length;
+		this.field = "poll_input_" + ($("[id*=\"poll_input_\"]").length + 1);
 	}
 	
 	add() {
 		return `<div class="animated faster fadeInUp choose">
 <div class="question h5 mt-4">${this.question}</div>
-<span id="${this.field}"></span>
+<span id="${this.field}" class="mb-4"></span>
 </div>`;
 	}
 }
@@ -293,6 +293,10 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
 	let y = $(x.add()).appendTo("#chat");
 	
 	function checkTP(ans) {
+		typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].blur();
+		
+		addMessage(pre + "\\(" + typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex() + "\\)" + post, "right");
+
 		if (ans == c) {
 			setTimeout(function() {
 				let x = d3.randomInt(2000, 3001)();
@@ -305,17 +309,7 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
 				addMessage(w, "left", function() {
 					setTimeout(function() {
 						addMessage(u, "left", function() {
-							let newOptions = {};
-
-							if (Object.keys(lastTypedPoll.replies).length != 0) {
-								for (let j in lastTypedPoll.options) {
-									newOptions[j] = [lastTypedPoll.options[j], lastTypedPoll.replies[j]];
-								}
-							} else {
-								newOptions = lastTypedPoll.options;
-							}									
-
-							addTypedPoll(lastTypedPoll.question, newOptions, c, r, w, u, pre, post, f);
+							addTypedPoll(lastTypedPoll.question, c, r, w, u, pre, post, f);
 						});
 					}, d3.randomInt(0, 501)());
 				}, d3.randomInt(2000, 3001)());
@@ -326,7 +320,7 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
 	typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)] = MQ.MathField($("#" + x.field)[0], {
 		handlers: {
 			enter: function() {
-				checkTP(x.latex());
+				checkTP(typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex());
 			}
 		}
 	});

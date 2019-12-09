@@ -143,14 +143,14 @@ for (let i = messages.length - 1; i >= 0; i--) {
 				messagesToAdd.unshift(function() {
 					addMessage(messages[i][1], messages[i][2], function() {
 						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
-						$("#chat").append(`<a class="btn" href="https://xtian.dev/m6q2proj" role="button">Next</a>`);
+						$("#chat").append(`<a class="btn btn-ian" href="https://xtian.dev/m6q2proj" role="button" style="display:block">Next</a>`);
 					});
 				});
 			} else {
 				messagesToAdd.unshift(function() {
 					addMessage(messages[i][1], messages[i][2], function() {
 						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
-						$("#chat").append(`<a class="btn" href="https://xtian.dev/m6q2proj" role="button">Next</a>`);
+						$("#chat").append(`<a class="btn btn-ian" href="https://xtian.dev/m6q2proj" role="button" style="display:block">Next</a>`);
 					}, messages[i][3]);
 				});
 			}

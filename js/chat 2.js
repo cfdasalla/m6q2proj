@@ -46,7 +46,8 @@ r2_a.setValues([...r2.coefficients], [...r2.signs]);
 r2_b.setValues([...r2.coefficients], [...r2.signs]);
 
 r2_a.coefficients[0] = r2.coefficients[0] + d3.randomInt(1, 11)();
-r2_b.coefficients[0] = r2.coefficients[0] - d3.randomInt(1, 11)();
+let r2_br = d3.randomInt(1, 11)();
+r2_b.coefficients[0] = r2.coefficients[0] - r2_br >= 0 ? r2.coefficients[0] - r2_br : 0;
 
 for (let u = 0; u < 3; u++) {
 	r2w[u] = new Polynomial();

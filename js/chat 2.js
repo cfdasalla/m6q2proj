@@ -63,12 +63,13 @@ r3.randomize(r3d);
 for (let y = 0; y < 3; y++) {
 	r3w[y] = new Polynomial();
 	r3w[y].randomize(r3d + 1);
+	
+	for (let o = 1; o < r3.coefficients.length; o++) {
+		r3w[y].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
+	}
+	
 	r3w[y].coefficients[0] = "C";
 	r3w[y].signs[0] = "+";
-	
-	if (r3.indefinite().coefficients[r3.coefficients.length - 1] instanceof Fraction) {
-		r3w[y].coefficients[r3.coefficients.length] = new Fraction(d3.randomInt(minCoef, maxCoef)(), r3.coefficients.length);
-	}
 }
 
 // Quiz
@@ -84,6 +85,10 @@ let [rq1w, rq2w, rq3w] = [[], [], []];
 
 for (let z = 0; z < 3; z++) {
 	[rq1w[z], rq2w[z], rq3w[z]] = [new Polynomial(), new Polynomial(), new Polynomial()];
+	
+	rq1w[z].randomize(rq1.coefficients.length + 1);
+	rq2w[z].randomize(rq2.coefficients.length + 1);
+	rq3w[z].randomize(rq3.coefficients.length + 1);
 	
 	for (let o = 1; o < rq1.indefinite().coefficients.length; o++) {
 		rq1w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);

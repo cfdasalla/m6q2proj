@@ -83,41 +83,30 @@ rq3.randomize(rq3d);
 let [rq1w, rq2w, rq3w] = [[], [], []];
 
 for (let z = 0; z < 3; z++) {
-	rq1w[z] = new Polynomial();
-	rq1w[z].randomize(rq1d + 1);
-	rq1w[z].coefficients[0] = "C";
-	rq1w[z].signs[0] = "+";
+	[rq1w[z], rq2w[z], rq3w[z]] = [new Polynomial(), new Polynomial(), new Polynomial()];
 	
-	rq2w[z] = new Polynomial();
-	rq2w[z].randomize(rq2d + 1);
-	rq2w[z].coefficients[0] = "C";
-	rq2w[z].signs[0] = "+";
+	for (let o = 1; o < rq1.indefinite().coefficients.length; o++) {
+		rq1w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
+	}
+
+	for (let o = 1; o < rq2.indefinite().coefficients.length; o++) {
+		rq2w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
+	}
 	
-	rq3w[z] = new Polynomial();
-	rq3w[z].randomize(rq3d + 1);
-	rq3w[z].coefficients[0] = "C";
-	rq3w[z].signs[0] = "+";
+	for (let o = 1; o < rq3.indefinite().coefficients.length; o++) {
+		rq3w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
+	}
+	
+	[rq1w[z].coefficients[0], rq2w[z].coefficients[0], rq3w[z].coefficients[0]] = ["C", "C", "C"];
+	[rq1w[z].signs[0], rq2w[z].signs[0], rq3w[z].signs[0]] = ["+", "+", "+"];
 }
 
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
 
-/*
-
-Uy, Cal! Tara, sagutan na natin yung pairwork!
-CAL: Sure! Pero uhh… di ko pa masyadong gets yung concepts huhu
-IO: Ahhh sige, turuan kita as we go along.
-IO: So yung topic kasi natin ay reverse power rule. Naalala mo pa ba yung power rule na ginawa natin dati sa derivatives? Masasabi nating medyo baliktad yung strategy na 'to sa reverse power rule na lesson natin ngayon. Ang ginagawa kasi natin ay para ma-integrate yung expression, kailangan nating dagdagan ng 1 yung exponent natin at mag-divide ng kaparehas na value na yun sa mismong term. Bale, ang result ng integration ng isang term na gumagamit ng reverse power rule ay (icannot format shit here but yeah gets naman yun)
-IO: Sige, try natin sagutan yung #1. <rng single term>
-IO: Para naman sa #2 na polynomial, pwede nating iintegrate isa-isa yung bawat term blah blah
-IO: Sige, subukan mo namang sagutan yung susunod na items.
-IO: enter CHIE
-
-*/
-
 let messages = [
-	["m", "Uy, Cal! 👋", left, 1000],
+	["m", "Uy, Cal! 👋🏽", left, 1000],
 	["m", "Sagutan na natin yung pair work!", left, 3000],
-	["m", "Sure!", right],
+	["m", "Sige!", right],
 	["m", "Yun nga lang...", right],
 	["m", "...hindi ko pa masyado gets yung concepts 😣", right],
 	["m", "Ganun ba?", left, 1000],
@@ -128,7 +117,7 @@ let messages = [
 	["m", "Masasabi nating medyo baliktad yung strategy na 'to sa reverse power rule na lesson natin ngayon.", left, 3500],
 	["m", "Para mag-integrate gamit ang reverse power rule, kailangan nating dagdagan ng 1 yung exponent natin, tapos magdi-divide tayo ng kaparehas na number sa mismong term.", left, 6000],
 	["m", "Bale, pag nag-reverse power rule tayo sa isang term, kunyari \\(ax^b\\), ang integral niya ay \\(\\frac{a}{b+1}x^{b+1}\\).", left, 4000],
-	["m", "Parang ang gulo naman nun...", right],
+	["m", "Parang ang gulo naman nun... 😕", right],
 	["m", "Sige, bigyan kita ng example.", left],
 	["p", "Ano ang lalabas pag ginamitan ng reverse power rule ang \\(" + r1.display() +"\\)?", {
 		a: "\\(" + r1c.display() + "\\)",
@@ -149,10 +138,10 @@ let messages = [
 	["m", "\\(" + r2_a.derivative().display() + "\\) din...", right],
 	["m", "Ano naman ang derivative ng \\(" + r2_b.display() + "\\)?", left, 2500],
 	["m", "\\(" + r2_b.derivative().display() + "\\) pa rin!", right],
-	["m", "Dahil ang integration ang kabaligtaran ng differentiation, ano ang lalabas pag in-integrate mo si \\(" + r2_b.derivative().display() + "\\)?", left, 4000],
-	["m", "Hala! Pwede kahit alin dun sa tatlo kanina!", right],
+	["m", "Dahil ang integration ang kabaligtaran ng differentiation, ano ang pwedeng integral ng \\(" + r2_b.derivative().display() + "\\)?", left, 4000],
+	["m", "Hala! Pwede kahit alin dun sa tatlo kanina! 😲", right],
 	["m", "Oo. Kahit nga ano pa yung constant sa dulo, parehas pa rin yung integral niya.", left, 3000],
-	["m", "Pa'no yun? Ano yung integral niya kung maraming pwedeng sagot?", right],
+	["m", "Pa'no yun? Ano yung integral niya kung maraming pwedeng sagot? 🤔", right],
 	["m", "Kelangan nating isama lahat ng pwedeng maging integral ng function na yun.", left, 2500],
 	["m", "Dahil dun, kailangan nating magdagdag ng \\(+C\\) sa dulo ng makukuha natin sa reverse power rule.", left, 3500],
 	["m", "Pwede nating palitan si \\(C\\) ng kahit anong real number, at tama pa rin yung sagot natin.", left, 3000],
@@ -202,9 +191,9 @@ let messages = [
 		d: "\\(" + rq3w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "O ayan! Natapos na natin yung pairwork!", left, 1500],
-	["m", "Yehey! Salamat ulit sa pagturo sa 'kin!", right],
+	["m", "Yehey! Salamat ulit sa pagturo sa 'kin! 😁", right],
 	["m", "Walang anuman!", left, 1000],
-	["m", "May quiz pala ulit bukas, ha!", left, 1500],
+	["m", "May quiz pala bukas, ha!", left, 1500],
 	["m", "Good luck! Kaya mo yan!", left, 1000],
 	["m", "Ha? May quiz bukas?! 😱", right]
 ];

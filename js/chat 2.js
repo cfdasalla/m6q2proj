@@ -18,13 +18,12 @@ for (let x = 0; x < 3; x++) {
 	r1w[x] = new Polynomial();
 }
 
-r1w[0].copy(r1);
-r1w[0].coefficients.shift();
+r1w[0].copy(r1.derivative());
 
 r1w[1].copy(r1.indefinite());
 r1w[1].coefficients.shift();
 
-r1w[2].copy(r1.indefinite());
+r1w[2].copy(r1.derivative());
 r1w[2].coefficients[0] = 0;
 r1w[2].coefficients.unshift(0);
 
@@ -101,7 +100,7 @@ for (let i of [[rq1w, rq1], [rq2w, rq2]]) {
 
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
 
-let messages = [/*
+let messages = [
 	["m", "Uy, Cal! 👋🏽", left, 1000],
 	["m", "Sagutan na natin yung pair work!", left, 3000],
 	["m", "Sige!", right],
@@ -128,7 +127,7 @@ let messages = [/*
 	["m", "Bakit?", right],
 	["m", "Hindi pa dun nagtatapos ang reverse power rule.", left, 1500],
 	["m", "Ha? Eh mukha namang tama yung sagot ah?", right],
-	["m", "Tama naman yung sagot natin, pero may nakakalimutan tayo.", left, 2000],*/
+	["m", "Tama naman yung sagot natin, pero may nakakalimutan tayo.", left, 2000],
 	["m", "Ano ang derivative ng \\(" + r2.display() + "\\)?", left, 2000],
 	["m", "\\(" + r2.derivative().display() + "\\), diba?", right],
 	["m", "Tama...", left],

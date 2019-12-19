@@ -10039,10 +10039,6 @@ a.text-ian:hover, a.text-ian:focus {
   }
 }
 
-html {
-  padding-bottom: 100px;
-}
-
 #question, #answer {
   font-size: 20px;
 }

@@ -19,14 +19,14 @@ for (let x = 0; x < 3; x++) {
 }
 
 r1w[0].copy(r1);
-r1w[0].coefficients[0] = "C";
+r1w[0].coefficients.shift();
 
 r1w[1].copy(r1.indefinite());
 r1w[1].coefficients.shift();
-r1w[1].coefficients[0] = "C";
 
-r1w[2].copy(r1);
-r1w[2].coefficients.unshift("C");
+r1w[2].copy(r1.indefinite());
+r1w[2].coefficients[0] = 0;
+r1w[2].coefficients.unshift(0);
 
 // Second example: introduction of +C
 
@@ -36,11 +36,13 @@ for (let y = r2.coefficients.length - 2; y > 0; y--) {
 	r2.coefficients[y] = 0;
 }
 
-let [r2_a, r2_b] = [new Polynomial(r2.coefficients), new Polynomial(r2.coefficients)];
+let [r2_a, r2_b] = [new Polynomial(), new Polynomial()];
+
+r2_a.copy(r2);
+r2_b.copy(r2);
 
 r2_a.coefficients[0] = r2.coefficients[0] + d3.randomInt(1, 11)();
-let r2_br = d3.randomInt(1, 11)();
-r2_b.coefficients[0] = r2.coefficients[0] - r2_br >= 0 ? r2.coefficients[0] - r2_br : 0;
+r2_b.coefficients[0] = r2.coefficients[0] - d3.randomInt(1, 11)();
 
 for (let u = 0; u < 3; u++) {
 	r2w[u] = new Polynomial();
@@ -99,7 +101,7 @@ for (let i of [[rq1w, rq1], [rq2w, rq2]]) {
 
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
 
-let messages = [
+let messages = [/*
 	["m", "Uy, Cal! 👋🏽", left, 1000],
 	["m", "Sagutan na natin yung pair work!", left, 3000],
 	["m", "Sige!", right],
@@ -126,7 +128,7 @@ let messages = [
 	["m", "Bakit?", right],
 	["m", "Hindi pa dun nagtatapos ang reverse power rule.", left, 1500],
 	["m", "Ha? Eh mukha namang tama yung sagot ah?", right],
-	["m", "Tama naman yung sagot natin, pero may nakakalimutan tayo.", left, 2000],
+	["m", "Tama naman yung sagot natin, pero may nakakalimutan tayo.", left, 2000],*/
 	["m", "Ano ang derivative ng \\(" + r2.display() + "\\)?", left, 2000],
 	["m", "\\(" + r2.derivative().display() + "\\), diba?", right],
 	["m", "Tama...", left],
@@ -134,9 +136,9 @@ let messages = [
 	["m", "\\(" + r2_a.derivative().display() + "\\) din...", right],
 	["m", "Ano naman ang derivative ng \\(" + r2_b.display() + "\\)?", left, 2500],
 	["m", "\\(" + r2_b.derivative().display() + "\\) pa rin!", right],
-	["m", "Dahil ang integration ang kabaligtaran ng differentiation, ano ang pwedeng integral ng \\(" + r2_b.derivative().display() + "\\)?", left, 4000],
-	["m", "Hala! Pwede kahit alin dun sa tatlo kanina! 😲", right],
-	["m", "Oo. Kahit nga ano pa yung constant sa dulo, parehas pa rin yung integral niya.", left, 3000],
+	["m", "Dahil ang integration ang kabaligtaran ng differentiation, alin dun sa tatlo ang pwedeng integral ng \\(" + r2_b.derivative().display() + "\\)?", left, 4000],
+	["m", "Hala! Pwede kahit alin sa kanila! 😲", right],
+	["m", "Oo. Kahit nga ano pa yung constant sa dulo, pwede pa rin siyang integral ng \\(" + r2_b.derivative().display() + "\\).", left, 3000],
 	["m", "Pa'no yun? Ano yung integral niya kung maraming pwedeng sagot? 🤔", right],
 	["m", "Kelangan nating isama lahat ng pwedeng maging integral ng function na yun.", left, 2500],
 	["m", "Dahil dun, kailangan nating magdagdag ng \\(+C\\) sa dulo ng makukuha natin sa reverse power rule.", left, 3500],

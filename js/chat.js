@@ -184,9 +184,6 @@ function addMessage(m, s, f = function() {}, d = 0) {
 	
 	updateScroll();
 	
-	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
-	setTimeout(function() {window.scrollTo(0, $("body").css("height").slice(0, -2))}, 800);
-	
 	setTimeout(f, d + timeDelay(m.length));
 }
 
@@ -363,7 +360,7 @@ function toggleOnline() {
 }
 
 function updateScroll() {
-	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
+	window.scroll({top: $("body").css("height").slice(0, -2), left: 0, behavior: 'smooth'});
 }
 
 $(function() {

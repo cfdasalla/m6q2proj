@@ -15,18 +15,18 @@ let r1c = r1.indefinite();
 r1c.coefficients[0] = 0;
 
 for (let x = 0; x < 3; x++) {
-	r1w[x] = new Polynomial([r1.coefficients]);
+	r1w[x] = new Polynomial();
 }
 
-r1w[0].coefficients.unshift(0);
+r1w[0].copy(r1);
+r1w[0].coefficients[0] = "C";
 
-r1w[1] = r1w[1].indefinite();
-r1w[1].coefficients[0] = 0;
-r1w[1].coefficients.unshift(0);
+r1w[1].copy(r1.indefinite());
+r1w[1].coefficients.shift();
+r1w[1].coefficients[0] = "C";
 
-r1w[2].coefficients.shift();
-r1w[2] = r1w[2].indefinite();
-r1w[2].coefficients[0] = 0;
+r1w[2].copy(r1);
+r1w[2].coefficients.unshift("C");
 
 // Second example: introduction of +C
 

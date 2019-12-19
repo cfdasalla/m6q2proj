@@ -15,12 +15,13 @@ for (let x = 0; x < 3; x++) {
 	r1w[x] = new Polynomial(r1.coefficients);
 }
 
+r1w[0].copy(r1);
 r1w[0].coefficients.shift();
 
-r1w[1] = r1w[1].derivative();
+r1w[1].copy(r1.derivative());
 r1w[1].coefficients.shift();
 
-r1w[2] = r1w[2].derivative();
+r1w[2].copy(r1.derivative());
 r1w[2].coefficients.unshift(0);
 
 // Second example: derivative of a polynomial

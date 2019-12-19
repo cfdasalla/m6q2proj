@@ -5,7 +5,7 @@ let [r1w, r2w] = [[], []];
 
 // First example: derivative of one term
 
-r1.randomize(d3.randomInt(1, 5)());
+r1.randomize(d3.randomInt(2, 5)());
 
 for (let y = 0; y < r1.coefficients.length - 1; y++) {
 	r1.coefficients[y] = 0;
@@ -70,8 +70,8 @@ let messages = [
 	["m", "Legit?", right],
 	["m", "Oo naman!", left, 1000],
 	["m", "Sige, bago tayo mag-discuss ng power rule, pag-usapan muna natin yung derivatives.", left, 5000],
-	["m", "(insert derivatives short discussion: as slope)", left, 3000],
-	["m", "Ang power rule ay isang strategy ng pag-differentiate. Kadalasan siyang ginagamit pag ang term o expression na ididifferentiate ay may exponent.", left, 7000],
+	["m", "Ang derivative ng isang function ay ang sukat ng pagbabago ng y-component ng function sa pagbago ng x-component ng function. Masasabi rin natin na ito ang slope sa lahat ng points ng function.", left, 7000],
+	["m", "Ang power rule ay isang strategy ng paghanap ng derivative (o tinatawag na <i>differentiation</i>). Kadalasan siyang ginagamit pag ang term o expression na ididifferentiate ay may exponent.", left, 7000],
 	["m", "Para makapag-differentiate gamit ang power rule, imumultiply natin yung coefficient ng term sa exponent niya tapos magsusubtract tayo ng 1 sa exponent.", left, 8000],
 	["m", "Kumbaga, binababa natin yung exponent tapos nagmiminus 1 tayo sa exponent.", left, 4500],
 	["m", "Halimbawa, \\(" + r1.display() + "\\).", left, 4000],
@@ -133,53 +133,3 @@ let messages = [
 	["m", "Good luck pala sa quiz bukas!", left, 2000],
 	["m", "Salamat!", right]
 ];
-
-let messagesToAdd = [];
-
-for (let i = messages.length - 1; i >= 0; i--) {
-	if (messages[i][0] == "m") {
-		if (i == messages.length - 1) {
-			if (messages[i].length == 3) {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], function() {
-						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
-					});
-				});
-			} else {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], function() {
-						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
-					}, messages[i][3]);
-				});
-			}
-		} else {
-			if (messages[i].length == 3) {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], messagesToAdd[i + 1]);
-				});
-			} else {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], messagesToAdd[i + 1], messages[i][3]);
-				});
-			}
-		}
-	} else {
-		if (i == messages.length - 1) {
-			messagesToAdd.unshift(function() {
-				addPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8]);
-			});
-		} else {
-			messagesToAdd.unshift(function() {
-				addPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8], messagesToAdd[i + 1]);
-			});
-		}
-	}
-}
-
-$("#chat button").click(function() {
-	toggleOnline();
-	setTimeout(function() {
-		messagesToAdd[0]();
-	}, d3.randomInt(500, 1001)());
-	$("#chat button").hide();
-});

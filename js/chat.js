@@ -117,10 +117,10 @@ class TypedPoll {
 }
 
 /** Calisto's Recipient object. */
-let cal = new Recipient("Calisto", "Lucero", "images/cal dp.png");
+let cal = new Recipient("Calisto", "Lucero", "../images/cal dp.png");
 
 /** IO's recipient object. */
-let io = new Recipient("Ian", "Kona", "images/io dp.png", "Okelani");
+let io = new Recipient("Ian", "Kona", "../images/io dp.png", "Okelani");
 
 /** Last poll added. */
 let lastPoll;

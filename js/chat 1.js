@@ -45,7 +45,7 @@ r2w[2].coefficients.unshift(0);
 // Quiz
 
 let [rq1, rq2, rq3] = [new Polynomial(), new Polynomial(), new Polynomial()];
-let [rq1d, rq2d, rq3d] = [d3.randomInt(1, 3)(), d3.randomInt(1, 3)(), d3.randomInt(1, 3)()];
+let [rq1d, rq2d, rq3d] = [d3.randomInt(2, 4)(), d3.randomInt(2, 4)(), d3.randomInt(2, 4)()];
 
 rq1.randomize(rq1d);
 rq2.randomize(rq2d);
@@ -78,16 +78,16 @@ let messages = [
 	["m", "Uy, IO! Kamusta?", right],
 	["m", "Okay naman. Ikaw?", left, 2000],
 	["m", "Okay naman din, pero… medyo nahihirapan ako sa Math eh.", right],
-	["m", "Ahhh. Ano na ba topic niyo?", left, 2500],
-	["m", "Power rule. May quiz nga kami bukas eh, tapos di ko gets yung lesson. GG na.", right],
-	["m", "Ayyy hala. Oh sige, turuan kita!", left, 2500],
+	["m", "Ah. Ano na ba topic niyo?", left, 2500],
+	["m", "Power rule. May quiz nga kami bukas eh, tapos di ko gets yung lesson. GG na 😭", right],
+	["m", "Ay hala… sige, turuan kita!", left, 2500],
 	["m", "Legit?", right],
-	["m", "Oo naman!", left, 1000],
+	["m", "Oo naman! 😁", left, 1000],
 	["m", "Sige, bago tayo mag-discuss ng power rule, pag-usapan muna natin yung derivatives.", left, 5000],
 	["m", "Ang derivative ng isang function ay ang sukat ng pagbabago ng y-component ng function sa pagbago ng x-component ng function. Masasabi rin natin na ito ang slope sa lahat ng points ng function.", left, 7000],
-	["m", "Ang power rule ay isang strategy ng paghanap ng derivative (o tinatawag na <i>differentiation</i>). Kadalasan siyang ginagamit pag ang term o expression na ididifferentiate ay may exponent.", left, 7000],
-	["m", "Para makapag-differentiate gamit ang power rule, imumultiply natin yung coefficient ng term sa exponent niya tapos magsusubtract tayo ng 1 sa exponent.", left, 8000],
-	["m", "Kumbaga, binababa natin yung exponent tapos nagmiminus 1 tayo sa exponent.", left, 4500],
+	["m", "Ang power rule ay isang strategy ng paghanap ng derivative (o tinatawag na <b>differentiation</b>). Kadalasan siyang ginagamit pag ang term o expression na idi-differentiate ay may exponent.", left, 7000],
+	["m", "Para makapag-differentiate gamit ang power rule, imu-multiply natin yung coefficient ng term sa exponent niya tapos babawasan natin ng 1 ang exponent.", left, 8000],
+	["m", "Kumbaga, binababa natin yung exponent tapos nagmi-minus 1 tayo sa exponent.", left, 4500],
 	["m", "Halimbawa, \\(" + r1.display() + "\\).", left, 4000],
 	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.display() + ")\\]", {
 		a: "\\(" + r1.derivative().display() + "\\)",
@@ -95,15 +95,15 @@ let messages = [
 		c: "\\(" + r1w[1].display() + "\\)",
 		d: "\\(" + r1w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "OK! Mukhang madali lang 'to, ah!", right],
+	["m", "OK! Mukhang madali lang ’to, ah!", right],
 	["m", "Teka lang...", right],
-	["m", "Paano naman kung constant lang yung meron?", right],
-	["m", "Magandang tanong 'yan!", left, 1500],
+	["m", "Paano naman kung constant lang yung meron? 🤔", right],
+	["m", "Magandang tanong ’yan!", left, 1500],
 	["m", "Sige, isipin natin...", left, 1000],
 	["p", "Ano ba ang <i>degree</i> ng isang constant?", {
-		a: ["1", "Degree 1 'yun, diba?"],
-		b: ["0", "Degree 0 'yun, diba?"],
-		c: ["wala", "Wala namang degree 'yun, diba?"]
+		a: ["1", "Degree 1 ’yun, diba?"],
+		b: ["0", "Degree 0 ’yun, diba?"],
+		c: ["wala", "Wala namang degree ’yun, diba?"]
 	}, "b", "Ayun!", "Hindi...", "Isipin mo ulit."],
 	["m", "So dahil degree 0 ang isang constant, para mo na rin siyang nilagyan ng invisible na \\(x^0\\).", left, 4000],
 	["m", "Dahil sinasabi ng power rule na imu-multiply natin sa coefficient yung exponent, magiging 0 na yung coefficient niya.", left, 4000],
@@ -119,7 +119,7 @@ let messages = [
 		c: "\\(" + r2w[1].display() + "\\)",
 		d: "\\(" + r2w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "Sige, para mas lalo kang mahawa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000],
+	["m", "Sige, para mas lalo kang mahasa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000],
 	["m", "Number 1:", left, 1000],
 	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq1.display() + ")\\]", {
 		a: "\\(" + rq1.derivative().display() + "\\)",
@@ -137,8 +137,8 @@ let messages = [
 	["m", "Isa pa siguro...", left, 1500],
 	["m", "Ngayon, ikaw naman mag-type!", left, 1500],
 	["t", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.display() + ")\\]", rq3.derivative().display(), "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
-	["m", "O ayan, nagets mo na ba kung pano yung power rule?", left, 3000],
-	["m", "Oo, salamat sa pagturo sa 'kin nito!", right],
+	["m", "O ayan, na-gets mo na ba kung pa’no yung power rule?", left, 3000],
+	["m", "Oo, salamat sa pagturo sa ’kin nito!", right],
 	["m", "Walang anuman!", left, 1000],
 	["m", "Good luck pala sa quiz bukas!", left, 2000],
 	["m", "Salamat!", right]

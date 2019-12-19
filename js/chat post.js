@@ -6,19 +6,25 @@ for (let i = messages.length - 1; i >= 0; i--) {
 			if (messages[i].length == 3) {
 				messagesToAdd.unshift(function() {
 					addMessage(messages[i][1], messages[i][2], function() {
-						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
 						setTimeout(function() {
-							$("#chat").append(`<a class="btn btn-ian" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`)
-						}, 3000);
+							toggleOnline();
+							setTimeout(function() {
+								$("#chat").append(`<a class="btn animated fadeInUp faster" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`);
+								$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
+							}, 2000);
+						}, d3.randomInt(2000, 3001)());
 					});
 				});
 			} else {
 				messagesToAdd.unshift(function() {
 					addMessage(messages[i][1], messages[i][2], function() {
-						setTimeout(toggleOnline, d3.randomInt(2000, 3001)());
 						setTimeout(function() {
-							$("#chat").append(`<a class="btn btn-ian" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`)
-						}, 3000);
+							toggleOnline();
+							setTimeout(function() {
+								$("#chat").append(`<a class="btn animated fadeInUp faster" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`);
+								$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
+							}, 2000);
+						}, d3.randomInt(2000, 3001)());
 					}, messages[i][3]);
 				});
 			}

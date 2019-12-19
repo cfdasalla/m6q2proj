@@ -18,9 +18,6 @@
 --- go reggie!
 */
 
-/** Array containing + and - operators/signs. */
-let sgn = ["+", "-"];
-
 /** Object containing modes. */
 let allowed = {d: true,
 			   i: true,

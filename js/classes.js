@@ -43,33 +43,38 @@ class Fraction {
 /** The equation class. */
 class Polynomial {
 	/** Makes a polynomial. Also makes upper and lower bounds for the definite integral. */
-	constructor() {
+	constructor(c = [], e = [], l = 0, u = 0) {
 		/** Coefficients of each term of the polynomial. */
-		this.coefficients = [];
+		this.coefficients = c;
 		
-		/** Signs of each term of the polynomial. */
-		this.signs = [];
+		/** Any extra terms (e.g., logarithms, trig functions) appended to the end of the polynomial. */
+		this.extras = e;
 		
 		/** The lower bound of the definite integral. */
-		this.defl;
+		this.defl = l;
 
 		/** The upper bound of the definite integral. */
-		this.defu;
-	}
-	
-	setValues(c, s) {
-		this.coefficients = c;
-		this.signs = s;
-	}
-	
-	randomize(max) {
-		for (let i = 0; i <= max; i++) {
-			this.coefficients.push(d3.randomInt(minCoef, maxCoef + 1)());
-			this.signs.push(sgn[d3.randomInt(0,2)()]);
-		}
+		this.defu = u;
 		
-		if (this.signs[this.signs.length - 1] == "+") {
-			this.signs[this.signs.length - 1] = "";
+		return this;
+	}
+	
+	/** Sets values of polynomial. Call without parameters to clear polynomial. */
+	setValues(c = [], e = [], l = 0, u = 0) {
+		this.coefficients = c;
+		this.extras = e;
+		this.defl = l;
+		this.defu = u;
+		
+		return this;
+	}
+	
+	/** Assigns random values to coefficients. */
+	randomize(max) {
+		let sgn = ["+", "-"];
+		
+		for (let i = 0; i <= max; i++) {
+			this.coefficients.push(parseInt(sgn[d3.randomInt(0,2)()] + d3.randomInt(minCoef, maxCoef + 1)()));
 		}
 		
 		this.defl = d3.randomInt(minBound, maxBound + 1)();
@@ -79,6 +84,8 @@ class Polynomial {
 		} else {
 			this.defu = d3.randomInt(this.defl, maxBound + 1)();
 		}
+		
+		return this;
 	}
 	
 	/** Randomly assigns zero coefficients to terms. */
@@ -90,6 +97,8 @@ class Polynomial {
 				this.coefficients[i] = 0;
 			}
 		}
+		
+		return this;
 	}
 	
 	/** Returns the LaTeX code of the equation for display in #question. */
@@ -102,82 +111,55 @@ class Polynomial {
 				if (!(this.coefficients[i] instanceof Fraction)) {
 					switch (i) {
 						case 0:
-							terms[i] = this.signs[i] + this.coefficients[i];
+							terms[i] = this.coefficients[i].toString();
 							break;
 						case 1:
-							if (this.coefficients[i] == 1) {
-								terms[i] = this.signs[i] + "x";
-							} else {
-								terms[i] = this.signs[i] + this.coefficients[i] + "x";
-							}
+							terms[i] = this.coefficients[i] == 1 ? "x"
+									 : this.coefficients[i] == -1 ? "-x"
+									 : this.coefficients[i] + "x";
 							break;
 						default:
 							if (i < 10) {
-								if (this.coefficients[i] == 1) {
-									terms[i] = this.signs[i] + "x^" + i;
-								} else {
-									terms[i] = this.signs[i] + this.coefficients[i] + "x^" + i;
-								}
+								terms[i] = this.coefficients[i] == 1 ? "x^" + i
+										 : this.coefficients[i] == -1 ? "-x^" + i
+										 : this.coefficients[i] + "x^" + i;
 							} else {
-								if (this.coefficients[i] == 1) {
-									terms[i] = this.signs[i] + "x^{" + i + "}";
-								} else {
-									terms[i] = this.signs[i] + this.coefficients[i] + "x^{" + i + "}";
-								}
+								terms[i] = this.coefficients[i] == 1 ? "x^{" + i + "}"
+										 : this.coefficients[i] == -1 ? "-x^{" + i + "}"
+										 : this.coefficients[i] + "x^{" + i + "}";
 							}
 							break;
 					}
 				} else {
 					switch (i) {
 						case 0:
-							terms[i] = this.signs[i] + this.coefficients[i].latex();
+							terms[i] = this.coefficients[i].latex();
 							break;
 						case 1:
-							if (this.coefficients[i] == 1) {
-								terms[i] = this.signs[i] + "x";
-							} else {
-								terms[i] = this.signs[i] + this.coefficients[i].latex() + "x";
-							}
+							terms[i] = this.coefficients[i].latex() + "x";
 							break;
 						default:
-							if (i < 10) {
-								if (this.coefficients[i] == 1) {
-									terms[i] = this.signs[i] + "x^" + i;
-								} else {
-									terms[i] = this.signs[i] + this.coefficients[i].latex() + "x^" + i;
-								}
-							} else {
-								if (this.coefficients[i] == 1) {
-									terms[i] = this.signs[i] + "x^{" + i + "}";
-								} else {
-									terms[i] = this.signs[i] + this.coefficients[i].latex() + "x^{" + i + "}";
-								}
-							}
+							terms[i] = i < 10 ? this.coefficients[i].latex() + "x^" + i : terms[i] = this.coefficients[i].latex() + "x^{" + i + "}";
 							break;
-								
 					}
 				}
 
 				if (checkZero(this.coefficients[i])) {
-					terms[i] = undefined;
-
-					if (i > 0) {
-						if (this.signs[i - 1] == "+" && this.coefficients.slice(i, this.coefficients.length).every(checkZero)) {
-							this.signs[i - 1] = "";
-						}
-					}
-
+					terms[i] = "";
+					/*
 					if (this.coefficients[i - 1] == 0) {
 						terms[i - 1] = "";
-					}
+					}*/
 				}
 			}
 		}
 		
 		for (let i = terms.length - 1; i >= 0; i--) {
-			if (terms[i] != undefined) {
-				final += terms[i];
-			}
+			if (terms[i] != "") { final += terms[i][0] == "-" ? terms[i] : "+" + terms[i]; }
+		}
+		
+		for (let i of this.extras) {
+			final += i[0] == "-" ? i : "+" + i;
 		}
 		
 		if (final == "") { final = "0" }
@@ -193,7 +175,6 @@ class Polynomial {
 		
 		for (let i = 1; i < this.coefficients.length; i++) {
 			answerEq.coefficients[i - 1] = i * this.coefficients[i];
-			answerEq.signs[i - 1] = this.signs[i];
 		}
 		
 		return answerEq;
@@ -205,11 +186,9 @@ class Polynomial {
 		
 		for (let i = 0; i < this.coefficients.length; i++) {
 			answerEq.coefficients[i + 1] = new Fraction(this.coefficients[i], i + 1);
-			answerEq.signs[i + 1] = this.signs[i];
 		}
 		
 		answerEq.coefficients[0] = "C";
-		answerEq.signs[0] = "+";
 		
 		return answerEq;
 	}
@@ -222,7 +201,7 @@ class Polynomial {
 		let lwA;
 		
 		for (let i = 0; i < this.coefficients.length; i++) {
-			let coef = parseInt(this.signs[i] + this.coefficients[i]);
+			let coef = this.coefficients[i];
 			
 			let multU = operateFrac(new Fraction(coef), new Fraction(1, i + 1), "m");
 			let prodU = operateFrac(multU, new Fraction(this.defu ** (i + 1)), "m");
@@ -249,6 +228,24 @@ class Polynomial {
 		
 		return ans.latex();
 	}
+	
+	/** Copies values from another polynomial to current polynomial. */
+	copy(other) {
+		this.setValues();
+		
+		for (let c = 0; c < other.coefficients.length; c++) {
+			if (other.coefficients[c] instanceof Fraction) {
+				this.coefficients[c] = new Fraction(other.coefficients[c].n, other.coefficients[c].d);
+			} else {
+				this.coefficients[c] = other.coefficients[c];
+			}
+		}
+		
+		this.defl = other.defl;
+		this.defu = other.defu;
+		
+		return this;
+	}
 }
 
 /** Gets the GCD of two numbers. Used to find lowest terms. */
@@ -263,7 +260,8 @@ function lcm(a, b) {
 	return Math.abs((a * b) / gcd(a, b));
 }
 
-/** Operates on two Fractions.
+/**
+	Operates on two Fractions.
 	@param {Fraction} a - First Fraction
 	@param {Fraction} b - Second Fraction
 	@param {string} operation - Operation to be performed
@@ -289,9 +287,128 @@ function operateFrac(a, b, operation) {
 }
 
 /**
+	Operates on two Polynomials.
+	@param {Polynomial} a - First Polynomial
+	@param {Polynomial} b - Second Polynomial
+	@param {string} operation - Operation to be performed
+*/
+function operatePoly(a, b, operation) {
+	let result = new Polynomial;
+	let A = [];
+	let B = [];
+	
+	let resultC = [];
+	let resultE = [];
+	
+	for (let i = 0; i < a.coefficients.length; i++) {
+		A[i] = a.coefficients[i] != undefined ? a.coefficients[i] : 0;
+	}
+	
+	for (let i = 0; i < b.coefficients.length; i++) {
+		B[i] = b.coefficients[i] != undefined ? b.coefficients[i] : 0;
+	}
+	
+	if (A.length > B.length) {
+		for (let u = B.length; u < A.length; u++) {
+			B.push(0);
+		}
+	} else {
+		for (let u = A.length; u < B.length; u++) {
+			A.push(0);
+		}
+	}
+	
+	switch (operation) {
+		case "a":
+			if (A.length >= B.length) {
+				for (let i = 0; i < A.length; i++) {
+					resultC[i] = operate(A[i], B[i], "a");
+				}
+			} else {
+				for (let i = 0; i < B.length; i++) {
+					resultC[i] = operate(A[i], B[i], "a");
+				}
+			}
+			break;
+		case "s":
+			if (A.length >= B.length) {
+				for (let i = 0; i < A.length; i++) {
+					resultC[i] = operate(A[i], B[i], "s");
+				}
+			} else {
+				for (let i = 0; i < B.length; i++) {
+					resultC[i] = operate(A[i], B[i], "s");
+				}
+			}
+			break;
+		case "m":
+			for (let i = 0; i < A.length; i++) {
+				for (let j = 0; j < B.length; j++) {
+					if (resultC[i + j] == undefined) {
+						resultC[i + j] = operate(A[i], B[j], "m");
+					} else {
+						resultC[i + j] += operate(A[i], B[j], "m");
+					}
+				}
+			}
+			break;
+		case "d":
+			let tempPoly = new Polynomial();
+			let remainder = 0;
+			tempPoly.copy(a);
+			
+			if (A.length < B.length) {
+				resultE.push("\\frac{" + a.display() + "}{" + b.display() + "}");
+			} else {
+				for (let g = a.coefficients.length - b.coefficients.length; g >= 0; g--) {
+					for (let h = 0; h < g; h++) {
+						tempPoly.coefficients[h] = 0;
+					}
+
+					let tempMult = new Polynomial();
+					tempMult.copy(tempPoly);
+
+					for (let i = 0; i < tempPoly.coefficients.length - 1; i++) {
+						tempMult.coefficients[i] = 0;
+					}
+
+					tempMult.coefficients.shift();
+
+					let tempSubt = operatePoly(b, tempMult, "m");
+					let tempDiff = operatePoly(tempPoly, tempSubt, "s");
+					
+					let newDivi = new Polynomial();
+					newDivi.copy(tempDiff);
+					newDivi.coefficients[tempDiff.coefficients.length - 2] = a.coefficients[tempDiff.coefficients.length - 2];
+					
+					tempPoly = newDivi;
+					resultC[g] = tempMult.coefficients[tempMult.coefficients.length - 1];
+					remainder = A[0] - tempSubt.coefficients[0];
+				}
+			}
+			
+			resultE.push("\\frac{" + remainder + "}{" + b.display() + "}");
+			break;
+	}
+	
+	for (let g = resultC.length - 1; g >= 0; g--) {
+		if (resultC[g] == 0) {
+			resultC.pop();
+		} else {
+			break;
+		}
+	}
+	
+	result.coefficients = resultC;
+	result.extras = resultE;
+	
+	return result;
+}
+
+/**
 	Takes two numbers. Returns either an integer or a LaTeX fraction depending on divisibilty.
 	@param {number} n - Numerator (dividend)
-	@param {number} d - Denominator (divisor)
+	@param {number} d - Denominator (workPoly)
 */
 function convertToLatexFrac(n, d) {
 	if (n % d == 0) {
@@ -336,6 +453,41 @@ function checkZero(c) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+}
+
+/**
+	Operates on two values.
+	@param {Number|Fraction} a - First Fraction
+	@param {Number|Fraction} b - Second Fraction
+	@param {string} operation - Operation to be performed
+*/
+function operate(a, b, o) {
+	if (a instanceof Fraction) {
+		if (b instanceof Fraction) {
+			return operateFrac(a, b, o);
+		} else {
+			return operateFrac(a, new Fraction(b), o);
+		}
+	} else {
+		if (b instanceof Fraction) {
+			return operateFrac(new Fraction(a), b, o);
+		} else {
+			switch (o) {
+				case "a":
+					return a + b;
+					break;
+				case "s":
+					return a - b;
+					break;
+				case "m":
+					return a * b;
+					break;
+				case "d":
+					return operateFrac(new Fraction(a), new Fraction(b), o);
+					break;
+			}
 		}
 	}
 }

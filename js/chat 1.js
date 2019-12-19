@@ -12,31 +12,35 @@ for (let y = 0; y < r1.coefficients.length - 1; y++) {
 }
 
 for (let x = 0; x < 3; x++) {
-	r1w[x] = new Polynomial();
-	r1w[x].setValues([...r1.coefficients], [...r1.signs]);
+	r1w[x] = new Polynomial(r1.coefficients);
 }
 
 r1w[0].coefficients.shift();
-r1w[0].signs.shift();
 
 r1w[1] = r1w[1].derivative();
 r1w[1].coefficients.shift();
-r1w[1].signs.shift();
 
 r1w[2] = r1w[2].derivative();
 r1w[2].coefficients.unshift(0);
-r1w[2].signs.unshift("+");
 
 // Second example: derivative of a polynomial
 
-let r2d = d3.randomInt(1, 3)();
+let r2d = d3.randomInt(2, 4)();
 
 r2.randomize(r2d);
 
 for (let y = 0; y < 3; y++) {
 	r2w[y] = new Polynomial();
-	r2w[y].randomize(r2d - 1);
 }
+
+r2w[0].copy(r2);
+r2w[0].coefficients[0] = 0;
+
+r2w[1].copy(r2);
+r2w[1].coefficients.shift();
+
+r2w[2].copy(r2.derivative());
+r2w[2].coefficients.unshift(0);
 
 // Quiz
 
@@ -47,15 +51,25 @@ rq1.randomize(rq1d);
 rq2.randomize(rq2d);
 rq3.randomize(rq3d);
 
-let [rq1w, rq2w, rq3w] = [[], [], []];
+let [rq1w, rq2w] = [[], []];
 
 for (let z = 0; z < 3; z++) {
-	rq1w[z] = new Polynomial();
-	rq1w[z].randomize(rq1d - 1);
-	rq2w[z] = new Polynomial();
-	rq2w[z].randomize(rq2d - 1);
-	rq3w[z] = new Polynomial();
-	rq3w[z].randomize(rq3d - 1);
+	for (let i of [rq1w, rq2w]) {
+		i[z] = new Polynomial();
+	}
+}
+
+for (let i of [[rq1w, rq1], [rq2w, rq2]]) {
+	i[0][0].copy(i[1]);
+	shuffle(i[0][0].coefficients);
+	i[0][0].coefficients[0] = 0;
+	
+	i[0][1].copy(i[1]);
+	i[0][1].coefficients.shift();
+	
+	i[0][2].copy(i[1].derivative());
+	shuffle(i[0][2].coefficients);
+	i[0][2].coefficients.unshift(0);
 }
 
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer
@@ -121,12 +135,8 @@ let messages = [
 		d: "\\(" + rq2w[2].display() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Isa pa siguro...", left, 1500],
-	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.display() + ")\\]", {
-		a: "\\(" + rq3.derivative().display() + "\\)",
-		b: "\\(" + rq3w[0].display() + "\\)",
-		c: "\\(" + rq3w[1].display() + "\\)",
-		d: "\\(" + rq3w[2].display() + "\\)"
-	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["m", "Ngayon, ikaw naman mag-type!", left, 1500],
+	["t", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.display() + ")\\]", rq3.derivative().display(), "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "O ayan, nagets mo na ba kung pano yung power rule?", left, 3000],
 	["m", "Oo, salamat sa pagturo sa 'kin nito!", right],
 	["m", "Walang anuman!", left, 1000],

@@ -15,20 +15,16 @@ let r1c = r1.indefinite();
 r1c.coefficients[0] = 0;
 
 for (let x = 0; x < 3; x++) {
-	r1w[x] = new Polynomial();
-	r1w[x].setValues([...r1.coefficients], [...r1.signs]);
+	r1w[x] = new Polynomial([r1.coefficients]);
 }
 
 r1w[0].coefficients.unshift(0);
-r1w[0].signs.unshift("+");
 
 r1w[1] = r1w[1].indefinite();
 r1w[1].coefficients[0] = 0;
 r1w[1].coefficients.unshift(0);
-r1w[1].signs.unshift("+");
 
 r1w[2].coefficients.shift();
-r1w[2].signs.shift();
 r1w[2] = r1w[2].indefinite();
 r1w[2].coefficients[0] = 0;
 
@@ -40,10 +36,7 @@ for (let y = r2.coefficients.length - 2; y > 0; y--) {
 	r2.coefficients[y] = 0;
 }
 
-let [r2_a, r2_b] = [new Polynomial(), new Polynomial()];
-
-r2_a.setValues([...r2.coefficients], [...r2.signs]);
-r2_b.setValues([...r2.coefficients], [...r2.signs]);
+let [r2_a, r2_b] = [new Polynomial(r2.coefficients), new Polynomial(r2.coefficients)];
 
 r2_a.coefficients[0] = r2.coefficients[0] + d3.randomInt(1, 11)();
 let r2_br = d3.randomInt(1, 11)();
@@ -51,7 +44,7 @@ r2_b.coefficients[0] = r2.coefficients[0] - r2_br >= 0 ? r2.coefficients[0] - r2
 
 for (let u = 0; u < 3; u++) {
 	r2w[u] = new Polynomial();
-	r2w[u].setValues([...r1w[u].coefficients], [...r1w[u].signs]);
+	r2w[u].copy(r1w[u]);
 	r2w[u].coefficients[0] = "C";
 }
 
@@ -63,15 +56,17 @@ r3.randomize(r3d);
 
 for (let y = 0; y < 3; y++) {
 	r3w[y] = new Polynomial();
-	r3w[y].randomize(r3d + 1);
-	
-	for (let o = 1; o < r3.coefficients.length; o++) {
-		r3w[y].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
-	}
-	
-	r3w[y].coefficients[0] = "C";
-	r3w[y].signs[0] = "+";
 }
+
+r3w[0].copy(r3);
+r3w[0].coefficients[0] = "C";
+
+r3w[1].copy(r3.indefinite());
+r3w[1].coefficients.shift();
+r3w[1].coefficients[0] = "C";
+
+r3w[2].copy(r3);
+r3w[2].coefficients.unshift("C");
 
 // Quiz
 
@@ -82,29 +77,24 @@ rq1.randomize(rq1d);
 rq2.randomize(rq2d);
 rq3.randomize(rq3d);
 
-let [rq1w, rq2w, rq3w] = [[], [], []];
+let [rq1w, rq2w] = [[], []];
 
 for (let z = 0; z < 3; z++) {
-	[rq1w[z], rq2w[z], rq3w[z]] = [new Polynomial(), new Polynomial(), new Polynomial()];
-	
-	rq1w[z].randomize(rq1.indefinite().coefficients.length - 1);
-	rq2w[z].randomize(rq2.indefinite().coefficients.length - 1);
-	rq3w[z].randomize(rq3.indefinite().coefficients.length - 1);
-	
-	for (let o = 1; o < rq1w[z].coefficients.length; o++) {
-		rq1w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
+	for (let i of [rq1w, rq2w]) {
+		i[z] = new Polynomial();
 	}
+}
 
-	for (let o = 1; o < rq2w[z].coefficients.length; o++) {
-		rq2w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
-	}
+for (let i of [[rq1w, rq1], [rq2w, rq2]]) {
+	i[0][0].copy(i[1]);
+	i[0][0].coefficients[0] = "C";
 	
-	for (let o = 1; o < rq3w[z].coefficients.length; o++) {
-		rq3w[z].coefficients[o] = new Fraction(d3.randomInt(minCoef, maxCoef + 1)(), o);
-	}
+	i[0][1].copy(i[1].indefinite());
+	i[0][1].coefficients.shift();
+	i[0][1].coefficients[0] = "C";
 	
-	[rq1w[z].coefficients[0], rq2w[z].coefficients[0], rq3w[z].coefficients[0]] = ["C", "C", "C"];
-	[rq1w[z].signs[0], rq2w[z].signs[0], rq3w[z].signs[0]] = ["+", "+", "+"];
+	i[0][2].copy(i[1]);
+	i[0][2].coefficients.unshift("C");
 }
 
 // For polls: question, options, correct answer, right feedback, wrong feedback, ulit feedback, prepend to answer, postpend to answer

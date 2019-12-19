@@ -111,6 +111,7 @@ class TypedPoll {
 		return `<div class="animated faster fadeInUp choose">
 <div class="question h5 mt-4">${this.question}</div>
 <span id="${this.field}" class="mb-4"></span>
+<button class="btn ml-2">Send</button>
 </div>`;
 	}
 }
@@ -184,6 +185,7 @@ function addMessage(m, s, f = function() {}, d = 0) {
 	updateScroll();
 	
 	$("html").animate({scrollTop: ((parseFloat($("body").css("height").slice(0, -2))) + 100).toString()}, 800);
+	setTimeout(function() {window.scrollTo(0, $("body").css("height").slice(0, -2))}, 800);
 	
 	setTimeout(f, d + timeDelay(m.length));
 }
@@ -294,7 +296,7 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
 	
 	function checkTP(ans) {
 		typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].blur();
-		
+
 		addMessage(pre + "\\(" + typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex() + "\\)" + post, "right");
 
 		if (ans == c) {
@@ -315,9 +317,13 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
 				}, d3.randomInt(2000, 3001)());
 			}, d3.randomInt(1001, 2501)());
 		}
+		
+		$("#" + lastTypedPoll.field).siblings("button").prop("disabled", true);
 	}
 	
 	typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)] = MQ.MathField($("#" + x.field)[0], {
+		spaceBehavesLikeTab: true,
+		charsThatBreakOutOfSupSub: '+-',
 		handlers: {
 			enter: function() {
 				checkTP(typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex());
@@ -330,6 +336,12 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
 	updateScroll();
 	
 	lastTypedPoll = x;
+	
+	typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].focus();
+	$("#" + lastTypedPoll.field).siblings("button").one("click", function() {
+		checkTP(typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex());
+	});
+	$("#" + lastTypedPoll.field).siblings("button").addClass("btn-" + $("#chat").attr("class").match(new RegExp(currentRecipient.first.toLowerCase()))[0]);
 }
 
 /** Adds button classes corresponding to current chat color. */

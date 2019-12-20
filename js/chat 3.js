@@ -38,7 +38,7 @@ let messages = [
 	["m", "Yeah.", right],
 	["m", "I can differentiate pretty well now, but the functions have been getting harder to work with.", right],
 	["m", "For example, one item from our homework was \\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1a.display() + ")(" + r1b.display() + ")\\).", right],
-	["m", "I expand3e the function, which gave me \\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.display() + ")\\).", right],
+	["m", "I expanded the function, which gave me \\(\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.display() + ")\\).", right],
 	["m", "Then I differentiated it, and I got \\(" + r1.derivative().display() + "\\).", right],
 	["m", "It's all good, until I get bigger polynomials and it gets much harder to expand.", right],
 	["m", "Is there a way to make things easier?", right],

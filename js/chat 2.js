@@ -116,11 +116,11 @@ let messages = [
 	["m", "Bale, pag nag-reverse power rule tayo sa isang term, kunyari \\(ax^b\\), ang integral niya ay \\(\\frac{a}{b+1}x^{b+1}\\).", left, 4000],
 	["m", "Parang ang gulo naman nun... 😕", right],
 	["m", "Sige, bigyan kita ng example.", left],
-	["p", "Ano ang lalabas pag ginamitan ng reverse power rule ang \\(" + r1.display() +"\\)?", {
-		a: "\\(" + r1c.display() + "\\)",
-		b: "\\(" + r1w[0].display() + "\\)",
-		c: "\\(" + r1w[1].display() + "\\)",
-		d: "\\(" + r1w[2].display() + "\\)",
+	["p", "Ano ang lalabas pag ginamitan ng reverse power rule ang \\(" + r1.latex() +"\\)?", {
+		a: "\\(" + r1c.latex() + "\\)",
+		b: "\\(" + r1w[0].latex() + "\\)",
+		c: "\\(" + r1w[1].latex() + "\\)",
+		d: "\\(" + r1w[2].latex() + "\\)",
 	}, "a", "Yun!", "Hindi eh...", "Subukin ulit natin.", "", " ba?"],
 	["m", "OK, gets ko na! Madali lang pala ’to eh.", right],
 	["m", "Teka lang!", left, 500],
@@ -128,27 +128,27 @@ let messages = [
 	["m", "Hindi pa dun nagtatapos ang reverse power rule.", left, 1500],
 	["m", "Ha? Eh mukha namang tama yung sagot ah?", right],
 	["m", "Tama naman yung sagot natin, pero may nakakalimutan tayo.", left, 2000],
-	["m", "Ano ang derivative ng \\(" + r2.display() + "\\)?", left, 2000],
-	["m", "\\(" + r2.derivative().display() + "\\), diba?", right],
+	["m", "Ano ang derivative ng \\(" + r2.latex() + "\\)?", left, 2000],
+	["m", "\\(" + r2.derivative().latex() + "\\), diba?", right],
 	["m", "Tama...", left],
-	["m", "Pero ano naman ang derivative ng \\(" + r2_a.display() + "\\)?", left, 2500],
-	["m", "\\(" + r2_a.derivative().display() + "\\) din...", right],
-	["m", "Ano naman ang derivative ng \\(" + r2_b.display() + "\\)?", left, 2500],
-	["m", "\\(" + r2_b.derivative().display() + "\\) pa rin!", right],
-	["m", "Dahil ang integration ang kabaligtaran ng differentiation, alin dun sa tatlo ang pwedeng integral ng \\(" + r2_b.derivative().display() + "\\)?", left, 4000],
+	["m", "Pero ano naman ang derivative ng \\(" + r2_a.latex() + "\\)?", left, 2500],
+	["m", "\\(" + r2_a.derivative().latex() + "\\) din...", right],
+	["m", "Ano naman ang derivative ng \\(" + r2_b.latex() + "\\)?", left, 2500],
+	["m", "\\(" + r2_b.derivative().latex() + "\\) pa rin!", right],
+	["m", "Dahil ang integration ang kabaligtaran ng differentiation, alin dun sa tatlo ang pwedeng integral ng \\(" + r2_b.derivative().latex() + "\\)?", left, 4000],
 	["m", "Hala! Pwede kahit alin sa kanila! 😲", right],
-	["m", "Oo. Kahit nga ano pa yung constant sa dulo, pwede pa rin siyang integral ng \\(" + r2_b.derivative().display() + "\\).", left, 3000],
+	["m", "Oo. Kahit nga ano pa yung constant sa dulo, pwede pa rin siyang integral ng \\(" + r2_b.derivative().latex() + "\\).", left, 3000],
 	["m", "Pa’no yun? Ano yung integral niya kung maraming pwedeng sagot? 🤔", right],
 	["m", "Kelangan nating isama lahat ng pwedeng maging integral ng function na yun.", left, 2500],
 	["m", "Dahil dun, kailangan nating magdagdag ng \\(+C\\) sa dulo ng makukuha natin sa reverse power rule.", left, 3500],
 	["m", "Pwede nating palitan si \\(C\\) ng kahit anong real number, at tama pa rin yung sagot natin.", left, 3000],
 	["m", "Ah! Ganun pala yun! Kaya pala may nakikita akong \\(C\\) dun sa libro natin.", right],
 	["m", "Ngayon, balikan natin yung unang halimbawa natin.", left, 2000],
-	["p", "\\[\\int{" + r1.display() + "\\mathrm{d}x}\\]", {
-		a: "\\(" + r1.indefinite().display() + "\\)",
-		b: "\\(" + r2w[0].display() + "\\)",
-		c: "\\(" + r2w[1].display() + "\\)",
-		d: "\\(" + r2w[2].display() + "\\)"
+	["p", "\\[\\int{" + r1.latex() + "\\mathrm{d}x}\\]", {
+		a: "\\(" + r1.indefinite().latex() + "\\)",
+		b: "\\(" + r2w[0].latex() + "\\)",
+		c: "\\(" + r2w[1].latex() + "\\)",
+		d: "\\(" + r2w[2].latex() + "\\)"
 	}, "a", "Yun!", "Hindi eh...", "Subukin ulit natin.", "", " ba?"],
 	["m", "Wag mong kakalimutan yung \\(+C\\) sa dulo ng sagot pag nag-integrate ka.", left, 2500],
 	["m", "Pag nalimutan mong ilagay yun, mamamali yung sagot mo.", left, 2000],
@@ -157,32 +157,32 @@ let messages = [
 	["m", "Pwede rin bang mag-integrate nang pa-isa-isa kapag polynomial?", right],
 	["m", "Ay! Buti pinaalala mo!", left, 1000],
 	["m", "Gaya ng sa pag-differentiate, pwede mo ring isa-isahin ang pag-integrate sa polynomial.", left, 2500],
-	["m", "Halimbawa, \\(" + r3.display() + "\\).", left, 1000],
-	["p", "\\[\\int{(" + r3.display() + ")\\mathrm{d}x}\\]", {
-		a: "\\(" + r3.indefinite().display() + "\\)",
-		b: "\\(" + r3w[0].display() + "\\)",
-		c: "\\(" + r3w[1].display() + "\\)",
-		d: "\\(" + r3w[2].display() + "\\)"
+	["m", "Halimbawa, \\(" + r3.latex() + "\\).", left, 1000],
+	["p", "\\[\\int{(" + r3.latex() + ")\\mathrm{d}x}\\]", {
+		a: "\\(" + r3.indefinite().latex() + "\\)",
+		b: "\\(" + r3w[0].latex() + "\\)",
+		c: "\\(" + r3w[1].latex() + "\\)",
+		d: "\\(" + r3w[2].latex() + "\\)"
 	}, "a", "Yun!", "Hindi eh...", "Subukin ulit natin.", "", " ba yung sagot?"],
 	["m", "O, mukhang gets mo na ’tong reverse power rule.", left, 1500],
 	["m", "Gawin na natin ’tong pairwork!", left, 1000],
 	["m", "Number 1:", left, 1000],
-	["p", "\\[\\int{(" + rq1.display() + ")\\mathrm{d}x}\\]", {
-		a: "\\(" + rq1.indefinite().display() + "\\)",
-		b: "\\(" + rq1w[0].display() + "\\)",
-		c: "\\(" + rq1w[1].display() + "\\)",
-		d: "\\(" + rq1w[2].display() + "\\)"
+	["p", "\\[\\int{(" + rq1.latex() + ")\\mathrm{d}x}\\]", {
+		a: "\\(" + rq1.indefinite().latex() + "\\)",
+		b: "\\(" + rq1w[0].latex() + "\\)",
+		c: "\\(" + rq1w[1].latex() + "\\)",
+		d: "\\(" + rq1w[2].latex() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Number 2!", left, 1000],
-	["p", "\\[\\int{(" + rq2.display() + ")\\mathrm{d}x}\\]", {
-		a: "\\(" + rq2.indefinite().display() + "\\)",
-		b: "\\(" + rq2w[0].display() + "\\)",
-		c: "\\(" + rq2w[1].display() + "\\)",
-		d: "\\(" + rq2w[2].display() + "\\)"
+	["p", "\\[\\int{(" + rq2.latex() + ")\\mathrm{d}x}\\]", {
+		a: "\\(" + rq2.indefinite().latex() + "\\)",
+		b: "\\(" + rq2w[0].latex() + "\\)",
+		c: "\\(" + rq2w[1].latex() + "\\)",
+		d: "\\(" + rq2w[2].latex() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Last na!", left, 1500],
 	["m", "Ngayon, ikaw naman mag-type!", left, 1500],
-	["t", "\\[\\int{(" + rq3.display() + ")\\mathrm{d}x}\\]", rq3.indefinite().display(), "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["t", "\\[\\int{(" + rq3.latex() + ")\\mathrm{d}x}\\]", rq3.indefinite().latex(), "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "O ayan! Natapos na natin yung pairwork!", left, 1500],
 	["m", "Yehey! Salamat ulit sa pagturo sa ’kin! 😁", right],
 	["m", "Walang anuman!", left, 1000],

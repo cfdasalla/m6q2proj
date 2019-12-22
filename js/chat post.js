@@ -54,11 +54,11 @@ for (let i = messages.length - 1; i >= 0; i--) {
 	} else if (messages[i][0] = "t") {
 		if (i == messages.length - 1) {
 			messagesToAdd.unshift(function() {
-				addTypedPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7]);
+				addTypedPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8]);
 			});
 		} else {
 			messagesToAdd.unshift(function() {
-				addTypedPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messagesToAdd[i + 1]);
+				addTypedPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8], messagesToAdd[i + 1]);
 			});
 		}
 	}

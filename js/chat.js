@@ -287,16 +287,25 @@ function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
 	}
 }
 
-function addTypedPoll(q, c, r, w, u, pre = "", post = "", f = function() {}) {
+function addTypedPoll(q, c, r, w, u, pre = "", post = "", d = false, f = function() {}) {
 	let x = new TypedPoll(q);
 	let y = $(x.add()).appendTo("#chat");
 	
 	function checkTP(ans) {
 		typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].blur();
-
-		addMessage(pre + "\\(" + typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex() + "\\)" + post, "right");
-
-		if (ans == c) {
+		
+		let open = d ? "\\(\\displaystyle" : "\\(";
+		addMessage(pre + open + typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex() + "\\)" + post, "right");
+		
+		let truthy = false;
+		
+		if (c instanceof Array) {
+			truthy = c.includes(ans);
+		} else {
+			truthy = ans == c;
+		}
+		
+		if (truthy) {
 			setTimeout(function() {
 				let x = d3.randomInt(2000, 3001)();
 

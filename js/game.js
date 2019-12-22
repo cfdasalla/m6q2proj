@@ -29,26 +29,11 @@ let qCount = 0;
 /** Current question number. */
 let qCurrent = 1;
 
-/** Maximum degree of Polynomial. Default value: 3. */
-let maxDeg = 3;
+/** Current upper bound for definite integrals. */
+let currU = 0
 
-/** Minimum term coefficient in Polynomials. Default value: 1. */
-let minCoef = 1;
-
-/** Maximum term coefficient in Polynomials. Default value: 20. */
-let maxCoef = 20;
-
-/** Minimum definite integral bound in Polynomials. Default value: -5. */
-let minBound = -5;
-
-/** Maximum definite integral bound in Polynomials. Default value: 5. */
-let maxBound = 5;
-
-/** Determines whether Polynomials will have missing terms. Default value: true. */
-let zeroCoef = true;
-
-/** Determines whether lower bounds greater than upper bounds are allowed. Default value: true. */
-let greaterLower = true;
+/** Current lower bound for definite integrals. */
+let currL = 0;
 
 /** Number of correct answers. */
 let tamaC = 0;
@@ -95,9 +80,9 @@ function generatePolynomial() {
 
 /** Checks if answer is correct. */
 function check() {
-	let modes = {d: current.derivative().display(),
-				 i: current.indefinite().display(),
-				 f: current.definite()};
+	let modes = {d: current.derivative().latex(),
+				 i: current.indefinite().latex(),
+				 f: current.definite(currL, currU)};
 	let dots = $("#progress .dot");
 	
     $("#check").prop("disabled", true);
@@ -147,9 +132,9 @@ function check() {
 
 /* Fills in input field with correct answer while skipping current question. */
 function skip() {
-	let modes = {d: current.derivative().display(),
-				 i: current.indefinite().display(),
-				 f: current.definite()};
+	let modes = {d: current.derivative().latex(),
+				 i: current.indefinite().latex(),
+				 f: current.definite(currL, currU)};
 	let dots = $("#progress .dot");
     
 	dots.eq(qCurrent - 1).removeClass("currentQ");
@@ -224,16 +209,19 @@ function place() {
 
 		switch (mode) {
 			case "d":
-				$("#question").html("\\( \\displaystyle \\frac{\\mathrm{d}} {\\mathrm{d} x} (" + current.display() + ") \\)");
-				$("#question").css("color", "red");
+				$("#question").html("\\( \\displaystyle \\frac{\\mathrm{d}} {\\mathrm{d} x} (" + current.latex() + ") \\)");
+				$("#question").css("color", "var(--red)");
 				break;
 			case "i":
-				$("#question").html("\\( \\displaystyle \\int {(" + current.display() + ") \\mathrm{d} x} \\)");
-				$("#question").css("color", "blue");
+				$("#question").html("\\( \\displaystyle \\int {(" + current.latex() + ") \\mathrm{d} x} \\)");
+				$("#question").css("color", "var(--blue)");
 				break;
 			case "f":
-				$("#question").html("\\( \\displaystyle \\int ^{" + current.defu + "} _{" + current.defl + "} {(" + current.display() + ") \\mathrm{d} x} \\)");
-				$("#question").css("color", "green");
+				currU = d3.randomInt(minBound, maxBound + 1)();
+				currL = greaterLower ? d3.randomInt(minBound, maxBound + 1)() : d3.randomInt(currU, maxBound + 1)();
+				
+				$("#question").html("\\( \\displaystyle \\int ^{" + currU + "} _{" + currL + "} {(" + current.latex() + ") \\mathrm{d} x} \\)");
+				$("#question").css("color", "var(--green)");
 				break;
 		}
 
@@ -383,7 +371,7 @@ $("#questionCount").keypress(function(e) {
 })
 
 $("#advancedLink").click(function() {
-    if ($("#advanced").css("display") == "none") {
+    if ($("#advanced").css("latex") == "none") {
         $("#advanced").slideDown();
     } else {
         $("#advanced").slideUp();

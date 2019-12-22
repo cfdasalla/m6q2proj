@@ -89,12 +89,12 @@ let messages = [
 	["m", "Ang power rule ay isang strategy ng paghanap ng derivative (o tinatawag na <b>differentiation</b>). Kadalasan siyang ginagamit pag ang term o expression na idi-differentiate ay may exponent.", left, 7000],
 	["m", "Para makapag-differentiate gamit ang power rule, imu-multiply natin yung coefficient ng term sa exponent niya tapos babawasan natin ng 1 ang exponent.", left, 8000],
 	["m", "Kumbaga, binababa natin yung exponent tapos nagmi-minus 1 tayo sa exponent.", left, 4500],
-	["m", "Halimbawa, \\(" + r1.display() + "\\).", left, 4000],
-	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.display() + ")\\]", {
-		a: "\\(" + r1.derivative().display() + "\\)",
-		b: "\\(" + r1w[0].display() + "\\)",
-		c: "\\(" + r1w[1].display() + "\\)",
-		d: "\\(" + r1w[2].display() + "\\)"
+	["m", "Halimbawa, \\(" + r1.latex() + "\\).", left, 4000],
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r1.latex() + ")\\]", {
+		a: "\\(" + r1.derivative().latex() + "\\)",
+		b: "\\(" + r1w[0].latex() + "\\)",
+		c: "\\(" + r1w[1].latex() + "\\)",
+		d: "\\(" + r1w[2].latex() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "OK! Mukhang madali lang ’to, ah!", right],
 	["m", "Teka lang...", right],
@@ -113,31 +113,31 @@ let messages = [
 	["m", "At kahit ano pang constant ang gamitin natin, 0 lagi ang magiging derivative niya.", left, 2500],
 	["m", "Wow! Ang galing naman nun!", right],
 	["m", "Kapag binigyan naman tayo ng polynomial, maaari nating isa-isahin ang pag-differentiate sa bawat term.", left, 4000],
-	["m", "Halimbawa, \\(" + r2.display() + "\\).", left, 4000],
-	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r2.display() + ")\\]", {
-		a: "\\(" + r2.derivative().display() + "\\)",
-		b: "\\(" + r2w[0].display() + "\\)",
-		c: "\\(" + r2w[1].display() + "\\)",
-		d: "\\(" + r2w[2].display() + "\\)"
+	["m", "Halimbawa, \\(" + r2.latex() + "\\).", left, 4000],
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + r2.latex() + ")\\]", {
+		a: "\\(" + r2.derivative().latex() + "\\)",
+		b: "\\(" + r2w[0].latex() + "\\)",
+		c: "\\(" + r2w[1].latex() + "\\)",
+		d: "\\(" + r2w[2].latex() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Sige, para mas lalo kang mahasa sa paggamit ng power rule, bibigyan kita ng short quiz.", left, 5000],
 	["m", "Number 1:", left, 1000],
-	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq1.display() + ")\\]", {
-		a: "\\(" + rq1.derivative().display() + "\\)",
-		b: "\\(" + rq1w[0].display() + "\\)",
-		c: "\\(" + rq1w[1].display() + "\\)",
-		d: "\\(" + rq1w[2].display() + "\\)"
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq1.latex() + ")\\]", {
+		a: "\\(" + rq1.derivative().latex() + "\\)",
+		b: "\\(" + rq1w[0].latex() + "\\)",
+		c: "\\(" + rq1w[1].latex() + "\\)",
+		d: "\\(" + rq1w[2].latex() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Number 2!", left, 1000],
-	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq2.display() + ")\\]", {
-		a: "\\(" + rq2.derivative().display() + "\\)",
-		b: "\\(" + rq2w[0].display() + "\\)",
-		c: "\\(" + rq2w[1].display() + "\\)",
-		d: "\\(" + rq2w[2].display() + "\\)"
+	["p", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq2.latex() + ")\\]", {
+		a: "\\(" + rq2.derivative().latex() + "\\)",
+		b: "\\(" + rq2w[0].latex() + "\\)",
+		c: "\\(" + rq2w[1].latex() + "\\)",
+		d: "\\(" + rq2w[2].latex() + "\\)"
 	}, "a", "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "Isa pa siguro...", left, 1500],
 	["m", "Ngayon, ikaw naman mag-type!", left, 1500],
-	["t", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.display() + ")\\]", rq3.derivative().display(), "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
+	["t", "\\[\\frac{\\mathrm{d}}{\\mathrm{d}x}(" + rq3.latex() + ")\\]", rq3.derivative().latex(), "Nice! Natama mo!", "Hindi eh...", "Subukin mo ulit! Mahahanap mo rin yung tamang sagot.", "", " ba yung sagot?"],
 	["m", "O ayan, na-gets mo na ba kung pa’no yung power rule?", left, 3000],
 	["m", "Oo, salamat sa pagturo sa ’kin nito!", right],
 	["m", "Walang anuman!", left, 1000],

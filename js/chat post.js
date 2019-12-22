@@ -1,64 +1,45 @@
 let messagesToAdd = [];
 
 for (let i = messages.length - 1; i >= 0; i--) {
-	if (messages[i][0] == "m") {
-		if (i == messages.length - 1) {
-			if (messages[i].length == 3) {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], function() {
-						setTimeout(function() {
-							toggleOnline();
-							setTimeout(function() {
-								$("#chat").append(`<a class="btn animated fadeInUp faster" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`);
-								$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
-								updateScroll();
-							}, 2000);
-						}, d3.randomInt(2000, 3001)());
-					});
-				});
-			} else {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], function() {
-						setTimeout(function() {
-							toggleOnline();
-							setTimeout(function() {
-								$("#chat").append(`<a class="btn animated fadeInUp faster" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`);
-								$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
-								updateScroll();
-							}, 2000);
-						}, d3.randomInt(2000, 3001)());
-					}, messages[i][3]);
-				});
-			}
-		} else {
-			if (messages[i].length == 3) {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], messagesToAdd[i + 1]);
-				});
-			} else {
-				messagesToAdd.unshift(function() {
-					addMessage(messages[i][1], messages[i][2], messagesToAdd[i + 1], messages[i][3]);
-				});
-			}
-		}
-	} else if (messages[i][0] == "p") {
+	let x = messages[i];
+	
+	if (x[0] == "m") {
 		if (i == messages.length - 1) {
 			messagesToAdd.unshift(function() {
-				addPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8]);
+				addMessage(x[1], x[2], function() {
+					setTimeout(function() {
+						toggleOnline();
+						setTimeout(function() {
+							$("#chat").append(`<a class="btn animated fadeInUp faster" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`);
+							$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
+							updateScroll();
+						}, 2000);
+					}, d3.randomInt(2000, 3001)());
+				}, timeDelay(x[1].length));
 			});
 		} else {
 			messagesToAdd.unshift(function() {
-				addPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8], messagesToAdd[i + 1]);
+				addMessage(x[1], x[2], messagesToAdd[i + 1], timeDelay(x[1].length));
 			});
 		}
-	} else if (messages[i][0] = "t") {
+	} else if (x[0] == "p") {
 		if (i == messages.length - 1) {
 			messagesToAdd.unshift(function() {
-				addTypedPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8]);
+				addPoll(x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8]);
 			});
 		} else {
 			messagesToAdd.unshift(function() {
-				addTypedPoll(messages[i][1], messages[i][2], messages[i][3], messages[i][4], messages[i][5], messages[i][6], messages[i][7], messages[i][8], messagesToAdd[i + 1]);
+				addPoll(x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], messagesToAdd[i + 1]);
+			});
+		}
+	} else if (x[0] = "t") {
+		if (i == messages.length - 1) {
+			messagesToAdd.unshift(function() {
+				addTypedPoll(x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8]);
+			});
+		} else {
+			messagesToAdd.unshift(function() {
+				addTypedPoll(x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], messagesToAdd[i + 1]);
 			});
 		}
 	}

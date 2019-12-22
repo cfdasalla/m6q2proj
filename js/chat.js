@@ -128,6 +128,11 @@ let lastPoll;
 /** Last input poll added. */
 let lastTypedPoll;
 
+/**
+	Returns a random millisecond duration representing how long it takes to read/type a message of the specified length.
+	
+	@param {number} l - Length of message.
+*/
 function timeDelay(l) {
 	return (l * 50) - 500 > 1000 ? d3.randomInt((l * 50) - 500, (l * 50) + 1500)() : d3.randomInt(1000, (l * 50) + 1500)();
 }

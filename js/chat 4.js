@@ -99,7 +99,7 @@ let messages = [
 	], "That’s right!", "I don’t think that’s right…", "Let’s try again.", "Is it ", "?", true],
 	["m", "Looks like you’re getting the hang of it now!", left, 2500],
 	["m", "Yay! There’s only one item left!", right],
-	["m", "It looks harder than the first two though…", right]
+	["m", "It looks harder than the first two though…", right],
 	["m", "Can you walk me through the procedure again?", right],
 	["m", "It’s \\(\\displaystyle\\frac{\\mathrm{d}}{\\mathrm{d}x}\\left(" + r3.latex() + "\\right)\\).", right],
 	["m", "Huh… so the numerator is of degree 2…", left, 1500],

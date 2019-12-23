@@ -6,21 +6,37 @@ for (let i = messages.length - 1; i >= 0; i--) {
 	if (x[0] == "m") {
 		if (i == messages.length - 1) {
 			messagesToAdd.unshift(function() {
-				addMessage(x[1], x[2], function() {
-					setTimeout(function() {
-						toggleOnline();
+				setTimeout(function() {
+					addMessage(x[1], x[2], function() {
 						setTimeout(function() {
-							$("#chat").append(`<a class="btn animated fadeInUp faster" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`);
-							$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
-							updateScroll();
-						}, 2000);
-					}, d3.randomInt(2000, 3001)());
-				}, timeDelay(x[1].length));
+							toggleOnline();
+							setTimeout(function() {
+								$("#chat").append(`<a class="btn animated fadeInUp faster" href="https://xtian.dev/m6q2proj" role="button" style="display:inline-block">Next</a>`);
+								$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
+								updateScroll();
+							}, 2000);
+						}, d3.randomInt(2000, 3001)());
+					}, timeDelay(x[1].length));
+				}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true) + Math.trunc(timeDelay(x[1].length) / 2));
 			});
-		} else {
+		} else if (i == 0) {
 			messagesToAdd.unshift(function() {
 				addMessage(x[1], x[2], messagesToAdd[i + 1], timeDelay(x[1].length));
 			});
+		} else {
+			if (x[2] == "left") {
+				messagesToAdd.unshift(function() {
+					setTimeout(function() {
+						addMessage(x[1], x[2], messagesToAdd[i + 1], timeDelay(x[1].length));
+					}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
+				});
+			} else {
+				messagesToAdd.unshift(function() {
+					setTimeout(function() {
+						addMessage(x[1], x[2], messagesToAdd[i + 1], timeDelay(x[1].length));
+					}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true) + Math.trunc(timeDelay(x[1].length) / 2));
+				});	
+			}
 		}
 	} else if (x[0] == "p") {
 		if (i == messages.length - 1) {

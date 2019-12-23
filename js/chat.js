@@ -133,8 +133,12 @@ let lastTypedPoll;
 	
 	@param {number} l - Length of message.
 */
-function timeDelay(l) {
-	return (l * 50) - 500 > 1000 ? d3.randomInt((l * 50) - 500, (l * 50) + 1500)() : d3.randomInt(1000, (l * 50) + 1500)();
+function timeDelay(l, read = false) {
+	if (read) {
+		return (l * 15) - 300 > 600 ? d3.randomInt((l * 15) - 300, (l * 15) + 300)() : d3.randomInt(600, (l * 15) + 300)();
+	} else {
+		return (l * 30) - 600 > 1200 ? d3.randomInt((l * 30) - 600, (l * 30) + 600)() : d3.randomInt(1200, (l * 30) + 600)();
+	}
 }
 
 /** Adds a message to the chat. */
@@ -157,6 +161,8 @@ function addMessage(m, s, f = function() {}, d = 0) {
 		}
 	}
 	
+	let del = timeDelay(m.length);
+	
 	if (d == 0) {
 		$("#chat").append(x.add());
 	} else {
@@ -164,7 +170,7 @@ function addMessage(m, s, f = function() {}, d = 0) {
 			addMessage(isTyping, s);
 			setTimeout(function() {
 				replaceLastMessage(m);
-			}, d);
+			}, del);
 		} else {
 			$("#chat").append(x.add());
 		}
@@ -189,7 +195,7 @@ function addMessage(m, s, f = function() {}, d = 0) {
 	
 	updateScroll();
 	
-	setTimeout(f, d + timeDelay(m.length));
+	setTimeout(f, d + del);
 }
 
 /** Removes last message from the chat. */

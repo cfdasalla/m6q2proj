@@ -27,7 +27,7 @@ let r3 = new Rational(r3a, r3b);
 
 let messages = [
 	["m", "Hey, it’s me again!", right],
-	["m", "I need help with our Math homework…", right],
+	["m", "I need help with my Math homework…", right],
 	["m", "…that is, if you’re not busy right now.", right],
 	["m", "Well, I’m free right now.", left],
 	["m", "Why, what’s up?", left],
@@ -54,7 +54,7 @@ let messages = [
 	["m", "That is, we multiply the denominator to the derivative of the numerator, then multiply the numerator to the derivative of the denominator, then subtract them.", left],
 	["m", "That’s one of the most important differences of the quotient rule from the product rule; forgetting this will give you a very wrong answer.", left],
 	["m", "OK, low-d-high minus high-d-low… got it!", right],
-	["m", "It’s not that bad as it sounds!", right],
+	["m", "It’s not as bad as it sounds!", right],
 	["m", "Wait, we’re not yet done.", left],
 	["m", "Whoops, sorry…", right],
 	["m", "We take this difference, and divide that entire thing by the <b>square</b> of the second function.", left],

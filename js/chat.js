@@ -132,12 +132,22 @@ let lastTypedPoll;
 	Returns a random millisecond duration representing how long it takes to read/type a message of the specified length.
 	
 	@param {number} l - Length of message.
+	@param {boolean} [read] - Determines whether or not delay should take into account message being read instead of typed. Defaults to false.
+	@param {boolean} [animate] - Determines whether or not to add 800 ms to output to compensate for message animation. Defaults to true.
 */
-function timeDelay(l, read = false) {
+function timeDelay(l, read = false, animate = true) {
+	/*
+	According to my research:
+	• average reading speed of a person is around 250 to 300 wpm
+	• professional typists type at around 65 to 75 wpm
+	• 1 wpm = 4 - 5 cpm
+	*/
 	if (read) {
-		return (l * 15) - 300 > 600 ? d3.randomInt((l * 15) - 300, (l * 15) + 300)() : d3.randomInt(600, (l * 15) + 300)();
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 1000) * l), Math.trunc((60000 / 1500) * l) + 1)() / 4) + (animate ? 800 : 0);
+		// ORIGINAL: return (l * 10) - 100 > 200 ? d3.randomInt((l * 10) - 100, (l * 10) + 100)() : d3.randomInt(200, (l * 10) + 100)();
 	} else {
-		return (l * 30) - 600 > 1200 ? d3.randomInt((l * 30) - 600, (l * 30) + 600)() : d3.randomInt(1200, (l * 30) + 600)();
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 260) * l), Math.trunc((60000 / 375) * l) + 1)() / 4) + (animate ? 800 : 0);
+		// ORIGINAL: return (l * 30) - 300 > 600 ? d3.randomInt((l * 30) - 300, (l * 30) + 300)() : d3.randomInt(600, (l * 30) + 300)();
 	}
 }
 
@@ -269,13 +279,15 @@ function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
 									}
 								} else {
 									newOptions = lastPoll.options;
-								}									
+								}
 								
-								addPoll(lastPoll.question, newOptions, c, r, w, u, pre, post, f);
-							});
-						}, d3.randomInt(0, 501)());
-					}, d3.randomInt(2000, 3001)());
-				}, d3.randomInt(1001, 2501)());
+								setTimeout(function() {
+									addPoll(lastPoll.question, newOptions, c, r, w, u, pre, post, f);
+								}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true) + timeDelay(lastPoll.question.length));
+							}, timeDelay(u.length, false, false));
+						}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
+					}, timeDelay(w.length, false, false));
+				}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
 			});
 		} else {
 			$(i).one("click", function() {
@@ -288,11 +300,10 @@ function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
 				}
 				
 				setTimeout(function() {
-					let x = d3.randomInt(2000, 3001)();
-					
-					addMessage(r, "left", undefined, x);
-					setTimeout(f, x + d3.randomInt(1000, 2001)());
-				}, d3.randomInt(1000, 2001)());
+					addMessage(r, "left", function() {
+						setTimeout(f, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
+					}, timeDelay(r.length, false, false));
+				}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
 			});
 		}
 	}
@@ -318,21 +329,22 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", d = false, f = functio
 		
 		if (truthy) {
 			setTimeout(function() {
-				let x = d3.randomInt(2000, 3001)();
-
-				addMessage(r, "left", undefined, x);
-				setTimeout(f, x + d3.randomInt(1000, 2001)());
-			}, d3.randomInt(1000, 2001)());
+				addMessage(r, "left", function() {
+					setTimeout(f, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
+				}, timeDelay(r.length, false, false));
+			}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
 		} else {
 			setTimeout(function() {
 				addMessage(w, "left", function() {
 					setTimeout(function() {
 						addMessage(u, "left", function() {
-							addTypedPoll(lastTypedPoll.question, c, r, w, u, pre, post, f);
-						});
-					}, d3.randomInt(0, 501)());
-				}, d3.randomInt(2000, 3001)());
-			}, d3.randomInt(1001, 2501)());
+							setTimeout(function() {
+								addTypedPoll(lastTypedPoll.question, c, r, w, u, pre, post, d, f);
+							}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true) + timeDelay(lastTypedPoll.question.length));
+						}, timeDelay(u.length, false, false));
+					}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
+				}, timeDelay(w.length, false, false));
+			}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
 		}
 		
 		$("#" + lastTypedPoll.field).siblings("button").prop("disabled", true);

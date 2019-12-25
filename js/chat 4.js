@@ -90,7 +90,7 @@ let messages = [
 	["m", "Just like earlier, subtracting them will give us our numerator.", left],
 	["t", "What’s the difference of \\(" + operatePoly(r2b, r2a.derivative(), "m").latex() + "\\) and \\(" + operatePoly(r2a, r2b.derivative(), "m").latex() + "\\)?", operatePoly(operatePoly(r2b, r2a.derivative(), "m"), operatePoly(r2a, r2b.derivative(), "m"), "s").latex(), "That’s right!", "I don’t think that’s right…", "Let’s try again.", "Is it ", "?"],
 	["m", "Finally, we square our second function, \\(" + r2b.latex() + "\\), for our denominator.", left],
-	["m", "Don’t worry, when the second function gets too messy, it’s fine to just leave it unexpanded.", left],
+	["m", "You don't have to worry about expanding the denominator, by the way. It’s fine to just leave it unexpanded.", left],
 	["m", "Then, we put the numerator and denominator together in our rational expression.", left],
 	["t", "What’s the final answer?", [
 		r2.derivative().latex(),

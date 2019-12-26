@@ -1,5 +1,7 @@
 let currentRecipient = io;
 
+let nextChapter = "../"
+
 // First example: d/dx (degree 1 / degree 1)
 
 maxCoef = 10;

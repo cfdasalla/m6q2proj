@@ -1,5 +1,7 @@
 let currentRecipient = io;
 
+let nextChapter = "../4/"
+
 // First example: d/dx (degree 1 * degree 1)
 
 maxCoef = 10;
@@ -29,7 +31,7 @@ let messages = [
 	["m", "Hi, (new character)!", right],
 	["m", "You’re from Block G, right?", right],
 	["m", "Yeah!", left],
-	["m", "You must be the guy IO told me about.", left],
+	["m", "You must be the guy IO was telling me about.", left],
 	["m", "Yeah. I’ve been having trouble with Math lately.", right],
 	["m", "He said you could help me with our current lesson.", right],
 	["m", "Sure! I just finished my Bio project, so I can help you right now.", left],

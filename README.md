@@ -1,5 +1,5 @@
 # The Adventures of Cal Q. Luz
-*a Math 6 project by Christian Dasalla, Lance De Castro, & Reggie Magalong*
+*a Math 6 project by [**Christian Dasalla**](https://github.com/xtianfdasalla), [**Lance De Castro**](https://github.com/lcpdecastro), & **Reggie Magalong***
 
 ## Summary
 *The Adventures of Cal Q. Luz* follows the story of Calisto Quintanilla Lucero, a.k.a. **Cal Q. Luz**, a scholar in his sixth year in high school. As he faces the challenges brought about by math, he encounters what might be the biggest problem he has ever imagined: differential and integral calculus.

@@ -10091,7 +10091,7 @@ a.text-ian:hover, a.text-ian:focus {
   height: 80px;
   width: 80px;
   border-radius: 80px;
-  border: 1px solid lightgray;
+  border: 1px solid #e9ecef;
 }
 
 #chat {
@@ -10205,4 +10205,39 @@ a.text-ian:hover, a.text-ian:focus {
   100% {
     opacity: 1;
   }
+}
+
+#convos {
+  position: sticky;
+  position: -webkit-sticky;
+  left: 0;
+}
+
+#convos .picture, #convos .icon {
+  display: inline-block;
+  height: 64px;
+  width: 64px;
+}
+
+#convos .picture {
+  border-radius: 64px;
+  border: 1px solid #e9ecef;
+}
+
+#convos .icon {
+  background-color: #343a40;
+  color: white;
+  border-radius: 10px;
+}
+
+#convos a {
+  transition: background-color 0.15s;
+}
+
+#convos a:hover {
+  background-color: #e9ecef;
+}
+
+#convos .convo-recipient {
+  font-weight: bold;
 }

@@ -47,4 +47,6 @@ $("#chat button").click(function() {
 		messagesToAdd[0]();
 	}, d3.randomInt(500, 1001)());
 	$("#chat button").hide();
+	
+	started = true;
 });

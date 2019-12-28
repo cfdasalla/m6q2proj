@@ -10214,20 +10214,14 @@ a.text-ian:hover, a.text-ian:focus {
 }
 
 #convos .picture, #convos .icon {
-  display: inline-block;
   height: 64px;
   width: 64px;
 }
 
 #convos .picture {
+  display: inline-block;
   border-radius: 64px;
   border: 1px solid #e9ecef;
-}
-
-#convos .icon {
-  background-color: #343a40;
-  color: white;
-  border-radius: 10px;
 }
 
 #convos a {
@@ -10240,4 +10234,415 @@ a.text-ian:hover, a.text-ian:focus {
 
 #convos .convo-recipient {
   font-weight: bold;
+}
+
+.badge-blue {
+  color: #fff;
+  background-color: #007bff;
+}
+
+a.badge-blue:hover, a.badge-blue:focus {
+  color: #fff;
+  background-color: #0062cc;
+}
+
+a.badge-blue:focus, a.badge-blue.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.badge-indigo {
+  color: #fff;
+  background-color: #6610f2;
+}
+
+a.badge-indigo:hover, a.badge-indigo:focus {
+  color: #fff;
+  background-color: #510bc4;
+}
+
+a.badge-indigo:focus, a.badge-indigo.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(102, 16, 242, 0.5);
+}
+
+.badge-purple {
+  color: #fff;
+  background-color: #6f42c1;
+}
+
+a.badge-purple:hover, a.badge-purple:focus {
+  color: #fff;
+  background-color: #59339d;
+}
+
+a.badge-purple:focus, a.badge-purple.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.5);
+}
+
+.badge-pink {
+  color: #fff;
+  background-color: #e83e8c;
+}
+
+a.badge-pink:hover, a.badge-pink:focus {
+  color: #fff;
+  background-color: #d91a72;
+}
+
+a.badge-pink:focus, a.badge-pink.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(232, 62, 140, 0.5);
+}
+
+.badge-red {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+a.badge-red:hover, a.badge-red:focus {
+  color: #fff;
+  background-color: #bd2130;
+}
+
+a.badge-red:focus, a.badge-red.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+}
+
+.badge-orange {
+  color: #212529;
+  background-color: #fd7e14;
+}
+
+a.badge-orange:hover, a.badge-orange:focus {
+  color: #212529;
+  background-color: #dc6502;
+}
+
+a.badge-orange:focus, a.badge-orange.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(253, 126, 20, 0.5);
+}
+
+.badge-yellow {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+a.badge-yellow:hover, a.badge-yellow:focus {
+  color: #212529;
+  background-color: #d39e00;
+}
+
+a.badge-yellow:focus, a.badge-yellow.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+}
+
+.badge-green {
+  color: #fff;
+  background-color: #28a745;
+}
+
+a.badge-green:hover, a.badge-green:focus {
+  color: #fff;
+  background-color: #1e7e34;
+}
+
+a.badge-green:focus, a.badge-green.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+}
+
+.badge-teal {
+  color: #fff;
+  background-color: #20c997;
+}
+
+a.badge-teal:hover, a.badge-teal:focus {
+  color: #fff;
+  background-color: #199d76;
+}
+
+a.badge-teal:focus, a.badge-teal.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.5);
+}
+
+.badge-cyan {
+  color: #fff;
+  background-color: #17a2b8;
+}
+
+a.badge-cyan:hover, a.badge-cyan:focus {
+  color: #fff;
+  background-color: #117a8b;
+}
+
+a.badge-cyan:focus, a.badge-cyan.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5);
+}
+
+.badge-white {
+  color: #212529;
+  background-color: #fff;
+}
+
+a.badge-white:hover, a.badge-white:focus {
+  color: #212529;
+  background-color: #e6e6e6;
+}
+
+a.badge-white:focus, a.badge-white.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
+}
+
+.badge-gray {
+  color: #fff;
+  background-color: #6c757d;
+}
+
+a.badge-gray:hover, a.badge-gray:focus {
+  color: #fff;
+  background-color: #545b62;
+}
+
+a.badge-gray:focus, a.badge-gray.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+}
+
+.badge-gray-dark {
+  color: #fff;
+  background-color: #343a40;
+}
+
+a.badge-gray-dark:hover, a.badge-gray-dark:focus {
+  color: #fff;
+  background-color: #1d2124;
+}
+
+a.badge-gray-dark:focus, a.badge-gray-dark.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border-radius: 15%;
+}
+
+.icon * {
+  margin: 0;
+  align-self: center;
+}
+
+.icon * [class*=icon] {
+  vertical-align: middle;
+  font-size: 250%;
+}
+
+a.icon:hover, a.icon:focus {
+  text-decoration: none;
+}
+
+.icon-blue {
+  color: #fff;
+  background-color: #007bff;
+}
+
+a.icon-blue:hover, a.icon-blue:focus {
+  color: #fff;
+  background-color: #0062cc;
+}
+
+a.icon-blue:focus, a.icon-blue.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.icon-indigo {
+  color: #fff;
+  background-color: #6610f2;
+}
+
+a.icon-indigo:hover, a.icon-indigo:focus {
+  color: #fff;
+  background-color: #510bc4;
+}
+
+a.icon-indigo:focus, a.icon-indigo.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(102, 16, 242, 0.5);
+}
+
+.icon-purple {
+  color: #fff;
+  background-color: #6f42c1;
+}
+
+a.icon-purple:hover, a.icon-purple:focus {
+  color: #fff;
+  background-color: #59339d;
+}
+
+a.icon-purple:focus, a.icon-purple.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.5);
+}
+
+.icon-pink {
+  color: #fff;
+  background-color: #e83e8c;
+}
+
+a.icon-pink:hover, a.icon-pink:focus {
+  color: #fff;
+  background-color: #d91a72;
+}
+
+a.icon-pink:focus, a.icon-pink.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(232, 62, 140, 0.5);
+}
+
+.icon-red {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+a.icon-red:hover, a.icon-red:focus {
+  color: #fff;
+  background-color: #bd2130;
+}
+
+a.icon-red:focus, a.icon-red.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+}
+
+.icon-orange {
+  color: #212529;
+  background-color: #fd7e14;
+}
+
+a.icon-orange:hover, a.icon-orange:focus {
+  color: #212529;
+  background-color: #dc6502;
+}
+
+a.icon-orange:focus, a.icon-orange.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(253, 126, 20, 0.5);
+}
+
+.icon-yellow {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+a.icon-yellow:hover, a.icon-yellow:focus {
+  color: #212529;
+  background-color: #d39e00;
+}
+
+a.icon-yellow:focus, a.icon-yellow.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+}
+
+.icon-green {
+  color: #fff;
+  background-color: #28a745;
+}
+
+a.icon-green:hover, a.icon-green:focus {
+  color: #fff;
+  background-color: #1e7e34;
+}
+
+a.icon-green:focus, a.icon-green.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+}
+
+.icon-teal {
+  color: #fff;
+  background-color: #20c997;
+}
+
+a.icon-teal:hover, a.icon-teal:focus {
+  color: #fff;
+  background-color: #199d76;
+}
+
+a.icon-teal:focus, a.icon-teal.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.5);
+}
+
+.icon-cyan {
+  color: #fff;
+  background-color: #17a2b8;
+}
+
+a.icon-cyan:hover, a.icon-cyan:focus {
+  color: #fff;
+  background-color: #117a8b;
+}
+
+a.icon-cyan:focus, a.icon-cyan.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5);
+}
+
+.icon-white {
+  color: #212529;
+  background-color: #fff;
+}
+
+a.icon-white:hover, a.icon-white:focus {
+  color: #212529;
+  background-color: #e6e6e6;
+}
+
+a.icon-white:focus, a.icon-white.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
+}
+
+.icon-gray {
+  color: #fff;
+  background-color: #6c757d;
+}
+
+a.icon-gray:hover, a.icon-gray:focus {
+  color: #fff;
+  background-color: #545b62;
+}
+
+a.icon-gray:focus, a.icon-gray.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+}
+
+.icon-gray-dark {
+  color: #fff;
+  background-color: #343a40;
+}
+
+a.icon-gray-dark:hover, a.icon-gray-dark:focus {
+  color: #fff;
+  background-color: #1d2124;
+}
+
+a.icon-gray-dark:focus, a.icon-gray-dark.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
 }

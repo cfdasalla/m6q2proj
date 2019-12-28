@@ -1,6 +1,8 @@
 let left = "left";
 let right = "right";
 
+let started = false;
+
 /** The typing animation. */
 let isTyping = `<div class="loading">
 	<div></div>
@@ -394,6 +396,13 @@ function toggleOnline() {
 function updateScroll() {
 	window.scroll({top: $("body").css("height").slice(0, -2), left: 0, behavior: 'smooth'});
 }
+
+window.addEventListener("beforeunload", function(x) {
+	if (started) {
+		x.preventDefault();
+		x.returnValue = "";
+	}
+});
 
 $(function() {
 	$("#chat button").addClass("btn-" + currentRecipient.first.toLowerCase());

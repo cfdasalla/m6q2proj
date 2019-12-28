@@ -18,6 +18,9 @@
 --- go reggie!
 */
 
+/** Tells whether a game is currently in progress. */
+let gameInProgress = false;
+
 /** Object containing modes. */
 let allowed = {d: true,
 			   i: true,
@@ -227,6 +230,8 @@ function place() {
 
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	} else {
+		gameInProgress = false;
+		
         $("#main").hide();
         $("#result").hide();
 		$("#stats").show();
@@ -235,6 +240,8 @@ function place() {
 
 /** Starts game proper. */
 function gameProper() {
+	gameInProgress = true;
+	
 	minCoef = parseInt($("#min_coef").val());
 	maxCoef = parseInt($("#max_coef").val());
 	minBound = parseInt($("#min_intb").val());
@@ -381,5 +388,12 @@ $("#advancedLink").click(function() {
 $("#restart").click(startup);
 
 $("form").submit(function(e){ e.preventDefault(); });
+
+window.addEventListener("beforeunload", function(x) {
+	if (gameInProgress) {
+		x.preventDefault();
+		x.returnValue = "";
+	}
+});
 
 $(startup);

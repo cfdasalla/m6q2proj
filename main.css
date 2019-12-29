@@ -1997,7 +1997,7 @@ pre code {
   text-shadow: 0 0 0 #495057;
 }
 
-.form-control:focus {
+.form-control:focus, #search input:focus {
   color: #495057;
   background-color: #fff;
   border-color: #80bdff;
@@ -2185,7 +2185,7 @@ textarea.form-control {
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
-.was-validated .form-control:valid:focus, .form-control.is-valid:focus {
+.was-validated .form-control:valid:focus, .was-validated #search input:valid:focus, #search .was-validated input:valid:focus, .form-control.is-valid:focus, #search input.is-valid:focus {
   border-color: #28a745;
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
@@ -2285,7 +2285,7 @@ textarea.form-control {
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
-.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {
+.was-validated .form-control:invalid:focus, .was-validated #search input:invalid:focus, #search .was-validated input:invalid:focus, .form-control.is-invalid:focus, #search input.is-invalid:focus {
   border-color: #dc3545;
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
@@ -3618,7 +3618,7 @@ input[type="button"].btn-block {
   margin-left: -1px;
 }
 
-.input-group > .form-control:focus,
+.input-group > .form-control:focus, #search .input-group > input:focus,
 .input-group > .custom-select:focus,
 .input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {
   z-index: 3;
@@ -10650,13 +10650,10 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
 #search input {
   border-radius: 2rem;
   background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
+  border-color: #e9ecef;
   width: 100%;
-  transition: box-shadow 0.15s, -webkit-box-shadow 0.15s;
 }
 
 #search input:focus {
-  outline: none;
-  box-shadow: 0 0 0.1rem 0.05rem #007bff;
-  -webkit-box-shadow: 0 0 0.1rem 0.05rem #007bff;
+  background-color: #f8f9fa;
 }

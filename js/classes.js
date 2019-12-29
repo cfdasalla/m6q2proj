@@ -370,6 +370,10 @@ class RaisedPoly {
 		return this;
 	}
 	
+	get coefficients() {
+		return this.poly.coefficients;
+	}
+	
 	/** Returns the LaTeX code for the RaisedPoly. */
 	latex() {
 		return this.power < 10 ? "\\left(" + this.poly.latex() + "\\right)^" + this.power : "\\left(" + this.poly.latex() + "\\right)^{" + this.power + "}";
@@ -392,6 +396,15 @@ class RaisedPoly {
 		return this;
 	}
 	
+	/** Returns a Polynomial representing the derivative of the RaisedPoly, as computed using the chain rule. */
+	derivative() {
+		let step1 = new RaisedPoly(this.poly, this.power - 1).expand();
+		let step2 = operatePoly(step1, new Polynomial([this.power]), "m");
+		let step3 = (operatePoly(step2, this.poly.derivative(), "m"));
+		
+		return step3;
+	}
+	
 	/** Copies values from another RaisedPoly to current RaisedPoly. */
 	copy(other) {
 		this.setValues();
@@ -400,10 +413,6 @@ class RaisedPoly {
 		this.power = other.power;
 		
 		return this;
-	}
-	
-	get coefficients() {
-		return this.poly.coefficients;
 	}
 }
 

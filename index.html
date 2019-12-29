@@ -23,7 +23,7 @@
 					<h2 class="mb-0 mx-4" style="font-size: 2rem; font-weight: 900">Conversations</h2>
 				</div>
 				<div id="search" class="mx-4 pt-3">
-					<input class="py-1 px-3" placeholder="Search">
+					<input class="py-1 px-3 form-control" placeholder="Search">
 				</div>
 				<ul class="list-unstyled pt-3 pb-3">
 					<li>
@@ -90,12 +90,12 @@
 	let convoTexts = [];
 	
 	for (let g = 0; g < $("li").length; g++) {
-		convoTexts.push($("li").get(g).innerText);
+		convoTexts.push($("li").get(g).innerText.toLowerCase());
 	}
 	
 	$("#search input").on("change keyup", function() {
 		for (let h = 0; h < convoTexts.length; h++) {
-			if (convoTexts[h].includes($("#search input").val())) {
+			if (convoTexts[h].includes($("#search input").val().toLowerCase())) {
 				$("li").eq(h).show();
 			} else {
 				$("li").eq(h).hide();

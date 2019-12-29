@@ -10652,10 +10652,11 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
   width: 100%;
-  transition: box-shadow 0.15s;
+  transition: box-shadow 0.15s, -webkit-box-shadow 0.15s;
 }
 
 #search input:focus {
   outline: none;
   box-shadow: 0 0 0.1rem 0.05rem #007bff;
+  -webkit-box-shadow: 0 0 0.1rem 0.05rem #007bff;
 }

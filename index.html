@@ -18,14 +18,14 @@
 <body class="h-100">
 	<div class="py-4 px-0 container-fluid h-100">
 		<div class="row mx-0 no-gutters h-100">
-			<div class="col-lg-3 border-right" id="convos">
+			<div class="col-lg-3" id="convos">
 				<div class="pt-3">
 					<h2 class="mb-0 mx-4" style="font-size: 2rem; font-weight: 900">Conversations</h2>
 				</div>
 				<div id="search" class="mx-4 pt-3">
 					<input class="py-1 px-3 form-control" placeholder="Search">
 				</div>
-				<ul class="list-unstyled pt-3 pb-3">
+				<ul class="list-unstyled py-3">
 					<li>
 						<a class="py-3 media text-reset text-decoration-none" href="0/">
 							<div class="icon icon-yellow ml-4 mr-3">
@@ -76,11 +76,16 @@
 						</a>
 					</li>
 				</ul>
+				<div id="no_results" class="text-center py-3">
+					<p class="font-italic text-muted small">Sorry, we couldn’t find anything matching “<span></span>”.</p>
+				</div>
 			</div>
-			<div class="col-lg-9 d-none d-lg-block align-self-center text-center px-3" id="main_convo">
-				<img src="images/icon.png" style="width: 200px; height: 200px" class="mb-2">
-				<h1>Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
-				<h5 class="font-italic text-muted">Select a conversation on the left to get started.</h5>
+			<div class="col-lg-9 d-none d-lg-flex px-3 border-left h-100 align-items-center justify-content-center" id="main_convo">
+				<div class="text-center">
+					<img src="images/icon.png" style="width: 200px; height: 200px" class="mb-2">
+					<h1>Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
+					<h5 class="font-italic text-muted">Select a conversation on the left to get started.</h5>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -90,17 +95,34 @@
 	let convoTexts = [];
 	
 	for (let g = 0; g < $("li").length; g++) {
-		convoTexts.push($("li").get(g).innerText.toLowerCase());
+		if ($("li").eq(g).find("[class*=icon]").length == 0) {
+			convoTexts.push($("li").get(g).innerText.toLowerCase());
+		} else {
+			convoTexts.push($("li").get(g).innerText.toLowerCase().replace($("li").eq(g).find("[class*=icon]").get(0).innerText, ""));
+		}
 	}
 	
 	$("#search input").on("change keyup", function() {
 		for (let h = 0; h < convoTexts.length; h++) {
 			if (convoTexts[h].includes($("#search input").val().toLowerCase())) {
-				$("li").eq(h).show();
+				$("li").eq(h).removeClass("d-none");
 			} else {
-				$("li").eq(h).hide();
+				$("li").eq(h).addClass("d-none");
 			}
 		}
+		
+		if ($("li.d-none").length == convoTexts.length) {
+			$("ul").hide();
+			$("#no_results").show();
+			$("#no_results span").text($("#search input").val());
+		} else {
+			$("ul").show();
+			$("#no_results").hide();
+		}
+	});
+	
+	$(function() {
+		$("#no_results").hide();
 	});
 </script>
 	

@@ -10646,3 +10646,16 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
 }
+
+#search input {
+  border-radius: 2rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  width: 100%;
+  transition: box-shadow 0.15s;
+}
+
+#search input:focus {
+  outline: none;
+  box-shadow: 0 0 0.1rem 0.05rem #007bff;
+}

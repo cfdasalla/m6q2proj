@@ -10076,14 +10076,19 @@ a.text-ian:hover, a.text-ian:focus {
   width: 80px;
 }
 
-#header {
-  border-bottom: 1px solid lightgray;
-  background-color: white;
-  text-align: center;
+#header, #convos_head {
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 1;
+  z-index: 100;
+}
+
+#header {
+  border-bottom: 1px solid lightgray;
+  text-align: center;
 }
 
 #picture {

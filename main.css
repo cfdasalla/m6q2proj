@@ -10076,21 +10076,6 @@ a.text-ian:hover, a.text-ian:focus {
   width: 80px;
 }
 
-#header, #convos_head {
-  background-color: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-  z-index: 100;
-}
-
-#header {
-  border-bottom: 1px solid lightgray;
-  text-align: center;
-}
-
 #picture {
   display: inline-block;
   height: 80px;
@@ -10213,9 +10198,7 @@ a.text-ian:hover, a.text-ian:focus {
 }
 
 #convos {
-  position: sticky;
-  position: -webkit-sticky;
-  left: 0;
+  overflow: auto;
 }
 
 #convos .picture, #convos .icon {
@@ -10661,4 +10644,19 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
 
 #search input:focus {
   background-color: #f8f9fa;
+}
+
+#header, #convos_head {
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#header {
+  border-bottom: 1px solid lightgray;
+  text-align: center;
 }

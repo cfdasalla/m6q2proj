@@ -16,26 +16,26 @@
 </head>
 
 <body class="h-100">
-	<div class="py-4 px-0 container-fluid h-100">
+	<div class="px-0 container-fluid h-100">
 		<div class="row mx-0 no-gutters h-100">
-			<div class="col-lg-3" id="convos">
-				<div id="convos_head" class="row mx-4 pt-4 pb-4 pb-md-4 px-0 no-gutters">
-					<div class="col col-md-4 col-lg-12 mb-0 align-self-center">
+			<div class="col-lg-3 h-100" id="convos">
+				<div id="convos_head" class="row pt-4 pb-4 pb-md-4 px-4 no-gutters w-100">
+					<div class="col col-md-4 col-lg-12 mb-0 align-self-center" style="order: 1; animation-duration: 200ms;">
 						<h2 class="mb-0" style="font-size: 2rem; font-weight: 900">Conversations</h2>
 					</div>
-					<div class="col-2 d-block d-md-none align-self-center clearfix">
+					<div class="col-2 d-block d-md-none align-self-center clearfix" style="order: 3">
 						<button role="button" class="btn btn-outline-dark float-right" style="border-radius: 2rem;" id="search_btn" data-toggle="button" aria-pressed="false">
 							<i class="material-icons-round align-text-bottom">search</i>
 						</button>
 					</div>
-					<div id="search" class="col-12 col-md-8 col-lg-12 d-md-block mt-2 mt-md-0 mt-lg-2">
-						<input class="py-1 px-3 form-control" placeholder="Search" id="search_bar">
+					<div id="search" class="col-10 col-md-8 col-lg-12 d-md-block mt-lg-2" style="order: 2; animation-duration: 200ms;">
+						<input class="px-3 form-control" placeholder="Search" id="search_bar">
 					</div>
 				</div>
 				
 				<ul class="list-unstyled pb-3">
 					<li>
-						<a class="py-3 media text-reset text-decoration-none" href="0/">
+						<a class="pb-4 media text-reset text-decoration-none" href="0/">
 							<div class="icon icon-yellow ml-4 mr-3 align-self-center">
 								<p>
 									<i class="material-icons-round">games</i>
@@ -48,7 +48,7 @@
 						</a>
 					</li>
 					<li>
-						<a class="py-3 media text-reset text-decoration-none" href="1/">
+						<a class="pb-4 media text-reset text-decoration-none" href="1/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/io%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
 								<h5 class="font-weight-bold">Power Rule <span class="badge badge-red align-bottom">Derivatives</span></h5>
@@ -57,7 +57,7 @@
 						</a>
 					</li>
 					<li>
-						<a class="py-3 media text-reset text-decoration-none" href="2/">
+						<a class="pb-4 media text-reset text-decoration-none" href="2/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/io%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
 								<h5 class="font-weight-bold">Reverse Power Rule <span class="badge badge-blue align-bottom">Integrals</span></h5>
@@ -66,7 +66,7 @@
 						</a>
 					</li>
 					<li>
-						<a class="py-3 media text-reset text-decoration-none" href="3/">
+						<a class="pb-4 media text-reset text-decoration-none" href="3/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/cal%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
 								<h5 class="font-weight-bold">Product Rule <span class="badge badge-red align-bottom">Derivatives</span></h5>
@@ -75,7 +75,7 @@
 						</a>
 					</li>
 					<li>
-						<a class="py-3 media text-reset text-decoration-none" href="4/">
+						<a class="pb-4 media text-reset text-decoration-none" href="4/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/cal%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
 								<h5 class="font-weight-bold">Quotient Rule <span class="badge badge-red align-bottom">Derivatives</span></h5>
@@ -130,17 +130,47 @@
 	});
 	
 	$("#search_btn").click(function() {
-		if (window.innerWidth < parseInt($(":root").css("--breakpoint-md"))) {
-			if ($("#search_btn").hasClass("active")) {
-				$("#search").slideUp();
-				$("#search_btn").attr("aria-pressed", false);
-			} else {
-				$("#search").slideDown();
-				$("#search_bar").focus();
-				$("#search_btn").attr("aria-pressed", true);
-			}
+		if ($("#search_btn").hasClass("active")) {
+			$("#search").addClass("animated fadeOut");
+			$("#search").one("animationend", function() {
+				$("#search").removeClass("animated fadeOut");
+				$("#search").hide();
+				$("#convos_head").children().eq(0).addClass("animated fadeIn");
+				$("#convos_head").children().eq(0).show();
+				$("#convos_head").children().eq(0).one("animationend", function() {
+					$("#convos_head").children().eq(0).removeClass("animated fadeIn");
+				});
+			});
+			
+			$("#search_btn").attr("aria-pressed", false);
+		} else {
+			$("#convos_head").children().eq(0).addClass("animated fadeOut");
+			$("#convos_head").children().eq(0).one("animationend", function() {
+				$("#convos_head").children().eq(0).removeClass("animated fadeOut");
+				$("#convos_head").children().eq(0).hide();
+				$("#search").addClass("animated fadeIn");
+				$("#search").show();
+				$("#search").one("animationend", function() {
+					$("#search").removeClass("animated fadeIn");
+				});
+			});
+			
+			$("#search_bar").focus();
+			$("#search_btn").attr("aria-pressed", true);
 		}
 	});
+	
+	$(window).resize(function() {
+		if (window.innerWidth < parseInt($(":root").css("--breakpoint-md"))) {
+			if ($("#search").css("display") == "none") {
+				$("#convos_head").children().eq(0).show();
+			} else {
+				$("#convos_head").children().eq(0).hide();
+			}
+		} else {
+			$("#convos_head").children().eq(0).show();
+		}
+	})
 	
 	$(function() {
 		$("#no_results").hide();

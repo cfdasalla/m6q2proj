@@ -10199,6 +10199,7 @@ a.text-ian:hover, a.text-ian:focus {
 
 #convos {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #convos .picture, #convos .icon {

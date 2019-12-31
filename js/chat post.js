@@ -42,11 +42,15 @@ for (let i = messages.length - 1; i >= 0; i--) {
 }
 
 $("#chat button").click(function() {
-	toggleOnline();
-	setTimeout(function() {
-		messagesToAdd[0]();
-	}, d3.randomInt(500, 1001)());
-	$("#chat button").hide();
-	
-	started = true;
+	$("#chat button").addClass("animated fadeOut");
+	$("#chat button").one("animationend", function() {
+		$("#chat button").hide();
+		
+		toggleOnline();
+		setTimeout(function() {
+			messagesToAdd[0]();
+		}, d3.randomInt(500, 1001)());
+
+		started = true;
+	});
 });

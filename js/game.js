@@ -378,7 +378,7 @@ $("#questionCount").keypress(function(e) {
 })
 
 $("#advancedLink").click(function() {
-    if ($("#advanced").css("latex") == "none") {
+    if ($("#advanced").css("display") == "none") {
         $("#advanced").slideDown();
     } else {
         $("#advanced").slideUp();

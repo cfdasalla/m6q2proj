@@ -20,7 +20,7 @@
 		<div class="row mx-0 no-gutters h-100">
 			<div class="col-lg-3 h-100" id="convos">
 				<div id="convos_head" class="row py-4 px-4 no-gutters w-100">
-					<div class="col col-md-4 col-lg-12 mb-0 align-self-center mt-2" style="order: 1; animation-duration: 200ms;">
+					<div class="col col-md-4 col-lg-12 mb-0 align-self-center" style="order: 1; animation-duration: 200ms;">
 						<h2 class="mb-0" style="font-size: 2rem; font-weight: 900">Conversations</h2>
 					</div>
 					<div class="col-2 d-block d-md-none align-self-center clearfix" style="order: 3">
@@ -110,9 +110,9 @@
 		}
 	}
 	
-	$("#search input").on("change keyup", function() {
+	$("#search_bar").on("change keyup input", function() {
 		for (let h = 0; h < convoTexts.length; h++) {
-			if (convoTexts[h].includes($("#search input").val().toLowerCase())) {
+			if (convoTexts[h].includes($("#search_bar").val().toLowerCase())) {
 				$("li").eq(h).removeClass("d-none");
 			} else {
 				$("li").eq(h).addClass("d-none");
@@ -122,7 +122,7 @@
 		if ($("li.d-none").length == convoTexts.length) {
 			$("ul").hide();
 			$("#no_results").show();
-			$("#no_results span").text($("#search input").val());
+			$("#no_results span").text($("#search_bar").val());
 		} else {
 			$("ul").show();
 			$("#no_results").hide();

@@ -10077,10 +10077,9 @@ a.text-ian:hover, a.text-ian:focus {
 }
 
 #picture {
-  display: inline-block;
-  height: 80px;
-  width: 80px;
-  border-radius: 80px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50px;
   border: 1px solid #e9ecef;
 }
 
@@ -10659,5 +10658,8 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
 
 #header {
   border-bottom: 1px solid lightgray;
-  text-align: center;
+}
+
+#back:hover {
+  text-decoration: none;
 }

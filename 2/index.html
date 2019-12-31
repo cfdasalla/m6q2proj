@@ -9,6 +9,7 @@
 	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.min.css'>
 	<link rel="stylesheet" href="../main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU=" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -24,12 +25,16 @@
 
 <body class="pb-4 pb-md-5">
 	<div class="container">
-		<div id="header" class="pt-4 pt-md-5">
-			<img id="picture" class="mb-2">
-			<h4 class="text-center bold"><span id="online_dot" class="offline">•</span> <span id="recipient"></span></h4>
+		<div id="header" class="pt-4 pb-2 pt-md-5 d-flex align-items-center">
+			<a href="../" id="back" role="button" class="btn btn-lg btn-link d-inline-flex align-items-center px-0 mr-4">
+				<i class="material-icons-round align-bottom">arrow_back_ios</i>
+				<span class="h5 font-weight-bold mb-0 ml-1">Back</span>
+			</a>
+			<img id="picture">
+			<h4 class="ml-2 mb-0"><span id="recipient"></span> <span id="online_dot" class="offline">•</span></h4>
 		</div>
 		<div id="chat" class="clearfix mx-2">
-			<button class="my-3 btn" role="button">Start</button>
+			<button class="my-3 btn" role="button" style="animation-duration: 250ms;">Start</button>
 		</div>
 	</div>
 </body>

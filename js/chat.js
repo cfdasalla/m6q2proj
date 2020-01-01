@@ -135,7 +135,7 @@ let lastTypedPoll;
 	
 	@param {number} l - Length of message.
 	@param {boolean} [read] - Determines whether or not delay should take into account message being read instead of typed. Defaults to false.
-	@param {boolean} [animate] - Determines whether or not to add 800 ms to output to compensate for message animation. Defaults to true.
+	@param {boolean} [animate] - Determines whether or not to add 1 second to output to compensate for message animation. Defaults to true.
 */
 function timeDelay(l, read = false, animate = true) {
 	/*
@@ -145,10 +145,10 @@ function timeDelay(l, read = false, animate = true) {
 	• 1 wpm = 4 - 5 cpm
 	*/
 	if (read) {
-		return Math.trunc(d3.randomInt(Math.trunc((60000 / 1000) * l), Math.trunc((60000 / 1500) * l) + 1)() / 8) + (animate ? 800 : 0);
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 1000) * l), Math.trunc((60000 / 1500) * l) + 1)() / 6) + (animate ? 1000 : 0);
 		// ORIGINAL: return (l * 10) - 100 > 200 ? d3.randomInt((l * 10) - 100, (l * 10) + 100)() : d3.randomInt(200, (l * 10) + 100)();
 	} else {
-		return Math.trunc(d3.randomInt(Math.trunc((60000 / 260) * l), Math.trunc((60000 / 375) * l) + 1)() / 8) + (animate ? 800 : 0);
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 260) * l), Math.trunc((60000 / 375) * l) + 1)() / 6) + (animate ? 1000 : 0);
 		// ORIGINAL: return (l * 30) - 300 > 600 ? d3.randomInt((l * 30) - 300, (l * 30) + 300)() : d3.randomInt(600, (l * 30) + 300)();
 	}
 }

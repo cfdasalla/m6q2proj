@@ -11,19 +11,18 @@ for (let i = messages.length - 1; i >= 0; i--) {
 						setTimeout(function() {
 							toggleOnline();
 							setTimeout(function() {
-								$("#chat").append(`<a class="btn animated fadeInUp faster" href="${nextChapter}" role="button" style="display:inline-block">Next</a>`);
-								$("a").addClass("btn-" + currentRecipient.first.toLowerCase());
+								$("#chat").append(`<a class="btn btn-${currentRecipient.first.toLowerCase()} animated fadeInUp faster" href="${nextChapter}" role="button" style="display:inline-block">Next</a>`);
 								updateScroll();
 							}, 2000);
 						}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
 					}, timeDelay(x[1].length));
-				}, (x[2] == "right" ? timeDelay(x[1].length, true) : 0) + (x[2] == "left" ? 800 : i == 0 ? 800 : timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true, false)));
+				}, (x[2] == "right" ? timeDelay(x[1].length, true) : 0) + (x[2] == "left" ? 1000 : i == 0 ? 1000 : timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true, false)));
 			});
 		} else {
 			messagesToAdd.unshift(function() {
 				setTimeout(function() {
 					addMessage(x[1], x[2], messagesToAdd[i + 1], timeDelay(x[1].length));
-				}, (x[2] == "right" ? timeDelay(x[1].length, true) : 0) + (x[2] == "left" ? 800 : i == 0 ? 800 : timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true, false)));
+				}, (x[2] == "right" ? timeDelay(x[1].length, true) : 0) + (x[2] == "left" ? 1000 : i == 0 ? 1000 : timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true, false)));
 			});
 		}
 	} else if (x[0] == "p") {

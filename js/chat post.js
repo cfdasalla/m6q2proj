@@ -11,7 +11,8 @@ for (let i = messages.length - 1; i >= 0; i--) {
 						setTimeout(function() {
 							toggleOnline();
 							setTimeout(function() {
-								$("#chat").append(`<a class="btn btn-${currentRecipient.first.toLowerCase()} animated fadeInUp faster" href="${nextChapter}" role="button" style="display:inline-block">Next</a>`);
+								$("#chat").append(`<a class="btn btn-${currentRecipient.first.toLowerCase()} animated fadeInUp faster" href="${nextChapter}" role="button" style="display:inline-block" id="next">Next</a>`);
+								$("#next").focus();
 								updateScroll();
 							}, 2000);
 						}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
@@ -40,16 +41,24 @@ for (let i = messages.length - 1; i >= 0; i--) {
 	}
 }
 
-$("#chat button").click(function() {
-	$("#chat button").addClass("animated fadeOut");
-	$("#chat button").one("animationend", function() {
-		$("#chat button").hide();
-		
-		toggleOnline();
-		setTimeout(function() {
-			messagesToAdd[0]();
-		}, d3.randomInt(500, 1001)());
+$(function() {
+	$("#chat").append(`<button class="btn btn-${currentRecipient.first.toLowerCase()} my-3" id="start" style="animation-duration: 250ms;">Start</button>`);
+	
+	$("#recipient").text(currentRecipient.fullName());
+	$("#picture").attr("src", currentRecipient.picture);
+	$("#chat").addClass(currentRecipient.first.toLowerCase());
+	
+	$("#start").click(function() {
+		$("#start").addClass("animated fadeOut");
+		$("#start").one("animationend", function() {
+			$("#start").hide();
 
-		started = true;
+			toggleOnline();
+			setTimeout(function() {
+				messagesToAdd[0]();
+			}, d3.randomInt(500, 1001)());
+
+			started = true;
+		});
 	});
 });

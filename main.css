@@ -3143,7 +3143,7 @@ fieldset:disabled a.btn {
   text-decoration: none;
 }
 
-.btn-link:hover {
+.btn-link:hover, #back:focus {
   color: #0056b3;
   text-decoration: underline;
 }
@@ -10660,6 +10660,26 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
   border-bottom: 1px solid lightgray;
 }
 
+#convos li a div {
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1em;
+}
+
+#convos li a div p, #convos li a div h5 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 #back:hover {
   text-decoration: none;
+}
+
+#back:focus {
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#back:focus :not([class*=icon]) {
+  text-decoration: underline;
 }

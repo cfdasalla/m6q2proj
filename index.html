@@ -18,9 +18,9 @@
 <body class="h-100">
 	<div class="px-0 container-fluid h-100">
 		<div class="row mx-0 no-gutters h-100">
-			<div class="col-lg-3 h-100" id="convos">
-				<div id="convos_head" class="row pt-4 pt-lg-5 pb-4 px-4 no-gutters w-100">
-					<div class="col col-md-4 col-lg-12 mb-0 align-self-center" style="order: 1; animation-duration: 200ms;">
+			<div class="col-lg-4 col-xl-3 h-100" id="convos">
+				<div id="convos_head" class="row py-4 px-4 no-gutters w-100 border-bottom">
+					<div class="col-10 col-md-4 col-lg-12 mb-0 align-self-center" style="order: 1; animation-duration: 200ms;">
 						<h2 class="mb-0" style="font-size: 2rem; font-weight: 900">Conversations</h2>
 					</div>
 					<div class="col-2 d-block d-md-none align-self-center clearfix" style="order: 3">
@@ -34,51 +34,51 @@
 				</div>
 				
 				<ul class="list-unstyled pb-4 mb-0">
-					<li>
+					<li data-toggle="tooltip" data-html="true" title="<b>Test your calculus skills!</b>">
 						<a class="py-3 media text-reset text-decoration-none" href="0/">
 							<div class="icon icon-yellow ml-4 mr-3 align-self-center">
 								<p>
 									<i class="material-icons-round">games</i>
 								</p>
 							</div>
-							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
-								<h5><span class="font-weight-bold">Test your calculus skills! <span class="badge badge-yellow align-bottom">Game</span></h5>
+							<div class="mr-4 media-body text-left align-self-center">
+								<h5 class="font-weight-bold"><span class="badge badge-yellow align-bottom">Game</span> Test your calculus skills!</h5>
 								<p class="text-muted font-italic mb-0">Play this game now!</p>
 							</div>
 						</a>
 					</li>
-					<li>
+					<li data-toggle="tooltip" data-html="true" title="<b>Power Rule</b><br><i>with Ian Okelani Kona</i>">
 						<a class="py-3 media text-reset text-decoration-none" href="1/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/io%20dp.png">
-							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
-								<h5 class="font-weight-bold">Power Rule <span class="badge badge-red align-bottom">Derivatives</span></h5>
+							<div class="mr-4 media-body text-left align-self-center">
+								<h5 class="font-weight-bold"><span class="badge badge-red align-bottom">Derivatives</span> Power Rule</h5>
 								<p class="text-muted font-italic mb-0">with <span class="convo-recipient">Ian Okelani Kona</span></p>
 							</div>
 						</a>
 					</li>
-					<li>
+					<li data-toggle="tooltip" data-html="true" title="<b>Reverse Power Rule</b><br><i>with Ian Okelani Kona</i>">
 						<a class="py-3 media text-reset text-decoration-none" href="2/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/io%20dp.png">
-							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
-								<h5 class="font-weight-bold">Reverse Power Rule <span class="badge badge-blue align-bottom">Integrals</span></h5>
+							<div class="mr-4 media-body text-left align-self-center">
+								<h5 class="font-weight-bold"><span class="badge badge-blue align-bottom">Integrals</span> Reverse Power Rule</h5>
 								<p class="text-muted font-italic mb-0">with <span class="convo-recipient">Ian Okelani Kona</span></p>
 							</div>
 						</a>
 					</li>
-					<li>
+					<li data-toggle="tooltip" data-html="true" title="<b>Product Rule</b><br><i>with (new character)</i>">
 						<a class="py-3 media text-reset text-decoration-none" href="3/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/cal%20dp.png">
-							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
-								<h5 class="font-weight-bold">Product Rule <span class="badge badge-red align-bottom">Derivatives</span></h5>
+							<div class="mr-4 media-body text-left align-self-center">
+								<h5 class="font-weight-bold"><span class="badge badge-red align-bottom">Derivatives</span> Product Rule</h5>
 								<p class="text-muted font-italic mb-0">with <span class="convo-recipient">(new character)</span></p>
 							</div>
 						</a>
 					</li>
-					<li>
+					<li data-toggle="tooltip" data-html="true" title="<b>Quotient Rule</b><br><i>with (new character)</i>">
 						<a class="py-3 media text-reset text-decoration-none" href="4/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/cal%20dp.png">
-							<div class="mr-4 media-body text-left align-self-center" style="line-height: 0.7em">
-								<h5 class="font-weight-bold">Quotient Rule <span class="badge badge-red align-bottom">Derivatives</span></h5>
+							<div class="mr-4 media-body text-left align-self-center">
+								<h5 class="font-weight-bold"><span class="badge badge-red align-bottom">Derivatives</span> Quotient Rule</h5>
 								<p class="text-muted font-italic mb-0">with <span class="convo-recipient">(new character)</span></p>
 							</div>
 						</a>
@@ -88,7 +88,7 @@
 					<p class="font-italic text-muted small">Sorry, we couldn’t find anything matching “<span></span>”.</p>
 				</div>
 			</div>
-			<div class="col-lg-9 d-none d-lg-flex px-3 border-left h-100 align-items-center justify-content-center" id="main_convo">
+			<div class="col-lg-8 col-xl-9 d-none d-lg-flex px-3 border-left h-100 align-items-center justify-content-center" id="main_convo">
 				<div class="text-center">
 					<img src="images/icon.png" style="width: 200px; height: 200px" class="mb-2">
 					<h1>Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
@@ -175,6 +175,16 @@
 	$(function() {
 		$("#no_results").hide();
 		$("#search").hide();
+		$('[data-toggle="tooltip"]').tooltip({
+			placement: function(tooltip, link) {
+				if (window.innerWidth >= parseInt($(":root").css("--breakpoint-lg"))) {
+					return "right";
+				} else {
+					return "top";
+				}
+			},
+			boundary: "window"
+		});
 	});
 </script>
 	

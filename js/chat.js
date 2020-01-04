@@ -85,7 +85,7 @@ class Poll {
 		let optionButtonsS = "";
 		
 		for (let i in this.options) {
-			optionButtonsA.push(`<button class="choice choice_${i} btn">${this.options[i]}</button>\n`);
+			optionButtonsA.push(`<button class="choice choice_${i} btn btn-outline-${currentRecipient.first.toLowerCase()}">${this.options[i]}</button>\n`);
 		}
 		
 		optionButtonsA = shuffle(optionButtonsA);
@@ -96,7 +96,7 @@ class Poll {
 		
 		return `<div class="animated faster fadeInUp choose">
 <div class="question h5 mt-4">${this.question}</div>
-<div class="choices mb-4">
+<div class="choices mb-4" tabindex="-1">
 ${optionButtonsS}
 </div>
 </div>`
@@ -113,7 +113,7 @@ class TypedPoll {
 		return `<div class="animated faster fadeInUp choose">
 <div class="question h5 mt-4">${this.question}</div>
 <span id="${this.field}" class="mb-4"></span>
-<button class="btn ml-2">Send</button>
+<button class="btn btn-${currentRecipient.first.toLowerCase()} ml-2">Send</button>
 </div>`;
 	}
 }
@@ -239,9 +239,9 @@ function addPoll(q, o, c, r, w, u, pre = "", post = "", f = function() {}) {
 	let y = $(x.add()).appendTo("#chat");
 	
 	addPollClicks(y.find(".choice"), c, r, w, u, pre, post, f);
-	colorButtons();
 	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	
+	$(".choices").last().focus();
 	updateScroll();
 	
 	lastPoll = x;
@@ -311,6 +311,7 @@ function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
 	}
 }
 
+/** Adds a typed poll to the chat. */
 function addTypedPoll(q, c, r, w, u, pre = "", post = "", d = false, f = function() {}) {
 	let x = new TypedPoll(q);
 	let y = $(x.add()).appendTo("#chat");
@@ -375,11 +376,7 @@ function addTypedPoll(q, c, r, w, u, pre = "", post = "", d = false, f = functio
 	$("#" + lastTypedPoll.field).siblings("button").addClass("btn-" + $("#chat").attr("class").match(new RegExp(currentRecipient.first.toLowerCase()))[0]);
 }
 
-/** Adds button classes corresponding to current chat color. */
-function colorButtons() {
-	$("#chat .choice").addClass("btn-outline-" + $("#chat").attr("class").match(new RegExp(currentRecipient.first.toLowerCase()))[0]);
-}
-
+/** Toggles the "online" state of the chatmate. */
 function toggleOnline() {
 	if ($("#online_dot").hasClass("online")) {
 		$("#online_dot").removeClass("online");
@@ -393,21 +390,15 @@ function toggleOnline() {
 	updateScroll();
 }
 
+/** Updates scroll position based on addition(s) to the chat. */
 function updateScroll() {
 	window.scroll({top: $("body").css("height").slice(0, -2), left: 0, behavior: 'smooth'});
 }
 
+/** Shows an "Are you sure you want to leave this page?" dialog when trying to navigate out of the page in the middle of a chat. */
 window.addEventListener("beforeunload", function(x) {
 	if (started) {
 		x.preventDefault();
 		x.returnValue = "";
 	}
-});
-
-$(function() {
-	$("#chat button").addClass("btn-" + currentRecipient.first.toLowerCase());
-	
-	$("#recipient").text(currentRecipient.fullName());
-	$("#picture").attr("src", currentRecipient.picture);
-	$("#chat").addClass(currentRecipient.first.toLowerCase());
 });

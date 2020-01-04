@@ -10129,6 +10129,10 @@ a.text-ian:hover, a.text-ian:focus {
   line-height: 3;
 }
 
+#chat .choices:focus {
+  outline: none;
+}
+
 #chat .choices button {
   border-radius: 50px;
   margin-left: 0.25em;
@@ -10663,7 +10667,6 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
 #convos li a div {
   white-space: nowrap;
   overflow: hidden;
-  line-height: 1em;
 }
 
 #convos li a div p, #convos li a div h5 {

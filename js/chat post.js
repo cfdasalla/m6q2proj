@@ -43,6 +43,7 @@ for (let i = messages.length - 1; i >= 0; i--) {
 
 $(function() {
 	$("#chat").append(`<button class="btn btn-${currentRecipient.first.toLowerCase()} my-3" id="start" style="animation-duration: 250ms;">Start</button>`);
+	$("#start").focus();
 	
 	$("#recipient").text(currentRecipient.fullName());
 	$("#picture").attr("src", currentRecipient.picture);

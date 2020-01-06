@@ -10110,7 +10110,7 @@ a.text-ian:hover, a.text-ian:focus {
   margin-left: auto;
 }
 
-#chat .choose {
+#chat .choose, #chat .type {
   margin: auto;
   padding: 0;
   border-top: 1px solid lightgray;
@@ -10137,16 +10137,6 @@ a.text-ian:hover, a.text-ian:focus {
   border-radius: 50px;
   margin-left: 0.25em;
   margin-right: 0.25em;
-}
-
-#chat .choices button:first-of-type {
-  margin-left: 0;
-  margin-right: 0.25em;
-}
-
-#chat .choices button:last-of-type {
-  margin-right: 0;
-  margin-left: 0.25em;
 }
 
 #chat .loading {

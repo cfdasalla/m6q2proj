@@ -91,8 +91,8 @@
 			<div class="col-lg-8 col-xl-9 d-none d-lg-flex px-3 border-left h-100 align-items-center justify-content-center" id="main_convo">
 				<div class="text-center">
 					<img src="images/icon.png" style="width: 200px; height: 200px" class="mb-2">
-					<h1 class="animated" style="animation-duration: 150ms;">Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
-					<h5 class="font-italic text-muted animated" style="animation-duration: 150ms;">Select a conversation on the left to get started.</h5>
+					<h1>Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
+					<h5 class="font-italic text-muted">Select a conversation on the left to get started.</h5>
 				</div>
 			</div>
 		</div>
@@ -180,6 +180,8 @@
 			$("#search_bar").focus();
 			$("#search_btn").attr("aria-pressed", true);
 		}
+		
+		$("#search_btn").toggleClass("active");
 	});
 	
 	$(window).resize(function() {

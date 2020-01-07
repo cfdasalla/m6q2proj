@@ -24,7 +24,7 @@
 						<h2 class="mb-0" style="font-size: 2rem; font-weight: 900; text-overflow: ellipsis; overflow: hidden;">Conversations</h2>
 					</div>
 					<div class="col-2 d-block d-md-none align-self-center clearfix" style="order: 3">
-						<button role="button" class="btn btn-outline-dark float-right" style="border-radius: 2rem;" id="search_btn" data-toggle="button" aria-pressed="false">
+						<button role="button" class="btn btn-outline-dark float-right" style="border-radius: 2rem;" id="search_btn">
 							<i class="material-icons-round align-text-bottom mx-n1">search</i>
 						</button>
 					</div>
@@ -34,7 +34,7 @@
 				</div>
 				
 				<ul class="list-unstyled pb-4 mb-0">
-					<li data-toggle="tooltip" data-html="true" title="<b>Test your calculus skills!</b>">
+					<li>
 						<a class="py-3 media text-reset text-decoration-none" href="0/">
 							<div class="icon icon-yellow ml-4 mr-3 align-self-center">
 								<p>
@@ -47,7 +47,7 @@
 							</div>
 						</a>
 					</li>
-					<li data-toggle="tooltip" data-html="true" title="<b>Power Rule</b><br><i>with Ian Okelani Kona</i>">
+					<li>
 						<a class="py-3 media text-reset text-decoration-none" href="1/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/io%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center">
@@ -56,7 +56,7 @@
 							</div>
 						</a>
 					</li>
-					<li data-toggle="tooltip" data-html="true" title="<b>Reverse Power Rule</b><br><i>with Ian Okelani Kona</i>">
+					<li>
 						<a class="py-3 media text-reset text-decoration-none" href="2/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/io%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center">
@@ -65,7 +65,7 @@
 							</div>
 						</a>
 					</li>
-					<li data-toggle="tooltip" data-html="true" title="<b>Product Rule</b><br><i>with (new character)</i>">
+					<li>
 						<a class="py-3 media text-reset text-decoration-none" href="3/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/cal%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center">
@@ -74,7 +74,7 @@
 							</div>
 						</a>
 					</li>
-					<li data-toggle="tooltip" data-html="true" title="<b>Quotient Rule</b><br><i>with (new character)</i>">
+					<li>
 						<a class="py-3 media text-reset text-decoration-none" href="4/">
 							<img class="picture ml-4 mr-3 align-self-center" src="images/cal%20dp.png">
 							<div class="mr-4 media-body text-left align-self-center">
@@ -84,15 +84,15 @@
 						</a>
 					</li>
 				</ul>
-				<div id="no_results" class="text-center py-3">
+				<div id="no_results" class="text-center py-3 px-4">
 					<p class="font-italic text-muted small">Sorry, we couldn’t find anything matching “<span></span>”.</p>
 				</div>
 			</div>
 			<div class="col-lg-8 col-xl-9 d-none d-lg-flex px-3 border-left h-100 align-items-center justify-content-center" id="main_convo">
 				<div class="text-center">
 					<img src="images/icon.png" style="width: 200px; height: 200px" class="mb-2">
-					<h1>Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
-					<h5 class="font-italic text-muted">Select a conversation on the left to get started.</h5>
+					<h1 class="animated" style="animation-duration: 150ms;">Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
+					<h5 class="font-italic text-muted animated" style="animation-duration: 150ms;">Select a conversation on the left to get started.</h5>
 				</div>
 			</div>
 		</div>
@@ -100,6 +100,14 @@
 </body>
 
 <script>
+	let sideText = [
+		["<span class=\"badge badge-yellow align-bottom\">Game</span> Test your calculus skills!", "Play this game now and see just how much you know about differentiation and integration!"],
+		["<span class=\"badge badge-red align-bottom\">Derivatives</span> Power Rule", "Learn about the power rule, the most useful differentiation hack there is to know, with Ian Okelani “IO” Kona."],
+		["<span class=\"badge badge-blue align-bottom\">Integrals</span> Reverse Power Rule", "Learn about the reverse power rule, the integration counterpart of the power rule, with Ian Okelani “IO” Kona."],
+		["<span class=\"badge badge-red align-bottom\">Derivatives</span> Product Rule", "Learn about the product rule, used when two expressions are being multiplied, with (new character)."],
+		["<span class=\"badge badge-red align-bottom\">Derivatives</span> Quotient Rule", "Learn about the quotient rule, used especially when dealing with rational expressions, with (new character)."]
+	]
+	
 	let convoTexts = [];
 	
 	for (let g = 0; g < $("li").length; g++) {
@@ -108,6 +116,20 @@
 		} else {
 			convoTexts.push($("li").get(g).innerText.toLowerCase().replace($("li").eq(g).find("[class*=icon]").get(0).innerText, ""));
 		}
+	}
+	
+	for (let a of $("li a")) {
+		$(a).mouseenter(function() {
+			$("#main_convo img").attr("src", $(a).find("img").attr("src"));
+			$("#main_convo h1").html(sideText[$("ul li").index($(a).parent())][0]);
+			$("#main_convo h5").html(sideText[$("ul li").index($(a).parent())][1]);
+		});
+		
+		$(a).mouseleave(function() {
+			$("#main_convo img").attr("src", "images/icon.png");
+			$("#main_convo h1").html("Welcome to <span class=\"font-weight-bold font-italic\">The Adventures of Cal Q. Luz</span>!");
+			$("#main_convo h5").html("Select a conversation on the left to get started.");
+		});
 	}
 	
 	$("#search_bar").on("change keyup input", function() {
@@ -175,16 +197,7 @@
 	$(function() {
 		$("#no_results").hide();
 		$("#search").hide();
-		$('[data-toggle="tooltip"]').tooltip({
-			placement: function(tooltip, link) {
-				if (window.innerWidth >= parseInt($(":root").css("--breakpoint-lg"))) {
-					return "right";
-				} else {
-					return "top";
-				}
-			},
-			boundary: "window"
-		});
+		$("#main_convos #icon-place").hide();
 	});
 </script>
 	

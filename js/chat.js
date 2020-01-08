@@ -1,6 +1,3 @@
-let left = "left";
-let right = "right";
-
 let started = false;
 
 /** The typing animation. */
@@ -9,8 +6,6 @@ let isTyping = `<div class="loading">
 	<div></div>
 	<div></div>
 </div>`
-
-let typedPollInputs = [];
 
 /**
 	Shuffles an array.
@@ -38,35 +33,113 @@ function shuffle(array) {
 /** The Recipient class. */
 class Recipient {
 	constructor(first, last, picture, middle = "") {
+		/** The first name of the character. */
 		this.first = first;
+		
+		/** The last name of the character. */
 		this.last = last;
+		
+		/** The middle name of the character. */
 		this.middle = middle;
+		
+		/** The picture of the character. */
 		this.picture = picture;
 	}
 	
-	fullName() {
+	/** Returns the full name of the character. */
+	get fullName() {
 		return this.middle != "" ? this.first + " " + this.middle + " " + this.last : this.first + " " + this.last;
 	}
 }
 
 /** The Message class. */
 class Message {
-	constructor(message, sender) {
-		this.message = message;
+	constructor(sender, message) {
+		/** The sender of the Message. */
 		this.sender = sender;
+		
+		/** The Message content. */
+		this.message = message;
+	}
+	
+	get html() {
+		return `<div class="animated faster fadeInUp ${this.sender == "l" ? "left" : "right"}">${this.message}</div>`
 	}
 	
 	add() {
-		return `<div class="animated faster fadeInUp ${this.sender}">${this.message}</div>`
+		let a = new Promise(function(resolve, reject) {
+			let lastEl = $("#chat div.left, #chat div.right").get(-1);
+			
+			let delRead = !!lastEl ? timeDelay(lastEl.innerText.length, true) : 0;
+			if ($("#chat").children().last().is(".choose .type")) delRead = 0;
+			
+			let delType = this.sender == "r" ? timeDelay(this.message.length, false, false) : 0;
+			
+			setTimeout(function() {
+				resolve();
+			}, delRead + delType);
+		}.bind(this)).then(function(a) {
+			let x = $(this.sender == "l" ? `<div class="animated faster fadeInUp left">${isTyping}</div>` : this.html).appendTo($("#chat"));
+			updateScroll();
+
+			if (x.prev().attr("class").match(new RegExp("\\bleft\\b")) != null && this.sender == "l") {
+				x.prev().css("margin-bottom", "1px");
+				x.prev().css("border-bottom-left-radius", "0");
+				x.css("border-top-left-radius", "0");
+				x.css("margin-top", "1px");
+			} else if (x.prev().attr("class").match(new RegExp("\\bright\\b")) != null && this.sender == "r") {
+				x.prev().css("margin-bottom", "1px");
+				x.prev().css("border-bottom-right-radius", "0");
+				x.css("border-top-right-radius", "0");
+				x.css("margin-top", "1px");
+			}
+			
+			let del1 = timeDelay(this.message.length);
+			let del2 = timeDelay(this.message.length, true);
+			
+			if (this.sender == "l") {
+				setTimeout(function() {
+					x.html(this.message);
+					updateScroll();
+					MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+				}.bind(this), del1);
+			} else {
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+			}
+			
+			setTimeout(function() {
+				queue.next();
+			}, del1 + del2);
+			
+			x.addClass("catch");
+		}.bind(this));
+		
+		var el = $(".catch");
+		el.removeClass("catch");
+		
+		let z = {
+			el: el,
+			base: this
+		}
+		
+		return z;
 	}
 }
 
 /** The Poll class. */
 class Poll {
-	constructor(question, options) {
+	constructor(question, options, correct) {
+		/** The question for the Poll. */
 		this.question = question;
+		
+		/** An object representing the options for the Poll. */
 		this.options = {};
+		
+		/** An object representing custom replies to be sent for each choice. */
 		this.replies = {};
+		
+		/** The choice corresponding to the correct answer. */
+		this.correct = correct;
 		
 		if (Object.values(options).every(a => a instanceof Array)) {
 			for (let i in options) {
@@ -80,7 +153,7 @@ class Poll {
 		}
 	}
 	
-	add() {
+	get html() {
 		let optionButtonsA = [];
 		let optionButtonsS = "";
 		
@@ -101,34 +174,85 @@ ${optionButtonsS}
 </div>
 </div>`
 	}
-}
-
-class TypedPoll {
-	constructor(question) {
-		this.question = question;
-		this.field = "poll_input_" + ($("[id*=\"poll_input_\"]").length + 1);
-	}
 	
 	add() {
-		return `<div class="animated faster fadeInUp choose">
-<div class="question h5 mt-4">${this.question}</div>
-<span id="${this.field}" class="mb-4"></span>
-<button class="btn btn-${currentRecipient.first.toLowerCase()} ml-2">Send</button>
-</div>`;
+		let x = $(this.html).appendTo($("#chat"));
+		updateScroll();
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		
+		let z = {
+			el: x,
+			base: this
+		}
+		
+		return z;
 	}
 }
 
+/** The TypedPoll class. */
+class TypedPoll {
+	constructor(question, correct) {
+		/** The question to be asked. */
+		this.question = question;
+		
+		/** The correct answer/s to the question. Can either be a string or an array of strings. */
+		this.correct = correct;
+	}
+	
+	/** Returns the HTML markup representing the TypedPoll. */
+	get html() {
+		return `<div class="animated faster fadeInUp type">
+<div class="question h5 mt-4">${this.question}</div>
+<div class="input-row mb-4">
+	<span class="type-input"></span>
+	<button class="btn btn-${currentRecipient.first.toLowerCase()} ml-2 send">Send</button>
+</div>
+</div>`;
+	}
+	
+	/** Adds the TypedPoll to #chat. */
+	add() {
+		let x = $(this.html).appendTo($("#chat"));
+		updateScroll();
+		
+		let i = MQ.MathField($(x).find(".type-input").get(0), {
+			spaceBehavesLikeTab: true,
+			charsThatBreakOutOfSupSub: '+-',
+			handlers: {
+				enter: function() {
+					queue.next();
+					let val = i.latex();
+					i.blur();
+					x.find(".send").prop("disabled", true);
+				}
+			}
+		});
+		
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		
+		let z = {
+			input: i,
+			el: x,
+			base: this
+		};
+		
+		return z;
+	}
+}
+
+// ==========
+// Recipients
+// ==========
+
 /** Calisto's Recipient object. */
-let cal = new Recipient("Calisto", "Lucero", "../images/cal dp.png");
+let cal = new Recipient("Calisto", "Lucero", "cal dp.png");
 
 /** IO's recipient object. */
-let io = new Recipient("Ian", "Kona", "../images/io dp.png", "Okelani");
+let io = new Recipient("Ian", "Kona", "io dp.png", "Okelani");
 
-/** Last poll added. */
-let lastPoll;
-
-/** Last input poll added. */
-let lastTypedPoll;
+// ==============
+// Other functions
+// ==============
 
 /**
 	Returns a random millisecond duration representing how long it takes to read/type a message of the specified length.
@@ -145,235 +269,12 @@ function timeDelay(l, read = false, animate = true) {
 	• 1 wpm = 4 - 5 cpm
 	*/
 	if (read) {
-		return Math.trunc(d3.randomInt(Math.trunc((60000 / 1000) * l), Math.trunc((60000 / 1500) * l) + 1)() / 6) + (animate ? 1000 : 0);
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 1000) * l), Math.trunc((60000 / 1500) * l) + 1)() / 8) + (animate ? 1000 : 0);
 		// ORIGINAL: return (l * 10) - 100 > 200 ? d3.randomInt((l * 10) - 100, (l * 10) + 100)() : d3.randomInt(200, (l * 10) + 100)();
 	} else {
-		return Math.trunc(d3.randomInt(Math.trunc((60000 / 260) * l), Math.trunc((60000 / 375) * l) + 1)() / 6) + (animate ? 1000 : 0);
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 260) * l), Math.trunc((60000 / 375) * l) + 1)() / 8) + (animate ? 1000 : 0);
 		// ORIGINAL: return (l * 30) - 300 > 600 ? d3.randomInt((l * 30) - 300, (l * 30) + 300)() : d3.randomInt(600, (l * 30) + 300)();
 	}
-}
-
-/** Adds a message to the chat. */
-function addMessage(m, s, f = function() {}, d = 0) {
-	let x = new Message(m, s);
-	let y = $("#chat div[class~=left], #chat div[class~=right]");
-	let z = y.last();
-	let u = $("#chat div[class~=choose]").last();
-	
-	if (z.prev().index() > u.index()) {
-		if (y.length != 0) {
-			if (z.attr("class").match(new RegExp(s)) != null) {
-				z.css("margin-bottom", "1px");
-				if (s == "left") {
-					z.css("border-bottom-left-radius", "0");	
-				} else {
-					z.css("border-bottom-right-radius", "0");
-				}
-			}
-		}
-	}
-	
-	let del = timeDelay(m.length);
-	
-	if (d == 0) {
-		$("#chat").append(x.add());
-	} else {
-		if (s == "left") {
-			addMessage(isTyping, s);
-			setTimeout(function() {
-				replaceLastMessage(m);
-			}, del);
-		} else {
-			$("#chat").append(x.add());
-		}
-	}
-	
-	z = $("#chat div[class~=left], #chat div[class~=right]").last();
-	u = $("#chat div[class~=choose]").last();
-	
-	if (z.prev().index() > u.index()) {
-		if (z.prev().attr("class").match(new RegExp(s)) != null) {
-			z.css("margin-top", "1px");
-
-			if (s == "left") {
-				z.css("border-top-left-radius", "0");
-			} else {
-				z.css("border-top-right-radius", "0");
-			}
-		}
-	}
-	
-	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	
-	updateScroll();
-	
-	setTimeout(f, d + del);
-}
-
-/** Removes last message from the chat. */
-function removeLastMessage() {
-	let x = $("#chat div[class~=left], #chat div[class~=right]").last();
-	x.removeClass("fadeInUp");
-	
-	if(x.attr("class").match(new RegExp("left")) != null) {
-		x.addClass("fadeOutLeft");
-	} else {
-		x.addClass("fadeOutRight");
-	}
-	
-	x.on("animationend", function() {x.remove();});
-}
-
-/** Replaces last message in the chat. */
-function replaceLastMessage(n) {
-	let x = $("#chat div[class~=left], #chat div[class~=right]").last();
-	
-	x.html(n);	
-	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	updateScroll();
-}
-
-/** Adds a poll to the chat. */
-function addPoll(q, o, c, r, w, u, pre = "", post = "", f = function() {}) {
-	let x = new Poll(q, o);
-	let y = $(x.add()).appendTo("#chat");
-	
-	addPollClicks(y.find(".choice"), c, r, w, u, pre, post, f);
-	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	
-	$(".choices").last().focus();
-	updateScroll();
-	
-	lastPoll = x;
-}
-
-/** Sets selected poll option to active and disables remaining options. */
-function pollSelect(a) {
-	$(a).addClass("active");
-	$(a).siblings().prop("disabled", true);
-	$(a).siblings().off();
-}
-
-/** Adds click events to poll choices. */
-function addPollClicks(a, c, r, w, u, pre = "", post = "", f = function() {}) {
-	for (let i of a) {
-		if ($(i).attr('class').match(new RegExp("choice_."))[0].slice(-1) != c) {
-			$(i).one("click", function() {
-				pollSelect(this);
-				
-				if (Object.keys(lastPoll.replies).length != 0) {
-					addMessage(lastPoll.replies[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)], "right");
-				} else {
-					addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
-				}
-				
-				delete lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)];
-				
-				setTimeout(function() {
-					addMessage(w, "left", function() {
-						setTimeout(function() {
-							addMessage(u, "left", function() {
-								let newOptions = {};
-								
-								if (Object.keys(lastPoll.replies).length != 0) {
-									for (let j in lastPoll.options) {
-										newOptions[j] = [lastPoll.options[j], lastPoll.replies[j]];
-									}
-								} else {
-									newOptions = lastPoll.options;
-								}
-								
-								setTimeout(function() {
-									addPoll(lastPoll.question, newOptions, c, r, w, u, pre, post, f);
-								}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true) + timeDelay(lastPoll.question.length));
-							}, timeDelay(u.length, false, false));
-						}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-					}, timeDelay(w.length, false, false));
-				}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-			});
-		} else {
-			$(i).one("click", function() {
-				pollSelect(this);
-				
-				if (Object.keys(lastPoll.replies).length != 0) {
-					addMessage(lastPoll.replies[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)], "right");
-				} else {
-					addMessage(pre + lastPoll.options[$(this).attr('class').match(new RegExp("choice_."))[0].slice(-1)] + post, "right");
-				}
-				
-				setTimeout(function() {
-					addMessage(r, "left", function() {
-						setTimeout(f, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-					}, timeDelay(r.length, false, false));
-				}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-			});
-		}
-	}
-}
-
-/** Adds a typed poll to the chat. */
-function addTypedPoll(q, c, r, w, u, pre = "", post = "", d = false, f = function() {}) {
-	let x = new TypedPoll(q);
-	let y = $(x.add()).appendTo("#chat");
-	
-	function checkTP(ans) {
-		typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].blur();
-		
-		let open = d ? "\\(\\displaystyle" : "\\(";
-		addMessage(pre + open + typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex() + "\\)" + post, "right");
-		
-		let truthy = false;
-		
-		if (c instanceof Array) {
-			truthy = c.includes(ans);
-		} else {
-			truthy = ans == c;
-		}
-		
-		if (truthy) {
-			setTimeout(function() {
-				addMessage(r, "left", function() {
-					setTimeout(f, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-				}, timeDelay(r.length, false, false));
-			}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-		} else {
-			setTimeout(function() {
-				addMessage(w, "left", function() {
-					setTimeout(function() {
-						addMessage(u, "left", function() {
-							setTimeout(function() {
-								addTypedPoll(lastTypedPoll.question, c, r, w, u, pre, post, d, f);
-							}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true) + timeDelay(lastTypedPoll.question.length));
-						}, timeDelay(u.length, false, false));
-					}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-				}, timeDelay(w.length, false, false));
-			}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
-		}
-		
-		$("#" + lastTypedPoll.field).siblings("button").prop("disabled", true);
-	}
-	
-	typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)] = MQ.MathField($("#" + x.field)[0], {
-		spaceBehavesLikeTab: true,
-		charsThatBreakOutOfSupSub: '+-',
-		handlers: {
-			enter: function() {
-				checkTP(typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex());
-			}
-		}
-	});
-	
-	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	
-	updateScroll();
-	
-	lastTypedPoll = x;
-	
-	typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].focus();
-	$("#" + lastTypedPoll.field).siblings("button").one("click", function() {
-		checkTP(typedPollInputs[x.field.slice(x.field.match(/(_)(?!.*\1)/).index + 1)].latex());
-	});
-	$("#" + lastTypedPoll.field).siblings("button").addClass("btn-" + $("#chat").attr("class").match(new RegExp(currentRecipient.first.toLowerCase()))[0]);
 }
 
 /** Toggles the "online" state of the chatmate. */
@@ -394,11 +295,3 @@ function toggleOnline() {
 function updateScroll() {
 	window.scroll({top: $("body").css("height").slice(0, -2), left: 0, behavior: 'smooth'});
 }
-
-/** Shows an "Are you sure you want to leave this page?" dialog when trying to navigate out of the page in the middle of a chat. */
-window.addEventListener("beforeunload", function(x) {
-	if (started) {
-		x.preventDefault();
-		x.returnValue = "";
-	}
-});

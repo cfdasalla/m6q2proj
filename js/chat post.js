@@ -44,9 +44,8 @@ function * queueFunc() {
 					
 					p.input.focus();
 					
-					p.html.find(".send").one("click", function() {
+					p.el.find(".send").one("click", function() {
 						queue.next();
-						let val = p.input.latex();
 						p.input.blur();
 						$(this).prop("disabled", true);
 					});
@@ -54,7 +53,7 @@ function * queueFunc() {
 					let c = yield p;
 					
 					let ans = p.input.latex();
-					yield new Message("r", x[6] + "\\(" + (x[8] == true ? "\\displaystyle" : "") + ans + "\\)" + x[7]).add();
+					yield new Message("r", x[6] + "\\(" + (x[8] ? "\\displaystyle" : "") + ans + "\\)" + x[7]).add();
 					
 					let truthy = false;
 					

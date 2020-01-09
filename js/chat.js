@@ -60,29 +60,31 @@ class Message {
 		
 		/** The Message content. */
 		this.message = message;
+		
+		/** The JQuery object containing the HTML element of the Message. */
+		this.element;
 	}
 	
 	get html() {
 		return `<div class="animated faster fadeInUp ${this.sender == "l" ? "left" : "right"}">${this.message}</div>`
 	}
 	
+	set el(a) {
+		this.element = a;
+		return a;
+	}
+	
 	add() {
 		let a = new Promise(function(resolve, reject) {
-			let lastEl = $("#chat div.left, #chat div.right").get(-1);
-			
-			let delRead = !!lastEl ? timeDelay(lastEl.innerText.length, true) : 0;
-			if ($("#chat").children().last().is(".choose .type")) delRead = 0;
-			
 			let delType = this.sender == "r" ? timeDelay(this.message.length, false, false) : 0;
-			if ($("#chat").children().last().is(".choose .type")) delType = 0;
+			if ($("#chat").children().last().is(".choose, .type")) delType = 0;
 			
-			setTimeout(function() {
-				resolve();
-			}, delRead + delType);
+			setTimeout(resolve, delType);
 		}.bind(this)).then(function(a) {
 			let x = $(this.sender == "l" ? `<div class="animated faster fadeInUp left">${isTyping}</div>` : this.html).appendTo($("#chat"));
+			this.el = x;
 			updateScroll();
-
+			
 			if (x.prev().attr("class").match(new RegExp("\\bleft\\b")) != null && this.sender == "l") {
 				x.prev().css("margin-bottom", "1px");
 				x.prev().css("border-bottom-left-radius", "0");
@@ -111,19 +113,9 @@ class Message {
 			setTimeout(function() {
 				queue.next();
 			}, del1 + del2);
-			
-			x.addClass("catch");
 		}.bind(this));
 		
-		var el = $(".catch");
-		el.removeClass("catch");
-		
-		let z = {
-			el: el,
-			base: this
-		}
-		
-		return z;
+		return this;
 	}
 }
 
@@ -152,6 +144,9 @@ class Poll {
 				this.options[i] = options[i];
 			}
 		}
+		
+		/** The JQuery object containing the HTML element corresponding to the Poll. */
+		this.element;
 	}
 	
 	get html() {
@@ -176,17 +171,31 @@ ${optionButtonsS}
 </div>`
 	}
 	
+	set el(a) {
+		this.element = a;
+		return a;
+	}
+	
 	add() {
-		let x = $(this.html).appendTo($("#chat"));
-		updateScroll();
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		let p = new Promise(function(resolve, reject) {
+			setTimeout(resolve, timeDelay(this.question.length, false, false));
+		}.bind(this)).then(function(a) {
+			let x = $(this.html).appendTo($("#chat"));
+			this.el = x;
+			updateScroll();
+			
+			for (let i of x.find(".choice")) {
+				$(i).one("click", function() {
+					queue.next($(this));
+					$(this).addClass("active");
+					$(this).siblings().prop("disabled", true);
+				});
+			}
+			
+			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		}.bind(this));
 		
-		let z = {
-			el: x,
-			base: this
-		}
-		
-		return z;
+		return this;
 	}
 }
 
@@ -198,6 +207,12 @@ class TypedPoll {
 		
 		/** The correct answer/s to the question. Can either be a string or an array of strings. */
 		this.correct = correct;
+		
+		/** The JQuery object containing the HTML element corresponding to the TypedPoll. */
+		this.element;
+		
+		/** The MathQuill object corresponding to the TypedPoll's input box. */
+		this.input;
 	}
 	
 	/** Returns the HTML markup representing the TypedPoll. */
@@ -211,32 +226,51 @@ class TypedPoll {
 </div>`;
 	}
 	
+	set el(a) {
+		this.element = a;
+		return a;
+	}
+	
+	set in(a) {
+		this.input = a;
+		return a;
+	}
+	
 	/** Adds the TypedPoll to #chat. */
 	add() {
-		let x = $(this.html).appendTo($("#chat"));
-		updateScroll();
-		
-		let i = MQ.MathField($(x).find(".type-input").get(0), {
-			spaceBehavesLikeTab: true,
-			charsThatBreakOutOfSupSub: '+-',
-			handlers: {
-				enter: function() {
-					queue.next();
-					i.blur();
-					x.find(".send").prop("disabled", true);
+		let p = new Promise(function(resolve, reject) {
+			setTimeout(resolve, timeDelay(this.question.length, false, false));
+		}.bind(this)).then(function(a) {
+			let x = $(this.html).appendTo($("#chat"));
+			updateScroll();
+
+			let i = MQ.MathField($(x).find(".type-input").get(0), {
+				spaceBehavesLikeTab: true,
+				charsThatBreakOutOfSupSub: '+-',
+				handlers: {
+					enter: function() {
+						queue.next();
+						i.blur();
+						x.find(".send").prop("disabled", true);
+					}
 				}
-			}
-		});
+			});
+			
+			i.focus();
+			
+			x.find(".send").one("click", function() {
+				queue.next();
+				x.input.blur();
+				$(this).prop("disabled", true);
+			});
+			
+			this.el = x;
+			this.in = i;
+
+			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		}.bind(this));
 		
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-		
-		let z = {
-			input: i,
-			el: x,
-			base: this
-		};
-		
-		return z;
+		return this;
 	}
 }
 
@@ -269,10 +303,10 @@ function timeDelay(l, read = false, animate = true) {
 	• 1 wpm = 4 - 5 cpm
 	*/
 	if (read) {
-		return Math.trunc(d3.randomInt(Math.trunc((60000 / 1000) * l), Math.trunc((60000 / 1500) * l) + 1)() / 8) + (animate ? 1000 : 0);
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 1000) * l), Math.trunc((60000 / 1500) * l) + 1)() / 2) + (animate ? 1000 : 0);
 		// ORIGINAL: return (l * 10) - 100 > 200 ? d3.randomInt((l * 10) - 100, (l * 10) + 100)() : d3.randomInt(200, (l * 10) + 100)();
 	} else {
-		return Math.trunc(d3.randomInt(Math.trunc((60000 / 260) * l), Math.trunc((60000 / 375) * l) + 1)() / 8) + (animate ? 1000 : 0);
+		return Math.trunc(d3.randomInt(Math.trunc((60000 / 260) * l), Math.trunc((60000 / 375) * l) + 1)() / 4) + (animate ? 1000 : 0);
 		// ORIGINAL: return (l * 30) - 300 > 600 ? d3.randomInt((l * 30) - 300, (l * 30) + 300)() : d3.randomInt(600, (l * 30) + 300)();
 	}
 }

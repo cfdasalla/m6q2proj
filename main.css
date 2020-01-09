@@ -10088,7 +10088,7 @@ a.text-ian:hover, a.text-ian:focus {
 }
 
 #chat div {
-  border-radius: 10px;
+  border-radius: 1em;
   clear: both;
 }
 
@@ -10097,6 +10097,7 @@ a.text-ian:hover, a.text-ian:focus {
   max-width: 80%;
   margin: 10px 0px;
   text-align: left;
+  transition: border-radius 150ms;
 }
 
 #chat .left {

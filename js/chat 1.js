@@ -66,10 +66,10 @@ for (let i of [[rq1w, rq1], [rq2w, rq2]]) {
 	i[0][0].copy(i[1]);
 	shuffle(i[0][0].coefficients);
 	i[0][0].coefficients[0] = 0;
-	
+
 	i[0][1].copy(i[1]);
 	i[0][1].coefficients.shift();
-	
+
 	i[0][2].copy(i[1].derivative());
 	shuffle(i[0][2].coefficients);
 	i[0][2].coefficients.unshift(0);

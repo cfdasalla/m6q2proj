@@ -12,18 +12,10 @@ function * queueFunc() {
 			case "p":
 				while (true) {
 					let p = new Poll(x[1], x[2], x[3]).add();
-					
-					for (let i of p.el.find(".choice")) {
-						$(i).one("click", function() {
-							queue.next($(this));
-							$(this).addClass("active");
-							$(this).siblings().prop("disabled", true);
-						});
-					}
-					
 					let c = yield p;
+					
 					let ans = c.attr("class").match("choice_.")[0].slice(-1);
-					yield new Message("r", (Object.entries(p.base.replies).length === 0 ? x[7] + p.base.options[ans] + x[8] : p.base.replies[ans])).add();
+					yield new Message("r", (Object.entries(p.replies).length === 0 ? x[7] + p.options[ans] + x[8] : p.replies[ans])).add();
 					
 					if (c.attr("class").match(new RegExp("choice_" + x[3])) == null) {
 						delete x[2][c.attr("class").match(new RegExp("choice_."))[0].slice(-1)];
@@ -41,15 +33,6 @@ function * queueFunc() {
 			case "t":
 				while (true) {
 					let p = new TypedPoll(x[1], x[2]).add();
-					
-					p.input.focus();
-					
-					p.el.find(".send").one("click", function() {
-						queue.next();
-						p.input.blur();
-						$(this).prop("disabled", true);
-					});
-					
 					let c = yield p;
 					
 					let ans = p.input.latex();
@@ -57,10 +40,10 @@ function * queueFunc() {
 					
 					let truthy = false;
 					
-					if (p.tp.correct instanceof Array) {
-						truthy = p.tp.correct.includes(ans);
+					if (p.correct instanceof Array) {
+						truthy = p.correct.includes(ans);
 					} else {
-						truthy = ans == p.tp.correct;
+						truthy = ans == p.correct;
 					}
 					
 					if (truthy) {

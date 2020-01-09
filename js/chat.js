@@ -74,6 +74,7 @@ class Message {
 			if ($("#chat").children().last().is(".choose .type")) delRead = 0;
 			
 			let delType = this.sender == "r" ? timeDelay(this.message.length, false, false) : 0;
+			if ($("#chat").children().last().is(".choose .type")) delType = 0;
 			
 			setTimeout(function() {
 				resolve();

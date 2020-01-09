@@ -222,7 +222,6 @@ class TypedPoll {
 			handlers: {
 				enter: function() {
 					queue.next();
-					let val = i.latex();
 					i.blur();
 					x.find(".send").prop("disabled", true);
 				}

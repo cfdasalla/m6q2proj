@@ -23,15 +23,15 @@ function * queueFunc() {
 					
 					let c = yield p;
 					let ans = c.attr("class").match("choice_.")[0].slice(-1);
-					yield new Message((Object.entries(p.base.replies).length === 0 ? x[7] + p.base.options[ans] + x[8] : p.base.replies[ans]), "right").add();
+					yield new Message("r", (Object.entries(p.base.replies).length === 0 ? x[7] + p.base.options[ans] + x[8] : p.base.replies[ans])).add();
 					
 					if (c.attr("class").match(new RegExp("choice_" + x[3])) == null) {
 						delete x[2][c.attr("class").match(new RegExp("choice_."))[0].slice(-1)];
 						
-						yield new Message(x[5], "left").add();
-						yield new Message(x[6], "left").add();
+						yield new Message("l", x[5]).add();
+						yield new Message("l", x[6]).add();
 					} else {
-						yield new Message(x[4], "left").add();
+						yield new Message("l", x[4]).add();
 						break;
 					}
 				}
@@ -54,7 +54,7 @@ function * queueFunc() {
 					let c = yield p;
 					
 					let ans = p.input.latex();
-					yield new Message(x[6] + "\\(" + (x[8] == true ? "\\displaystyle" : "") + ans + "\\)" + x[7], "right").add();
+					yield new Message("r", x[6] + "\\(" + (x[8] == true ? "\\displaystyle" : "") + ans + "\\)" + x[7]).add();
 					
 					let truthy = false;
 					
@@ -65,11 +65,11 @@ function * queueFunc() {
 					}
 					
 					if (truthy) {
-						yield new Message(x[3], "left").add();
+						yield new Message("l", x[3]).add();
 						break;
 					} else {
-						yield new Message(x[4], "left").add();
-						yield new Message(x[5], "left").add();
+						yield new Message("l", x[4]).add();
+						yield new Message("l", x[5]).add();
 					}
 				}
 				

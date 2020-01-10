@@ -80,7 +80,8 @@ for (let i of [[rq1w, rq1], [rq2w, rq2]]) {
 let messages = [
 	["m", "r", "Uy, IO! Kamusta?"],
 	["m", "l", "Okay naman. Ikaw?"],
-	["m", "r", "Okay naman din, pero… medyo nahihirapan ako sa Math eh."],
+	["m", "r", "Okay naman din, pero…"],
+	["m", "r", "…medyo nahihirapan ako sa Math eh."],
 	["m", "l", "Ah. Ano na ba topic niyo?"],
 	["m", "r", "Power rule. May quiz nga kami bukas eh, tapos di ko gets yung lesson. GG na 😭"],
 	["m", "l", "Ay hala… sige, turuan kita!"],

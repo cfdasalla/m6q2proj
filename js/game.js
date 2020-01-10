@@ -77,7 +77,7 @@ let current;
 function generatePolynomial() {
 	current = new Polynomial();
 	current.randomize(d3.randomInt(0, maxDeg + 1)());
-	
+
 	if (zeroCoef) { current.randomZero(); }
 }
 
@@ -87,12 +87,12 @@ function check() {
 				 i: current.indefinite().latex(),
 				 f: current.definite(currL, currU)};
 	let dots = $("#progress .dot");
-	
+
     $("#check").prop("disabled", true);
     $("#skip").prop("disabled", true);
-    
+
 	dots.eq(qCurrent - 1).removeClass("currentQ");
-	
+
 	if (mathField.latex() === modes[mode]) {
 		if (chieRepeat == false) {
 			tamaC += 1;
@@ -106,30 +106,30 @@ function check() {
 			$("#answer .mq-matrixed").css("background", "yellow");
 			dots.eq(qCurrent - 1).addClass("sayangQ");
 		}
-		
+
 		setTimeout(function() {
 			refresh(true);
 		}, 1000);
-		
+
 		chieRepeat = false;
 		qCurrent++;
 	} else {
 		if (chieRepeat == false) {
 			chieC += 1;
 		}
-		
+
 		$("#result").text("MALI!");
 		$("#answer").css("background", "red");
 		$("#answer .mq-matrixed").css("background", "red");
 		dots.eq(qCurrent - 1).addClass("chieQ");
-		
+
 		setTimeout(function() {
 			refresh(false);
 		}, 1000);
-		
+
 		chieRepeat = true;
 	}
-	
+
 	updateCounters();
 }
 
@@ -139,30 +139,30 @@ function skip() {
 				 i: current.indefinite().latex(),
 				 f: current.definite(currL, currU)};
 	let dots = $("#progress .dot");
-    
+
 	dots.eq(qCurrent - 1).removeClass("currentQ");
-	
+
 	mathField.select();
 	mathField.write("");
     $("#check").prop("disabled", true);
     $("#skip").prop("disabled", true);
-    
+
 	mathField.write(modes[mode]);
-	
+
     if (chieRepeat == true) {
         chieC -= 1;
     }
-    
+
 	skipC += 1;
 	$("#result").text("SKIP!");
 	$("#answer").css("background", "dodgerblue");
 	$("#answer .mq-matrixed").css("background", "dodgerblue");
 	dots.eq(qCurrent - 1).addClass("skipQ");
-	
+
 	setTimeout(function() {
 		refresh(true);
 	}, 1000);
-	
+
 	qCurrent++;
 	chieRepeat = false;
 	updateCounters();
@@ -176,18 +176,18 @@ function refresh(correct) {
 	if (correct == true) {
 		generatePolynomial();
 		place();
-	
+
 		mathField.select();
 		mathField.write("");
 	}
-	
+
 	if (qCurrent <= qCount) {
 		$("#check").prop("disabled", false);
 		$("#skip").prop("disabled", false);
 	}
-	
+
 	mathField.focus();
-	
+
 	$("#result").html("");
 	$("#answer").css("background", "initial");
 	$("#answer .mq-matrixed").css("background", "initial");
@@ -196,17 +196,17 @@ function refresh(correct) {
 /** Generates a random mode based on allowed modes. */
 function randomMode() {
 	let modeList = Object.keys(allowed).filter(key => allowed[key] === true);
-	
+
 	mode = modeList[d3.randomInt(0,modeList.length)()];
 }
 
 /** Places equation into #question. */
 function place() {
 	let dots = $("#progress .dot");
-	
+
 	dots.eq(qCurrent - 1).removeClass("soonQ");
 	dots.eq(qCurrent - 1).addClass("currentQ");
-	
+
 	if (qCurrent <= qCount) {
 		randomMode();
 
@@ -222,7 +222,7 @@ function place() {
 			case "f":
 				currU = d3.randomInt(minBound, maxBound + 1)();
 				currL = greaterLower ? d3.randomInt(minBound, maxBound + 1)() : d3.randomInt(currU, maxBound + 1)();
-				
+
 				$("#question").html("\\( \\displaystyle \\int ^{" + currU + "} _{" + currL + "} {(" + current.latex() + ") \\mathrm{d} x} \\)");
 				$("#question").css("color", "var(--green)");
 				break;
@@ -231,7 +231,7 @@ function place() {
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	} else {
 		gameInProgress = false;
-		
+
         $("#main").hide();
         $("#result").hide();
 		$("#stats").show();
@@ -241,7 +241,7 @@ function place() {
 /** Starts game proper. */
 function gameProper() {
 	gameInProgress = true;
-	
+
 	minCoef = parseInt($("#min_coef").val());
 	maxCoef = parseInt($("#max_coef").val());
 	minBound = parseInt($("#min_intb").val());
@@ -249,28 +249,28 @@ function gameProper() {
 	zeroCoef = $("#allow_zero").prop("checked");
 	maxDeg = parseInt($("#max_deg").val());
 	greaterLower = $("#greater_lower").prop("checked");
-	
+
 	$("#choose").hide();
     $("#main").show();
     $("#progress").show();
     $("#result").show();
-    
+
 	allowed.d = $("#inc_d").is(":checked");
 	allowed.i = $("#inc_i").is(":checked");
 	allowed.f = $("#inc_f").is(":checked");
-	
+
 	qCurrent = 1;
 	qCount = parseInt($("#question_count").val());
-    
+
     minCoef = parseInt($("#min_coef").val());
     maxCoef = parseInt($("#max_coef").val());
-	
+
 	$("#check").prop("disabled", false);
 	$("#skip").prop("disabled", false);
-	
+
 	progressDots();
 	resetCounters();
-	
+
 	generatePolynomial();
 	place();
 }
@@ -287,7 +287,7 @@ function resetCounters() {
 	tamaC = 0;
 	chieC = 0;
 	skipC = 0;
-	
+
 	updateCounters();
 }
 
@@ -302,13 +302,13 @@ function progressDots() {
 function checkForm() {
 	$("#choose").find("*").removeClass("is-invalid");
 	$("#choose").find("*").prop("disabled", false);
-    
+
     for (let z of ["question_count", "min_coef", "max_coef", "min_intb", "max_intb"]) {
         $("#" + z).val() == "" ? $("#" + z).addClass("is-invalid") : $("#" + z).removeClass("is-invalid");
     }
-	
+
 	$("#question_types :checked").length == 0 ? $("#question_types input").addClass("is-invalid") : $("#question_types input").removeClass("is-invalid");
-	
+
 	if (!$("#inc_f").is(":checked")) {
 		$("#min_intb").prop("disabled", true);
 		$("#max_intb").prop("disabled", true);
@@ -318,17 +318,17 @@ function checkForm() {
 		$("#max_intb").prop("disabled", false);
 		$("#greater_lower").prop("disabled", false);
 	}
-	
+
 	parseInt($("#question_count").val()) <= 0 ? $("#question_count").addClass("is-invalid") : $("#question_count").removeClass("is-invalid");
-	
+
 	parseInt($("#min_coef").val()) <= 0 || parseInt($("#min_coef").val()) > parseInt($("#max_coef").val()) ? $("#min_coef").addClass("is-invalid") : $("#min_coef").removeClass("is-invalid");
-	
+
 	parseInt($("#max_coef").val()) <= 0 || parseInt($("#max_coef").val()) < parseInt($("#min_coef").val()) ? $("#max_coef").addClass("is-invalid") : $("#max_coef").removeClass("is-invalid");
-	
+
 	parseInt($("#min_intb").val()) > parseInt($("#max_intb").val()) ? $("#min_intb").addClass("is-invalid") : $("#min_intb").removeClass("is-invalid");
-	
+
 	parseInt($("#max_intb").val()) < parseInt($("#min_intb").val()) ? $("#max_intb").addClass("is-invalid") : $("#max_intb").removeClass("is-invalid");
-	
+
 	$("#choose").find('.is-invalid').length > 0 ? $("#start").prop("disabled", true) : $("#start").prop("disabled", false);
 }
 
@@ -338,9 +338,13 @@ function startup() {
 	$("#main").hide();
 	$("#stats").hide();
 	checkForm();
-	
+
 	$("#progress").empty();
-    $("#advanced").hide();
+	$("#advanced").hide();
+	
+	$("#back").click(function() {
+		history.back();
+	});
 }
 
 $("#choose").change(checkForm);

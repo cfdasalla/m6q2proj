@@ -35,17 +35,17 @@ class Recipient {
 	constructor(first, last, picture, middle = "") {
 		/** The first name of the character. */
 		this.first = first;
-		
+
 		/** The last name of the character. */
 		this.last = last;
-		
+
 		/** The middle name of the character. */
 		this.middle = middle;
-		
+
 		/** The picture of the character. */
 		this.picture = picture;
 	}
-	
+
 	/** Returns the full name of the character. */
 	get fullName() {
 		return this.middle != "" ? this.first + " " + this.middle + " " + this.last : this.first + " " + this.last;
@@ -57,49 +57,49 @@ class Message {
 	constructor(sender, message) {
 		/** The sender of the Message. */
 		this.sender = sender;
-		
+
 		/** The Message content. */
 		this.message = message;
-		
+
 		/** The JQuery object containing the HTML element of the Message. */
 		this.element;
 	}
-	
+
 	get html() {
 		return `<div class="animated faster fadeInUp ${this.sender == "l" ? "left" : "right"}">${this.message}</div>`
 	}
-	
+
 	set el(a) {
 		this.element = a;
 		return a;
 	}
-	
+
 	add() {
 		let a = new Promise(function(resolve, reject) {
-			let delType = this.sender == "r" ? timeDelay(this.message.length, false, false) : 0;
+			let delType = this.sender == "r" ? timeDelay(this.message.replace("//displaystyle", "").length, false, false) : 0;
 			if ($("#chat").children().last().is(".choose, .type")) delType = 0;
-			
+
 			setTimeout(resolve, delType);
 		}.bind(this)).then(function(a) {
 			let x = $(this.sender == "l" ? `<div class="animated faster fadeInUp left">${isTyping}</div>` : this.html).appendTo($("#chat"));
 			this.el = x;
 			updateScroll();
-			
+
 			if (x.prev().attr("class").match(new RegExp("\\bleft\\b")) != null && this.sender == "l") {
 				x.prev().css("margin-bottom", "1px");
-				x.prev().css("border-bottom-left-radius", "0");
-				x.css("border-top-left-radius", "0");
+				x.prev().css("border-bottom-left-radius", "5px");
+				x.css("border-top-left-radius", "5px");
 				x.css("margin-top", "1px");
 			} else if (x.prev().attr("class").match(new RegExp("\\bright\\b")) != null && this.sender == "r") {
 				x.prev().css("margin-bottom", "1px");
-				x.prev().css("border-bottom-right-radius", "0");
-				x.css("border-top-right-radius", "0");
+				x.prev().css("border-bottom-right-radius", "5px");
+				x.css("border-top-right-radius", "5px");
 				x.css("margin-top", "1px");
 			}
-			
+
 			let del1 = timeDelay(this.message.length);
 			let del2 = timeDelay(this.message.length, true);
-			
+
 			if (this.sender == "l") {
 				setTimeout(function() {
 					x.html(this.message);
@@ -109,12 +109,12 @@ class Message {
 			} else {
 				MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 			}
-			
+
 			setTimeout(function() {
 				queue.next();
 			}, del1 + del2);
 		}.bind(this));
-		
+
 		return this;
 	}
 }
@@ -124,16 +124,16 @@ class Poll {
 	constructor(question, options, correct) {
 		/** The question for the Poll. */
 		this.question = question;
-		
+
 		/** An object representing the options for the Poll. */
 		this.options = {};
-		
+
 		/** An object representing custom replies to be sent for each choice. */
 		this.replies = {};
-		
+
 		/** The choice corresponding to the correct answer. */
 		this.correct = correct;
-		
+
 		if (Object.values(options).every(a => a instanceof Array)) {
 			for (let i in options) {
 				this.options[i] = options[i][0];
@@ -144,25 +144,25 @@ class Poll {
 				this.options[i] = options[i];
 			}
 		}
-		
+
 		/** The JQuery object containing the HTML element corresponding to the Poll. */
 		this.element;
 	}
-	
+
 	get html() {
 		let optionButtonsA = [];
 		let optionButtonsS = "";
-		
+
 		for (let i in this.options) {
 			optionButtonsA.push(`<button class="choice choice_${i} btn btn-outline-${currentRecipient.first.toLowerCase()}">${this.options[i]}</button>\n`);
 		}
-		
+
 		optionButtonsA = shuffle(optionButtonsA);
-		
+
 		for (let j of optionButtonsA) {
 			optionButtonsS += j;
 		}
-		
+
 		return `<div class="animated faster fadeInUp choose">
 <div class="question h5 mt-4">${this.question}</div>
 <div class="choices mb-4" tabindex="-1">
@@ -170,12 +170,12 @@ ${optionButtonsS}
 </div>
 </div>`
 	}
-	
+
 	set el(a) {
 		this.element = a;
 		return a;
 	}
-	
+
 	add() {
 		let p = new Promise(function(resolve, reject) {
 			setTimeout(resolve, timeDelay(this.question.length, false, false));
@@ -183,7 +183,7 @@ ${optionButtonsS}
 			let x = $(this.html).appendTo($("#chat"));
 			this.el = x;
 			updateScroll();
-			
+
 			for (let i of x.find(".choice")) {
 				$(i).one("click", function() {
 					queue.next($(this));
@@ -191,10 +191,10 @@ ${optionButtonsS}
 					$(this).siblings().prop("disabled", true);
 				});
 			}
-			
+
 			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 		}.bind(this));
-		
+
 		return this;
 	}
 }
@@ -204,17 +204,17 @@ class TypedPoll {
 	constructor(question, correct) {
 		/** The question to be asked. */
 		this.question = question;
-		
+
 		/** The correct answer/s to the question. Can either be a string or an array of strings. */
 		this.correct = correct;
-		
+
 		/** The JQuery object containing the HTML element corresponding to the TypedPoll. */
 		this.element;
-		
+
 		/** The MathQuill object corresponding to the TypedPoll's input box. */
 		this.input;
 	}
-	
+
 	/** Returns the HTML markup representing the TypedPoll. */
 	get html() {
 		return `<div class="animated faster fadeInUp type">
@@ -225,17 +225,17 @@ class TypedPoll {
 </div>
 </div>`;
 	}
-	
+
 	set el(a) {
 		this.element = a;
 		return a;
 	}
-	
+
 	set in(a) {
 		this.input = a;
 		return a;
 	}
-	
+
 	/** Adds the TypedPoll to #chat. */
 	add() {
 		let p = new Promise(function(resolve, reject) {
@@ -255,21 +255,21 @@ class TypedPoll {
 					}
 				}
 			});
-			
+
 			i.focus();
-			
+
 			x.find(".send").one("click", function() {
 				queue.next();
-				x.input.blur();
+				i.blur();
 				$(this).prop("disabled", true);
 			});
-			
+
 			this.el = x;
 			this.in = i;
 
 			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 		}.bind(this));
-		
+
 		return this;
 	}
 }
@@ -284,13 +284,13 @@ let cal = new Recipient("Calisto", "Lucero", "cal dp.png");
 /** IO's recipient object. */
 let io = new Recipient("Ian", "Kona", "io dp.png", "Okelani");
 
-// ==============
+// ===============
 // Other functions
-// ==============
+// ===============
 
 /**
 	Returns a random millisecond duration representing how long it takes to read/type a message of the specified length.
-	
+
 	@param {number} l - Length of message.
 	@param {boolean} [read] - Determines whether or not delay should take into account message being read instead of typed. Defaults to false.
 	@param {boolean} [animate] - Determines whether or not to add 1 second to output to compensate for message animation. Defaults to true.

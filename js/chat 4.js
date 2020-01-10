@@ -75,7 +75,7 @@ let messages = [
 	["t", "What’s the difference of \\(" + operatePoly(r1b, r1a.derivative(), "m").latex() + "\\) and \\(" + operatePoly(r1a, r1b.derivative(), "m").latex() + "\\)?", operatePoly(operatePoly(r1b, r1a.derivative(), "m"), operatePoly(r1a, r1b.derivative(), "m"), "s").latex(), "That’s right!", "I don’t think that’s right…", "Let’s try again.", "Is it ", "?"],
 	["m", "l", "Finally, we’re going to take our second function and square it for our denominator."],
 	["t", "What’s the square of \\(" + r1b.latex() + "\\)?", operatePoly(r1b, r1b, "m").latex(), "That’s right!", "I don’t think that’s right…", "Let’s try again.", "Is it ", "?"],
-	["m", "l", "Now, when we put those together, our answer turns out to be \\(\\displaystyle" + r1.derivative().latex() + "\\)."],
+	["m", "l", "Now, when we put those together, our answer turns out to be \\(\\displaystyle" + r1.derivative().latex(true) + "\\)."],
 	["m", "r", "OK, I think I’m starting to get it now…"],
 	["m", "r", "Maybe doing number 2 will help?"],
 	["m", "l", "Sure. What’s the question?"],

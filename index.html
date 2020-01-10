@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
 	<title>The Adventures of Cal Q. Luz</title>
 	<link rel="icon" href="images/icon.png" type="image/png" sizes="256x256">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,400,400i,700,700i|Nunito:200,400,400i,700,700i,900&display=swap&subset=latin-ext" rel="stylesheet">
@@ -32,7 +32,7 @@
 						<input class="px-3 form-control" placeholder="Search" id="search_bar">
 					</div>
 				</div>
-				
+
 				<ul class="list-unstyled pb-4 mb-0">
 					<li>
 						<a class="py-3 media text-reset text-decoration-none" href="0/">
@@ -107,9 +107,9 @@
 		["<span class=\"badge badge-red align-bottom\">Derivatives</span> Product Rule", "Learn about the product rule, used when two expressions are being multiplied, with (new character)."],
 		["<span class=\"badge badge-red align-bottom\">Derivatives</span> Quotient Rule", "Learn about the quotient rule, used especially when dealing with rational expressions, with (new character)."]
 	]
-	
+
 	let convoTexts = [];
-	
+
 	for (let g = 0; g < $("li").length; g++) {
 		if ($("li").eq(g).find("[class*=icon]").length == 0) {
 			convoTexts.push($("li").get(g).innerText.toLowerCase());
@@ -117,21 +117,21 @@
 			convoTexts.push($("li").get(g).innerText.toLowerCase().replace($("li").eq(g).find("[class*=icon]").get(0).innerText, ""));
 		}
 	}
-	
+
 	for (let a of $("li a")) {
 		$(a).mouseenter(function() {
 			$("#main_convo img").attr("src", $(a).find("img").attr("src"));
 			$("#main_convo h1").html(sideText[$("ul li").index($(a).parent())][0]);
 			$("#main_convo h5").html(sideText[$("ul li").index($(a).parent())][1]);
 		});
-		
+
 		$(a).mouseleave(function() {
 			$("#main_convo img").attr("src", "images/icon.png");
 			$("#main_convo h1").html("Welcome to <span class=\"font-weight-bold font-italic\">The Adventures of Cal Q. Luz</span>!");
 			$("#main_convo h5").html("Select a conversation on the left to get started.");
 		});
 	}
-	
+
 	$("#search_bar").on("change keyup input", function() {
 		for (let h = 0; h < convoTexts.length; h++) {
 			if (convoTexts[h].includes($("#search_bar").val().toLowerCase())) {
@@ -140,7 +140,7 @@
 				$("li").eq(h).addClass("d-none");
 			}
 		}
-		
+
 		if ($("li.d-none").length == convoTexts.length) {
 			$("ul").hide();
 			$("#no_results").show();
@@ -150,7 +150,7 @@
 			$("#no_results").hide();
 		}
 	});
-	
+
 	$("#search_btn").click(function() {
 		if ($("#search_btn").hasClass("active")) {
 			$("#search").addClass("animated fadeOut");
@@ -163,7 +163,7 @@
 					$("#convos_head").children().eq(0).removeClass("animated fadeIn");
 				});
 			});
-			
+
 			$("#search_btn").attr("aria-pressed", false);
 		} else {
 			$("#convos_head").children().eq(0).addClass("animated fadeOut");
@@ -176,14 +176,14 @@
 					$("#search").removeClass("animated fadeIn");
 				});
 			});
-			
+
 			$("#search_bar").focus();
 			$("#search_btn").attr("aria-pressed", true);
 		}
-		
+
 		$("#search_btn").toggleClass("active");
 	});
-	
+
 	$(window).resize(function() {
 		if (window.innerWidth < parseInt($(":root").css("--breakpoint-md"))) {
 			if ($("#search").css("display") == "none") {
@@ -195,12 +195,12 @@
 			$("#convos_head").children().eq(0).show();
 		}
 	})
-	
+
 	$(function() {
 		$("#no_results").hide();
 		$("#search").hide();
 		$("#main_convos #icon-place").hide();
 	});
 </script>
-	
+
 </html>

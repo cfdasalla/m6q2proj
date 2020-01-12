@@ -89,7 +89,7 @@
 				</div>
 			</div>
 			<div class="col-lg-8 col-xl-9 d-none d-lg-flex px-3 border-left h-100 align-items-center justify-content-center" id="main_convo">
-				<div class="text-center">
+				<div class="text-center" id="welcome">
 					<img src="images/icon.png" style="width: 200px; height: 200px" class="mb-2">
 					<h1>Welcome to <span class="font-weight-bold font-italic">The Adventures of Cal Q. Luz</span>!</h1>
 					<h5 class="font-italic text-muted">Select a conversation on the left to get started.</h5>
@@ -120,15 +120,15 @@
 
 	for (let a of $("li a")) {
 		$(a).mouseenter(function() {
-			$("#main_convo img").attr("src", $(a).find("img").attr("src"));
-			$("#main_convo h1").html(sideText[$("ul li").index($(a).parent())][0]);
-			$("#main_convo h5").html(sideText[$("ul li").index($(a).parent())][1]);
+			$("#welcome img").attr("src", $(a).find("img").attr("src"));
+			$("#welcome h1").html(sideText[$("ul li").index($(a).parent())][0]);
+			$("#welcome h5").html(sideText[$("ul li").index($(a).parent())][1]);
 		});
 
 		$(a).mouseleave(function() {
-			$("#main_convo img").attr("src", "images/icon.png");
-			$("#main_convo h1").html("Welcome to <span class=\"font-weight-bold font-italic\">The Adventures of Cal Q. Luz</span>!");
-			$("#main_convo h5").html("Select a conversation on the left to get started.");
+			$("#welcome img").attr("src", "images/icon.png");
+			$("#welcome h1").html("Welcome to <span class=\"font-weight-bold font-italic\">The Adventures of Cal Q. Luz</span>!");
+			$("#welcome h5").html("Select a conversation on the left to get started.");
 		});
 	}
 

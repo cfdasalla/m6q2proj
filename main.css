@@ -10076,15 +10076,15 @@ a.text-ian:hover, a.text-ian:focus {
   width: 80px;
 }
 
-#picture {
+#chat {
+  text-align: center;
+}
+
+#chat_dp {
   height: 40px;
   width: 40px;
   border-radius: 50px;
   border: 1px solid #e9ecef;
-}
-
-#chat {
-  text-align: center;
 }
 
 #chat div {

@@ -312,7 +312,7 @@ class Polynomial {
 
 		let ans = operateFrac(upA, lwA, "s");
 
-		return ans.latex();
+		return ans.simplify().latex();
 	}
 
 	/** Copies values from another polynomial to current polynomial. */

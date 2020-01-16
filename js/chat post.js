@@ -79,7 +79,7 @@ $(function() {
 	$("#start").focus();
 
 	$("#recipient").text(currentRecipient.fullName);
-	$("#picture").attr("src", "../images/" + currentRecipient.picture);
+	$("#chat_dp").attr("src", "../images/" + currentRecipient.picture);
 	$("#chat").addClass(currentRecipient.first.toLowerCase());
 
 	$("#start").click(function() {

@@ -59,7 +59,7 @@
 				</div>
 			</div>
 
-			<a id="advancedLink" href="#"><h5>Advanced options</h5></a>
+			<h4>Advanced options</h4>
 			<div class="form-group" id="advanced">
 				<div class="form-group row">
 					<label for="min_coef" class="col-md-4 col-form-label">Maximum polynomial degree</label>
@@ -67,39 +67,51 @@
 						<input type="number" id="max_deg" value="3" class="form-control" min="0">
 					</div>
 				</div>
+
 				<div class="form-group row">
 					<label for="min_coef" class="col-md-4 col-form-label">Minimum term coefficient</label>
-					<div class="col-md-2">
+					<div class="col-md-2 mb-3 mb-md-0">
 						<input type="number" id="min_coef" value="1" class="form-control" min="1">
 					</div>
-				</div>
-				<div class="form-group row">
 					<label for="max_coef" class="col-md-4 col-form-label">Maximum term coefficient</label>
 					<div class="col-md-2">
 						<input type="number" id="max_coef" value="20" class="form-control">
 					</div>
 				</div>
+
 				<div class="form-group row">
 					<label for="min_intb" class="col-md-4 col-form-label">Minimum definite integral bound</label>
-					<div class="col-md-2">
+					<div class="col-md-2 mb-3 mb-md-0">
 						<input type="number" id="min_intb" value="-5" class="form-control">
 					</div>
-				</div>
-				<div class="form-group row">
 					<label for="max_intb" class="col-md-4 col-form-label">Maximum definite integral bound</label>
 					<div class="col-md-2">
 						<input type="number" id="max_intb" value="5" class="form-control">
 					</div>
 				</div>
+
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" id="allow_zero" class="custom-control-input" checked>
 					<label class="custom-control-label" for="allow_zero">Allow missing terms (zero coefficient)</label>
 				</div>
+
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" id="greater_lower" class="custom-control-input" checked>
 					<label class="custom-control-label" for="greater_lower">Allow greater lower bound</label>
 				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" id="allow_frac" class="custom-control-input">
+					<label class="custom-control-label" for="allow_frac">Allow fractional coefficients</label>
+				</div>
 			</div>
+
+			<h3 class="mt-5">Reminders</h3>
+			<ul>
+				<li>Use \(C\) and <b>not</b> \(c\) for indefinite integrals.
+				<li>Make sure all fractional coefficients are in their lowest terms.
+				<li>The definite integral questions may be harder than expected. Be sure you’re ready!
+			</ul>
 
 			<button id="start" type="button" class="btn btn-success mt-2">Start</button>
 		</form>
@@ -112,7 +124,7 @@
 			<div id="buttons" class="mt-2">
 				<button id="check" type="button" class="btn btn-success">Check answer</button>
 				<button id="skip" type="button" class="btn btn-primary">Skip</button>
-            </div>
+      </div>
 		</div>
 
         <div id="progress" class="my-4 mx-2"></div>

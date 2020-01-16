@@ -76,9 +76,7 @@ let current;
 /** Creates a new, randomly generated equation. */
 function generatePolynomial() {
 	current = new Polynomial();
-	current.randomize(d3.randomInt(0, maxDeg + 1)());
-
-	if (zeroCoef) { current.randomZero(); }
+	current.randomize(d3.randomInt(0, maxDeg + 1)(), zeroCoef, fracCoef);
 }
 
 /** Checks if answer is correct. */
@@ -212,29 +210,30 @@ function place() {
 
 		switch (mode) {
 			case "d":
-				$("#question").html("\\( \\displaystyle \\frac{\\mathrm{d}} {\\mathrm{d} x} (" + current.latex() + ") \\)");
+				$("#question").html("\\( \\displaystyle \\frac{\\mathrm{d}} {\\mathrm{d} x} \\left(" + current.latex() + "\\right) \\)");
 				$("#question").css("color", "var(--red)");
 				break;
 			case "i":
-				$("#question").html("\\( \\displaystyle \\int {(" + current.latex() + ") \\mathrm{d} x} \\)");
+				$("#question").html("\\( \\displaystyle \\int {\\left(" + current.latex() + "\\right) \\mathrm{d} x} \\)");
 				$("#question").css("color", "var(--blue)");
 				break;
 			case "f":
 				currU = d3.randomInt(minBound, maxBound + 1)();
 				currL = greaterLower ? d3.randomInt(minBound, maxBound + 1)() : d3.randomInt(currU, maxBound + 1)();
 
-				$("#question").html("\\( \\displaystyle \\int ^{" + currU + "} _{" + currL + "} {(" + current.latex() + ") \\mathrm{d} x} \\)");
+				$("#question").html("\\( \\displaystyle \\int ^{" + currU + "} _{" + currL + "} {\\left(" + current.latex() + "\\right) \\mathrm{d} x} \\)");
 				$("#question").css("color", "var(--green)");
 				break;
 		}
 
+		mathField.focus();
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	} else {
 		gameInProgress = false;
-
-        $("#main").hide();
-        $("#result").hide();
+    $("#main").hide();
+    $("#result").hide();
 		$("#stats").show();
+		$("#restart").focus();
 	}
 }
 
@@ -249,11 +248,12 @@ function gameProper() {
 	zeroCoef = $("#allow_zero").prop("checked");
 	maxDeg = parseInt($("#max_deg").val());
 	greaterLower = $("#greater_lower").prop("checked");
+	fracCoef = $("#allow_frac").prop("checked");
 
 	$("#choose").hide();
-    $("#main").show();
-    $("#progress").show();
-    $("#result").show();
+  $("#main").show();
+  $("#progress").show();
+  $("#result").show();
 
 	allowed.d = $("#inc_d").is(":checked");
 	allowed.i = $("#inc_i").is(":checked");
@@ -262,8 +262,8 @@ function gameProper() {
 	qCurrent = 1;
 	qCount = parseInt($("#question_count").val());
 
-    minCoef = parseInt($("#min_coef").val());
-    maxCoef = parseInt($("#max_coef").val());
+  minCoef = parseInt($("#min_coef").val());
+  maxCoef = parseInt($("#max_coef").val());
 
 	$("#check").prop("disabled", false);
 	$("#skip").prop("disabled", false);
@@ -319,29 +319,29 @@ function checkForm() {
 		$("#greater_lower").prop("disabled", false);
 	}
 
-	parseInt($("#question_count").val()) <= 0 ? $("#question_count").addClass("is-invalid") : $("#question_count").removeClass("is-invalid");
+	if (parseInt($("#question_count").val()) <= 0) $("#question_count").addClass("is-invalid"); else $("#question_count").removeClass("is-invalid");
 
-	parseInt($("#min_coef").val()) <= 0 || parseInt($("#min_coef").val()) > parseInt($("#max_coef").val()) ? $("#min_coef").addClass("is-invalid") : $("#min_coef").removeClass("is-invalid");
+	if (parseInt($("#min_coef").val()) <= 0 || parseInt($("#min_coef").val()) > parseInt($("#max_coef").val())) $("#min_coef").addClass("is-invalid"); else $("#min_coef").removeClass("is-invalid");
 
-	parseInt($("#max_coef").val()) <= 0 || parseInt($("#max_coef").val()) < parseInt($("#min_coef").val()) ? $("#max_coef").addClass("is-invalid") : $("#max_coef").removeClass("is-invalid");
+	if (parseInt($("#max_coef").val()) <= 0 || parseInt($("#max_coef").val()) < parseInt($("#min_coef").val())) $("#max_coef").addClass("is-invalid"); else $("#max_coef").removeClass("is-invalid");
 
-	parseInt($("#min_intb").val()) > parseInt($("#max_intb").val()) ? $("#min_intb").addClass("is-invalid") : $("#min_intb").removeClass("is-invalid");
+	if (parseInt($("#min_intb").val()) > parseInt($("#max_intb").val())) $("#min_intb").addClass("is-invalid"); else $("#min_intb").removeClass("is-invalid");
 
-	parseInt($("#max_intb").val()) < parseInt($("#min_intb").val()) ? $("#max_intb").addClass("is-invalid") : $("#max_intb").removeClass("is-invalid");
+	if (parseInt($("#max_intb").val()) < parseInt($("#min_intb").val())) $("#max_intb").addClass("is-invalid"); else $("#max_intb").removeClass("is-invalid");
 
-	$("#choose").find('.is-invalid').length > 0 ? $("#start").prop("disabled", true) : $("#start").prop("disabled", false);
+	if ($("#choose").find('.is-invalid').length > 0) $("#start").prop("disabled", true); else $("#start").prop("disabled", false);
 }
 
 /** Startup function. Also used to restart. */
 function startup() {
+	$("input").first().focus();
 	$("#choose").show();
 	$("#main").hide();
 	$("#stats").hide();
 	checkForm();
 
 	$("#progress").empty();
-	$("#advanced").hide();
-	
+
 	$("#back").click(function() {
 		history.back();
 	});
@@ -379,15 +379,7 @@ $("#questionCount").keypress(function(e) {
     if (e.which === 13) {
         gameProper();
     }
-})
-
-$("#advancedLink").click(function() {
-    if ($("#advanced").css("display") == "none") {
-        $("#advanced").slideDown();
-    } else {
-        $("#advanced").slideUp();
-    }
-})
+});
 
 $("#restart").click(startup);
 

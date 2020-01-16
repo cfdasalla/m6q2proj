@@ -23,6 +23,9 @@ let zeroCoef = true;
 /** Determines whether lower bounds greater than upper bounds are allowed. Default value: true. */
 let greaterLower = true;
 
+/** Determines whether fractions are allowed. Default value: false. */
+let fracCoef = false;
+
 // =====================
 // Classes and functions
 // =====================
@@ -64,9 +67,10 @@ class Fraction {
 		}
 	}
 
-	/** Returns a new fraction representing the Fraction reduced to lowest terms. */
+	/** Returns either a new Fraction representing the Fraction reduced to lowest terms, or an integer. */
 	simplify() {
-		return new Fraction(this.n / gcd(this.n, this.d), this.d / gcd(this.n, this.d));
+		let [N, D] = [this.n / gcd(this.n, this.d), this.d / gcd(this.n, this.d)];
+		if (D === 1) return N; else if (D === -1) return -N; else return new Fraction(N, D);
 	}
 }
 
@@ -159,21 +163,24 @@ class Polynomial {
 	}
 
 	/** Assigns random values to coefficients. */
-	randomize(max) {
-		for (let i = 0; i <= max; i++) {
-			this.coefficients.push(d3.randomInt(0,2)() == 0 ? d3.randomInt(minCoef, maxCoef + 1)() : - d3.randomInt(minCoef, maxCoef + 1)());
-		}
-
-		return this;
-	}
-
-	/** Randomly assigns zero coefficients to terms. */
-	randomZero() {
+	randomize(max, zeroes = false, fractions = false) {
 		let tf = [true, false, false, false, false];
 
-		for (let i = 0; i < this.length; i++) {
-			if (tf[d3.randomInt(0, tf.length + 1)()]) {
-				this.coefficients[i] = 0;
+		for (let i = 0; i <= max; i++) {
+			if (fractions && d3.randomInt(0,2)()) {
+				let N = d3.randomInt(0,2)() ? d3.randomInt(minCoef, maxCoef + 1)() : - d3.randomInt(minCoef, maxCoef + 1)();
+				let D = d3.randomInt(0,2)() ? d3.randomInt(minCoef, maxCoef + 1)() : - d3.randomInt(minCoef, maxCoef + 1)();
+				this.coefficients.push(new Fraction(N, D).simplify());
+			} else {
+				this.coefficients.push(d3.randomInt(0,2)() ? d3.randomInt(minCoef, maxCoef + 1)() : - d3.randomInt(minCoef, maxCoef + 1)());
+			}
+		}
+
+		if (zeroes) {
+			for (let i = 0; i < this.length; i++) {
+				if (tf[d3.randomInt(0, tf.length + 1)()]) {
+					this.coefficients[i] = 0;
+				}
 			}
 		}
 
@@ -249,7 +256,7 @@ class Polynomial {
 		let tempIn = new Polynomial().copy(this);
 
 		for (let i = 1; i < tempIn.length; i++) {
-			answerEq.coefficients[i - 1] = i * tempIn.coefficients[i];
+			answerEq.coefficients[i - 1] = operate(i, tempIn.coefficients[i], "m");
 		}
 
 		if (n === 1) {
@@ -264,7 +271,7 @@ class Polynomial {
 		let answerEq = new Polynomial();
 
 		for (let i = 0; i < this.length; i++) {
-			answerEq.coefficients[i + 1] = this.coefficients[i] % (i + 1) == 0 ? this.coefficients[i] / (i + 1) : new Fraction(this.coefficients[i], i + 1).simplify();
+			answerEq.coefficients[i + 1] = operate(this.coefficients[i], i + 1, "d");
 		}
 
 		answerEq.coefficients[0] = "C";
@@ -282,11 +289,11 @@ class Polynomial {
 		for (let i = 0; i < this.length; i++) {
 			let coef = this.coefficients[i];
 
-			let multU = operateFrac(new Fraction(coef), new Fraction(1, i + 1), "m");
+			let multU = operateFrac(coef instanceof Fraction ? coef : new Fraction(coef), new Fraction(1, i + 1), "m");
 			let prodU = operateFrac(multU, new Fraction(u ** (i + 1)), "m");
 			upper.push(prodU);
 
-			let multL = operateFrac(new Fraction(coef), new Fraction(1, i + 1), "m");
+			let multL = operateFrac(coef instanceof Fraction ? coef : new Fraction(coef), new Fraction(1, i + 1), "m");
 			let prodL = operateFrac(multL, new Fraction(l ** (i + 1)), "m");
 			lower.push(prodL);
 		}
@@ -672,13 +679,13 @@ function checkZero(c) {
 function operate(a, b, o) {
 	if (a instanceof Fraction) {
 		if (b instanceof Fraction) {
-			return operateFrac(a, b, o);
+			return operateFrac(a, b, o).simplify();
 		} else {
-			return operateFrac(a, new Fraction(b), o);
+			return operateFrac(a, new Fraction(b), o).simplify();
 		}
 	} else {
 		if (b instanceof Fraction) {
-			return operateFrac(new Fraction(a), b, o);
+			return operateFrac(new Fraction(a), b, o).simplify();
 		} else {
 			switch (o) {
 				case "a":
@@ -691,7 +698,7 @@ function operate(a, b, o) {
 					return a * b;
 					break;
 				case "d":
-					return operateFrac(new Fraction(a), new Fraction(b), o);
+					return operateFrac(new Fraction(a), new Fraction(b), o).simplify();
 					break;
 			}
 		}
@@ -708,7 +715,19 @@ function latexToPoly(s) {
 
 	for (let i of t) {
     let j = i.split("x");
-    let coeff = j[0] === "" ? 1 : parseInt(j[0]);
+    // let coeff = j[0] === "" ? 1 : parseInt(j[0]);
+
+		let coeff;
+		if (j[0] === "") {
+			coeff = 1;
+		} else if (j[0].indexOf("\\frac") >= 0) {
+			let frac = j[0].match(/\\frac|{.?}/g);
+			let [N, D] = [frac[1].replace(/{|}/g, ""), frac[2].replace(/{|}/g, "")];
+			coeff = new Fraction(j[0][0] === "-" ? -N : N, D);
+		} else {
+			coeff = parseInt(j[0]);
+		}
+
     let power = j.length === 1 ? 0 : (j[1] === "" ? 1 : parseInt(j[1].replace("^", "")));
     u[power] = coeff;
 	}

@@ -96,6 +96,10 @@ $(function() {
 
 	$("#back").click(function() {
 		history.back();
+
+		window.onpopstate(function() {
+			window.location("../");
+		});
 	});
 });
 

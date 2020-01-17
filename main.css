@@ -10651,6 +10651,12 @@ a.icon-gray-dark:focus, a.icon-gray-dark.focus {
   z-index: 100;
 }
 
+#header h4, #convos_head h4 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 #header {
   border-bottom: 1px solid lightgray;
 }

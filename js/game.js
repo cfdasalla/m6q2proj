@@ -334,17 +334,13 @@ function checkForm() {
 
 /** Startup function. Also used to restart. */
 function startup() {
-	$("input").first().focus();
 	$("#choose").show();
 	$("#main").hide();
 	$("#stats").hide();
 	checkForm();
 
 	$("#progress").empty();
-
-	$("#back").click(function() {
-		history.back();
-	});
+	$("input").first().focus();
 }
 
 $("#choose").change(checkForm);
@@ -390,6 +386,14 @@ window.addEventListener("beforeunload", function(x) {
 		x.preventDefault();
 		x.returnValue = "";
 	}
+});
+
+$("#back").click(function() {
+	history.back();
+
+	window.onpopstate(function() {
+		window.location("../");
+	});
 });
 
 $(startup);

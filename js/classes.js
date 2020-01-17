@@ -310,9 +310,9 @@ class Polynomial {
 			[upA, lwA] = [new Fraction(0), new Fraction(0)];
 		}
 
-		let ans = operateFrac(upA, lwA, "s");
+		let ans = operateFrac(upA, lwA, "s").simplify();
 
-		return ans.simplify().latex();
+		return ans instanceof Fraction ? ans.latex() : ans;
 	}
 
 	/** Copies values from another polynomial to current polynomial. */

@@ -312,7 +312,7 @@ class Polynomial {
 
 		let ans = operateFrac(upA, lwA, "s").simplify();
 
-		return ans instanceof Fraction ? ans.latex() : ans;
+		return ans instanceof Fraction ? ans.latex() : ans.toString();
 	}
 
 	/** Copies values from another polynomial to current polynomial. */

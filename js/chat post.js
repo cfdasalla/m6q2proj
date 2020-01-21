@@ -57,6 +57,24 @@ function * queueFunc() {
 
 				count++;
 				break;
+			case "d":
+				while (true) {
+					let p = new DragDrop(x[1], x[2]).add();
+					let c = yield p;
+
+					yield new Message("r", x[6]).add();
+
+					if (c) {
+						yield new Message("l", x[3]).add();
+						break;
+					} else {
+						yield new Message("l", x[4]).add();
+						yield new Message("l", x[5]).add();
+					}
+				}
+
+				count++;
+				break;
 		}
 
 		updateScroll();
@@ -68,6 +86,7 @@ function * queueFunc() {
 			$("#chat").append(`<a class="btn btn-${currentRecipient.first.toLowerCase()} animated fadeInUp faster" href="${nextChapter}" role="button" style="display:inline-block" id="next">Next</a>`);
 			$("#next").focus();
 			updateScroll();
+			started = false;
 		}, 2000);
 	}, timeDelay($("#chat div[class~=left], #chat div[class~=right]").last().get(0).innerText.length, true));
 }
@@ -109,3 +128,5 @@ window.addEventListener("beforeunload", function(x) {
 		x.returnValue = "";
 	}
 });
+
+window.addEventListener('touchmove', function() {});

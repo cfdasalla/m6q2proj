@@ -77,7 +77,7 @@ class Message {
 	add() {
 		let a = new Promise(function(resolve, reject) {
 			let delType = this.sender == "r" ? timeDelay(this.message.replace("//displaystyle", "").length, false, false) : 0;
-			if ($("#chat").children().last().is(".choose, .type")) delType = 0;
+			if ($("#chat").children().last().is(".choose, .type, .dragdrop")) delType = 0;
 
 			setTimeout(resolve, delType);
 		}.bind(this)).then(function(a) {
@@ -104,10 +104,10 @@ class Message {
 				setTimeout(function() {
 					x.html(this.message);
 					updateScroll();
-					MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+					MathJax.typeset();
 				}.bind(this), del1);
 			} else {
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+				MathJax.typeset();
 			}
 
 			setTimeout(function() {
@@ -192,7 +192,7 @@ ${optionButtonsS}
 				});
 			}
 
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+			MathJax.typeset();
 		}.bind(this));
 
 		return this;
@@ -267,7 +267,123 @@ class TypedPoll {
 			this.el = x;
 			this.in = i;
 
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+			MathJax.typeset();
+		}.bind(this));
+
+		return this;
+	}
+}
+
+class DragDrop {
+	constructor(question, options) {
+		/** The question for the DragDrop. */
+		this.question = question;
+
+		/** The object containing the options to the DragDrop. */
+		this.options = options;
+
+		/** The JQuery object containing the HTML element corresponding to the TypedPoll. */
+		this.element;
+	}
+
+	get html() {
+		let drags = [];
+		let drops = [];
+
+		for (let i in this.options) {
+			drags.push(`<span class="drag-choice drag-choice-${i}" draggable="true">${this.options[i][0]}</span>\n`);
+			drops.push(`<span class="drop-choice drop-choice-${i}">${this.options[i][1]}:<span class="dropzone ml-2"></span></span>\n`);
+		}
+
+		drags = shuffle(drags);
+		drops = shuffle(drops);
+
+		let dragsS = "";
+		let dropsS = "";
+
+		for (let j of drags) dragsS += j;
+		for (let j of drops) dropsS += j;
+
+		return `<div class="animated faster fadeInUp dragdrop">
+<div class="question h5 mt-4">${this.question}</div>
+<div class="drags mb-3">
+${dragsS}
+</div>
+<div class="drops mb-4">
+${dropsS}
+</div>
+</div>`
+	}
+
+	set el(a) {
+		this.element = a;
+		return a;
+	}
+
+	add() {
+		let p = new Promise(function(resolve, reject) {
+			setTimeout(resolve, timeDelay(this.question.length, false, false));
+		}.bind(this)).then(function(a) {
+			let h = $(this.html).appendTo($("#chat"));
+			MathJax.typeset();
+
+			for (let c of h.find(".drag-choice")) {
+				$(c).on('dragstart', function (e) {
+		    	e.originalEvent.dataTransfer.setData("text/plain", $(e.originalEvent.target).attr("class").match(/drag-choice-./)[0].slice(-1));
+					e.originalEvent.dataTransfer.dropEffect = "move";
+					$(e.originalEvent.target).addClass("dragging");
+				});
+
+				$(c).on('dragend', function (e) {
+					e.originalEvent.preventDefault();
+					$(e.originalEvent.target).removeClass("dragging");
+
+			    if (e.originalEvent.dataTransfer.dropEffect !== 'none') {
+		        $(this).remove();
+			    }
+
+					if (!h.find(".drags").children().length) {
+						let t = true;
+
+						for (let g of h.find(".drag-placed")) {
+							if ($(g).attr("class").match(/drag-choice-./)[0].slice(-1) === $(g).parent().attr("class").match(/drop-choice-./)[0].slice(-1)) continue; else {t = false; break;}
+						}
+
+						queue.next(t);
+					}
+				});
+			}
+
+			for (let d of h.find(".dropzone")) {
+				$(d).on('dragenter', function(e) {
+					e.originalEvent.preventDefault();
+					e.originalEvent.dataTransfer.dropEffect = "move";
+					$(e.originalEvent.target).addClass("dragenter");
+			 	});
+
+				$(d).on('dragleave', function(e) {
+					e.originalEvent.preventDefault();
+					$(e.originalEvent.target).removeClass("dragenter");
+			 	});
+
+				$(d).on('dragover', function(e) {
+					e.originalEvent.preventDefault();
+					e.originalEvent.dataTransfer.dropEffect = "move";
+			 	});
+
+				$(d).on('drop', function(e) {
+					e.originalEvent.preventDefault();
+					$(e.originalEvent.target).css("border", "");
+
+					let choice = e.originalEvent.dataTransfer.getData("text/plain");
+					$(e.originalEvent.target).html(this.options[choice][0]);
+					$(e.originalEvent.target).removeClass("dropzone");
+					$(e.originalEvent.target).addClass(`drag-choice drag-placed drag-choice-${choice}`);
+					MathJax.typeset();
+				}.bind(this));
+			}
+
+			this.el = h;
 		}.bind(this));
 
 		return this;

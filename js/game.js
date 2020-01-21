@@ -227,7 +227,8 @@ function place() {
 		}
 
 		mathField.focus();
-		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+		MathJax.typesetClear();
+		MathJax.typeset();
 	} else {
 		gameInProgress = false;
     $("#main").hide();

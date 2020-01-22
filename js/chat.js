@@ -325,11 +325,18 @@ ${dropsS}
 			setTimeout(resolve, timeDelay(this.question.length, false, false));
 		}.bind(this)).then(function(a) {
 			let h = $(this.html).appendTo($("#chat"));
+			updateScroll();
 			MathJax.typeset();
 
 			for (let c of h.find(".drag-choice")) {
-				$(c).on('touchmove', document.preventDefault, {passive: false});
-				
+				c.addEventListener('touchmove', function() {
+					$(window).on('touchmove', function() {});
+				}, {passive: false});
+
+				c.addEventListener('touchend', function() {
+					$(window).off('touchmove', function() {});
+				}, {passive: false});
+
 				$(c).on('dragstart', function (e) {
 					e.originalEvent.dataTransfer.setData("text/plain", $(e.originalEvent.target).attr("class").match(/drag-choice-./)[0].slice(-1));
 					e.originalEvent.dataTransfer.dropEffect = "move";

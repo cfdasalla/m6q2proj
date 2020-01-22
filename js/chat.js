@@ -329,7 +329,7 @@ ${dropsS}
 			MathJax.typeset();
 
 			for (let c of h.find(".drag-choice")) {
-				// $(c).on('touchmove', document.preventDefault, {passive: false});
+				$(c).on('touchmove', document.preventDefault, {passive: false});
 
 				$(c).on('dragstart', function (e) {
 					e.originalEvent.dataTransfer.setData("text/plain", $(e.originalEvent.target).attr("class").match(/drag-choice-./)[0].slice(-1));

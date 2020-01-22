@@ -328,8 +328,8 @@ ${dropsS}
 			MathJax.typeset();
 
 			for (let c of h.find(".drag-choice")) {
-				c.addEventListener('touchstart', this.preventDefault, {passive: false});
-				c.addEventListener('touchforcechange', this.preventDefault, {passive: false});
+				c.addEventListener('touchstart', c.preventDefault, {passive: false});
+				c.addEventListener('touchforcechange', c.preventDefault, {passive: false});
 				
 				$(c).on('dragstart', function (e) {
 					e.originalEvent.dataTransfer.setData("text/plain", $(e.originalEvent.target).attr("class").match(/drag-choice-./)[0].slice(-1));

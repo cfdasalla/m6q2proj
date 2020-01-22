@@ -332,6 +332,7 @@ ${dropsS}
 		    	e.originalEvent.dataTransfer.setData("text/plain", $(e.originalEvent.target).attr("class").match(/drag-choice-./)[0].slice(-1));
 					e.originalEvent.dataTransfer.dropEffect = "move";
 					$(e.originalEvent.target).addClass("dragging");
+					window.addEventListener('touchmove', function() {});
 				});
 
 				$(c).on('dragend', function (e) {

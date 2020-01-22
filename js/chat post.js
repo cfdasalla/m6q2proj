@@ -128,5 +128,3 @@ window.addEventListener("beforeunload", function(x) {
 		x.returnValue = "";
 	}
 });
-
-window.addEventListener('touchmove', function() {});

@@ -329,20 +329,21 @@ ${dropsS}
 
 			for (let c of h.find(".drag-choice")) {
 				$(c).on('dragstart', function (e) {
-		    			e.originalEvent.dataTransfer.setData("text/plain", $(e.originalEvent.target).attr("class").match(/drag-choice-./)[0].slice(-1));
+					e.originalEvent.dataTransfer.setData("text/plain", $(e.originalEvent.target).attr("class").match(/drag-choice-./)[0].slice(-1));
 					e.originalEvent.dataTransfer.dropEffect = "move";
 					$(e.originalEvent.target).addClass("dragging");
 					window.addEventListener('touchmove', function(e) {
 						e.preventDefault();
 					}, { passive: false });
+				});
 
 				$(c).on('dragend', function (e) {
 					e.originalEvent.preventDefault();
 					$(e.originalEvent.target).removeClass("dragging");
 
-			    if (e.originalEvent.dataTransfer.dropEffect !== 'none') {
-		        $(this).remove();
-			    }
+					if (e.originalEvent.dataTransfer.dropEffect !== 'none') {
+						$(this).remove();
+					}
 
 					if (!h.find(".drags").children().length) {
 						let t = true;
